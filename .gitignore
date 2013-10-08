@@ -1,11 +1,5 @@
 .idea/
-meteor-paginated-subscription/
-meteorERP/
-microscope/
-Microscope-iron-router-screencast/
-take02/
-take03/
-todo01/
+packages/
 
 #################
 ## Eclipse

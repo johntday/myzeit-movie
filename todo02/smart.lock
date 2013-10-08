@@ -4,8 +4,8 @@
     "basePackages": {
       "accounts-ui-bootstrap-dropdown": {},
       "spin": {},
-      "paginated-subscription": {
-        "path": "../meteor-paginated-subscription"
+      "mypaginator": {
+        "path": "../../meteor-mypaginator"
       },
       "iron-router": {},
       "bootstrap-3": {},
@@ -22,8 +22,8 @@
         "tag": "v0.2.0",
         "commit": "fd3a2871a69442848b4b4e74f5e1ae28fa4a95a4"
       },
-      "paginated-subscription": {
-        "path": "../meteor-paginated-subscription"
+      "mypaginator": {
+        "path": "../../meteor-mypaginator"
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",

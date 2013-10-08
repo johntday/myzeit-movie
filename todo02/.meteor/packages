@@ -11,8 +11,8 @@ accounts-ui
 accounts-ui-bootstrap-dropdown
 accounts-password
 spin
-paginated-subscription
 iron-router
 underscore
 appcache
 moment
+mypaginator

@@ -16,3 +16,6 @@ and files in the root directory are loaded last (other than `main.*`).
 - Within a directory, files are loaded in alphabetical order by filename.
 - These rules stack, so that within lib, for example, files are still loaded in alphabetical order; and if there are multiple files named `main.js`,
 the ones in subdirectories are loaded earlier.
+
+### Notes
+- 10/10/2013: first pull
