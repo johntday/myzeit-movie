@@ -1,0 +1,12 @@
+{
+  "packages": {
+    "accounts-ui-bootstrap-dropdown": {},
+    "spin": {},
+    "paginated-subscription": {
+      "path": "/home/user/GitHub/myzeit/meteor-paginated-subscription"
+    },
+    "iron-router": {},
+    "bootstrap-3": {},
+	"moment": {}
+  }
+}

@@ -1,0 +1,47 @@
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>MyZeit</title>
+	<link rel="apple-touch-icon" href="apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon114.png">
+</head>
+
+<template name="layout">
+
+	<!-- HEADER
+	================================================== -->
+	{{> tmplHeader}}
+
+	<!-- ERRORS
+	================================================== -->
+	<!--
+	<div class="bs-old-docs">
+		<div class="container">
+			{{> errors}}
+		</div>
+	</div>
+-->
+
+	<div class="container bs-docs-container">
+		<div class="row">
+
+			<!-- SIDEBAR
+			================================================== -->
+			<div class="col-sm-4">
+				{{> tmplSidebar}}
+			</div>
+
+			<!-- MAIN
+			================================================== -->
+			<div class="col-sm-8" role="main">
+				<!-- <div style="padding-top: 30px;">	</div> -->
+				{{yield}}
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer
+	================================================== -->
+	{{> tmplFooter}}
+
+</template>

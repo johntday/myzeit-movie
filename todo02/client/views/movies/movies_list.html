@@ -1,0 +1,19 @@
+<template name="tmplMoviesList">
+	<div class="posts">
+        {{#each movies}}
+	        {{> tmplMovieItem}}
+        {{/each}}
+
+        {{#if moviesReady}}
+	        {{#unless allMoviesLoaded}}
+				<a class="load-more" href="#">Load more</a>
+	        {{/unless}}
+	    {{else}}
+		    <div>{{> spinner}}</div>
+        {{/if}}
+    </div>
+</template>
+
+<template name="tmplSortedMovies">
+    {{> tmplMoviesList options}}
+</template>

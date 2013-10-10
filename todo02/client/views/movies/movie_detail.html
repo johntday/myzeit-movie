@@ -1,0 +1,329 @@
+<template name="customers">
+	<table class="table table-striped">
+		<tr>
+			<th>Contact Person</th>
+			<th>Position</th>
+			<th>Company Name</th>
+			<th>Company Address</th>
+			<th>Contact #</th>
+			<th>Email</th>
+			<th colspan="3" class="text-center">Generate</th>
+			<th colspan="2">Actions</th>
+		</tr>
+		{{#each customers}}
+		<tr>
+			<td>{{contact_person}}</td>
+			<td>{{position}}</td>
+			<td>{{company_name}}</td>
+			<td>{{company_address}}</td>
+			<td>{{contact_number}}</td>
+			<td>{{email}}</td>
+			<td>
+				<button href="#billing-statement-modal" data-toggle="modal" class="btn btn-primary btn-small btnBilling" id="{{_id}}">B/S</button>
+			</td>
+			<td>
+				<button href="#sales-invoice-modal" data-toggle="modal" class="btn btn-primary btn-small btnSalesInvoice" id="{{_id}}">S/I</button>
+			</td>
+			<td>
+				<button href="#statement-modal" data-toggle="modal" class="btn btn-primary btn-small btnStatement" id="{{_id}}">S/A</button>
+			</td>
+			<td>
+				<button class="btn btn-primary btn-small btnEditCustomer" id="{{_id}}">
+					<i class="icon-edit"></i>
+				</button>
+			</td>
+			<td>
+				<button class="btn btn-primary btn-small btnRemoveCustomer" id="{{_id}}">
+					<i class="icon-trash"></i>
+				</button>
+			</td>
+		</tr>
+		{{/each}}
+	</table>
+</template>
+
+<template name="customers2">
+	<table class="table table-striped">
+		<tr>
+			<th>Contact Person</th>
+			<th>Position</th>
+			<th>Company Name</th>
+			<th>Company Address</th>
+			<th>Contact #</th>
+			<th>Email</th>
+			<th colspan="2">Actions</th>
+		</tr>
+		{{#each customers}}
+		<tr>
+			<td>{{contact_person}}</td>
+			<td>{{position}}</td>
+			<td>{{company_name}}</td>
+			<td>{{company_address}}</td>
+			<td>{{contact_number}}</td>
+			<td>{{email}}</td>
+			<td>
+				<button class="btn btn-primary btn-small btnEditCustomer" id="{{_id}}">
+					<i class="icon-edit"></i>
+				</button>
+			</td>
+			<td>
+				<button class="btn btn-primary btn-small btnRemoveCustomer" id="{{_id}}">
+					<i class="icon-trash"></i>
+				</button>
+			</td>
+		</tr>
+		{{/each}}
+	</table>
+</template>
+
+<template name="tmplMovieDetail">
+
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h2 class="panel-title">{{title}}</h2>
+		</div>
+		<div class="panel-body">
+
+
+	<form class="add modal-nav-box box-hide panel well form-horizontal" id="form_addCustomer">
+		{{#if editing_movie}}
+		{{#each data}}
+		<input type="hidden" value="{{_id}}" name="id"/>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Title</label>
+			<div class="col-lg-10">
+				<input type="text" value="{{title}}" class="form-control" name="title" required pattern="[a-zA-Z. ]*" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Release Date</label>
+			<div class="col-lg-10">
+				<input type="text" value="{{release_date}}" class="form-control" name="release_date"  required pattern="[0-9-]*" />
+			</div>
+		</div>
+		{{/each}}
+		{{else}}
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Title</label>
+			<div class="col-lg-10">
+				<input type="text" value="{{title}}" class="form-control" name="title" required pattern="[a-zA-Z. ]*" readonly="true" />
+			</div>
+		</div>
+		<div class="form-group">
+		<label class="col-lg-2 control-label">Release Date</label>
+			<div class="col-lg-10">{{release_date}}</div>
+		</div>
+		{{/if}}
+		<div class="form-group">
+			<div class="col-offset-8 col-lg-4">
+				{{#if editing_movie}}
+				<button type="button" class="btn btn-primary" id="btnUpdateCustomer">Update</button>
+				<button type="button" class="btn btn-primary" id="btnCancel">Cancel</button>
+				{{else}}
+				<button type="submit" class="btn btn-primary" id="btnAddCustomer">Add</button>
+				{{/if}}
+			</div>
+		</div>
+	</form>
+		</div>
+	</div>
+
+</template>
+
+<template name="customer_form2">
+	<form class="add modal-nav-box box-hide panel well form-horizontal" id="form_addCustomer2">
+		{{#if editing_movie}}
+		{{#each info}}
+		<input type="hidden" value="{{_id}}" name="id"/>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Contact Person</label>
+			<div class="col-lg-10">
+				<input type="text" value="{{contact_person}}" class="form-control" name="contact_person" required pattern="[a-zA-Z. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Position</label>
+			<div class="col-lg-10">
+				<input type="text" value="{{position}}" class="form-control" name="position"  required pattern="[a-zA-Z. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Company Name</label>
+			<div class="col-lg-10">
+				<input type="text" value="{{company_name}}" class="form-control" name="company_name" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Company Address</label>
+			<div class="col-lg-10">
+				<input type="text" value="{{company_address}}" class="form-control" name="company_address" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Contact Number</label>
+			<div class="col-lg-10">
+				<input type="text" value="{{contact_number}}" class="form-control" name="contact_number" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Email</label>
+			<div class="col-lg-10">
+				<input type="text" value="{{email}}" class="form-control" name="email" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+		</div>
+		{{/each}}
+		{{else}}
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Contact Persons</label>
+			<div class="col-lg-4">
+				<input type="text"class="form-control" name="contact_person" required pattern="[a-zA-Z. ]*">
+			</div>
+			<label class="col-lg-2 control-label">Position</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="position"  required pattern="[a-zA-Z. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Company Name</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="company_name" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+			<label class="col-lg-2 control-label">Company Address</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="company_address" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Contact Number</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="contact_number" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+			<label class="col-lg-2 control-label">Email</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="email" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+		</div>
+		{{/if}}
+		<div class="form-group">
+			<div class="col-offset-8 col-lg-4">
+				{{#if editing_movie}}
+				<button type="button" class="btn btn-primary" id="btnUpdateCustomer">Update</button>
+				<button type="button" class="btn btn-primary" id="btnCancel">Cancel</button>
+				{{else}}
+				<button type="submit" class="btn btn-primary" id="btnAddCustomer">Add</button>
+				{{/if}}
+			</div>
+		</div>
+	</form>
+</template>
+
+<template name="customer_form3">
+	<form class="add modal-nav-box box-hide panel well form-horizontal" id="form_addCustomer3">
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Contact Persons</label>
+			<div class="col-lg-4">
+				<input type="text"class="form-control" name="contact_person" required pattern="[a-zA-Z. ]*">
+			</div>
+			<label class="col-lg-2 control-label">Position</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="position"  required pattern="[a-zA-Z. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Company Name</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="company_name" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+			<label class="col-lg-2 control-label">Company Address</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="company_address" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-lg-2 control-label">Contact Number</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="contact_number" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+			<label class="col-lg-2 control-label">Email</label>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="email" required pattern="[a-zA-Z0-9@-&!#. ]*">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-offset-8 col-lg-4">
+				<button type="submit" class="btn btn-primary" data-dismiss="modal" id="btnAddCustomer">Add</button>
+			</div>
+		</div>
+	</form>
+</template>
+
+<template name="customers_dropdown">
+	<select class="form-control" name="customer_id" id="customer_id">
+		{{#each customers}}
+		<option value="{{_id}}">{{name}}</option>
+		{{/each}}
+	</select>
+</template>
+
+<template name="check_customers">
+	<select class="form-control" name="customer_id" id="customer_id">
+		{{#each customers}}
+		<option value="{{_id}}">{{contact_person}}</option>
+		{{/each}}
+	</select>
+</template>
+
+<template name="sale_order_customers">
+	<select class="form-control" id="sale_customer">
+		{{#each customers}}
+		<option value="{{_id}}">{{name}}</option>
+		{{/each}}
+	</select>
+</template>
+
+<template name="search_customers">
+	<div class="col-lg-4">
+		<input type="text" class="form-control " placeholder="Enter name here" id="c_input">
+	</div>
+	<input type="button" class="btn btn-primary" id="c_search" value="Find">
+</template>
+
+<template name="search_customers2">
+	<div class="col-lg-4">
+		<input type="text" class="form-control " placeholder="Enter name here" id="c_input2">
+	</div>
+	<input type="button" class="btn btn-default" id="c_search2" value="Find">
+</template>
+
+<template name="customers_badge">
+	{{customers.count}}
+</template>
+
+<template name="customer_to_sell">
+	<select class="form-control" name="customer_id" id="car_customer">
+		{{#each customers}}
+		<option value="{{_id}}">{{contact_person}}</option>
+		{{/each}}
+	</select>
+</template>
+
+<template name="customer_item_list">
+	<div class="accordion" id="accordion2">
+		{{#each customers}}
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#accordion{{_id}}">
+					{{contact_person}}
+				</a>
+			</div>
+			<div id="accordion{{_id}}" class="accordion-body collapse">
+				<div class="accordion-inner">
+					<div class="table-body">
+						{{>items_per_customer}}
+					</div>
+				</div>
+			</div>
+		</div>
+		{{/each}}
+	</div>
+</template>
