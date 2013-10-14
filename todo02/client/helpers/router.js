@@ -37,7 +37,8 @@ Router.map(function ()
 		path  : '/sciFiMovies/:_id',
 		waitOn: function ()
 		{
-			return Meteor.subscribe('selectedMovie', this.params._id);
+			Session.set('selected_movie_id', this.params._id);
+			return Meteor.subscribe('selectedMovie', this.params._id) && Meteor.subscribe('tmplSortedMovieTimelineList', this.params._id);
 		},
 		data  : function ()
 		{

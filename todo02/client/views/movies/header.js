@@ -29,5 +29,8 @@ Template.tmplHeader.events({
 Template.tmplHeader.helpers({
 	searchText: function() {
 		return Session.get("search_text");
+	},
+	isAdmin: function() {
+		return isAdmin();
 	}
 });

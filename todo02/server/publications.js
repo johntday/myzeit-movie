@@ -24,6 +24,10 @@ Meteor.publish('tmplSortedMovies', function(limit) {
 	return Movies.find({}, {sort: {title: 1}, limit: limit});
 });
 
+Meteor.publish('tmplSortedMovieTimelineList', function(movieId) {
+	return MovieTimelines.find({movieId: movieId}, {sort: {created: 1}, limit: 2});
+});
+
 Meteor.publish('selectedMovie', function(id) {
 	return id && Movies.find(id);
 });

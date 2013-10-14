@@ -1,0 +1,27 @@
+<template name="tmplMovieTimelineList">
+		{{#each movies}}
+		{{> tmplMovieTimeline2}}
+		{{/each}}
+
+		{{#if moviesReady}}
+		{{#unless allMoviesLoaded}}
+		<a class="load-more" href="#">Load more</a>
+		{{/unless}}
+		{{else}}
+		<div>{{> spinner}}</div>
+		{{/if}}
+</template>
+
+<template name="tmplSortedMovieTimelineList">
+	{{> tmplMovieTimelineList options}}
+</template>
+
+
+<template name="tmplMovieTimeline2">
+	<div class="post">
+		<div class="post-content">
+			<h4>{{description}}</h4>
+			<p>{{author}}</p>
+		</div>
+	</div>
+</template>

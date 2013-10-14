@@ -8,11 +8,11 @@ standard-app-packages
 bootstrap-3
 accounts-base
 accounts-ui
-accounts-ui-bootstrap-dropdown
+#accounts-ui-bootstrap-dropdown
 accounts-password
 spin
 iron-router
 underscore
-appcache
 moment
 mypaginator
+mytimeline

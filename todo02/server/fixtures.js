@@ -9006,7 +9006,77 @@ Meteor.startup(function () {
 		}
 	}
 
-	// POSTS
+	// MOVIE TIMELINES
+	if (MovieTimelines.find().count() === 0) {
+		var now = new Date().getTime();
+		//var results = Movies.find({title: {$regex: 'space odyssey', $options: 'i'}});
+		var results = Movies.find({id: 62});//id=62, space odyssey
+		var testId = null;
+		var count = 0;
+		results.forEach(function (movie) {
+			console.log("Title of movie " + count + ": " + movie.title + "("+movie._id+")");
+			testId = movie._id;
+			count += 1;
+		});
+
+		var movieTimelines = [
+			{
+				movieId: testId,
+				userId: null,
+				created: now,
+				description: "My description",
+				author: "John T Day",
+				commentsCount: 0,
+				upvoters: [],
+				votes: 0,
+				data: [
+					{
+						'start': new Date(2010,7,23),
+						'content': 'Conversation'
+					},
+					{
+						'start': new Date(2010,7,23,23,0,0),
+						'content': 'Mail from boss'
+					},
+					{
+						'start': new Date(2010,7,24,16,0,0),
+						'content': 'Report'
+					},
+					{
+						'start': new Date(2010,7,26),
+						'end': new Date(2010,8,2),
+						'content': 'Traject A'
+					},
+					{
+						'start': new Date(2010,7,28),
+						'content': 'Memo'
+					},
+					{
+						'start': new Date(2010,7,29),
+						'content': 'Phone call'
+					},
+					{
+						'start': new Date(2010,7,31),
+						'end': new Date(2010,8,3),
+						'content': 'Traject B'
+					},
+					{
+						'start': new Date(2010,8,4,12,0,0),
+						'content': 'Report'
+					}
+				]
+			}
+		];
+
+		for (var i=0; i < movieTimelines.length; i++) {
+			MovieTimelines.insert( movieTimelines[i] );
+			console.log("Insert MovieTimeline for ("+testId+")");
+		}
+
+		console.log("Count of MovieTimelines: " + MovieTimelines.find({}).count());
+	}
+
+		// POSTS
 	if (Posts.find().count() === 0) {
 	  var now = new Date().getTime();
 
