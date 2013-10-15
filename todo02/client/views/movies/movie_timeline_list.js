@@ -8,48 +8,44 @@ Template.tmplSortedMovieTimelineList.helpers({
 		}
 	}
 });
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmplMovieTimelineList.helpers({
 	movies: function() {
 		var i = 0;
 		var options = {sort: this.sort, limit: this.handle.limit()};
 		//console.log("selector: "+JSON.stringify(this.selector));
 		return MovieTimelines.find(this.selector, options).map(function(movie) {
+			movie.createdAgo = moment(movie.created).startOf('hour').fromNow();
+
 			movie._rank = i;
 			i += 1;
 			return movie;
 		});
 	},
-
 	moviesReady: function() {
 		return this.handle.ready();
 	},
-
 	allMoviesLoaded: function() {
 		//console.log("count: "+MovieTimelines.find().count());
 		//console.log("loaded: "+this.handle.loaded());
 		return this.handle.ready() &&
 			MovieTimelines.find().count() < this.handle.loaded();
 	}
-
 });
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmplMovieTimelineList.events({
 	'click .load-more': function(e) {
 		e.preventDefault();
 		this.handle.loadNextPage();
 	}
 });
-
-
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmplMovieTimeline2.helpers({
 	movieLink: function() {
 		return "/sciFiMovies/" + this._id;
 	}
 });
-
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmplMovieTimeline2.rendered = function(){
 	// animate post from previous position to new position
 	var instance = this;

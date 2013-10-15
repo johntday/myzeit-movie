@@ -1,11 +1,11 @@
 MovieTimelines = new Meteor.Collection('movieTimelines');
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 MovieTimelines.allow({
 	insert: isAdmin,
 	update: isAdmin,
 	remove: isAdmin
 });
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 Meteor.methods({
 	createMovieTimeline: function(movieTimelineAttr) {
 		var user = Meteor.user();
@@ -36,9 +36,9 @@ Meteor.methods({
 			userId: user._id,
 			author: user.username,
 			created: new Date().getTime(),
-			commentsCount: 0,
+			comment_count: 0,
 			upvoters: [],
-			votes: 0
+			vote_count: 0
 		});
 
 		var movieTimelineId = MovieTimelines.insert(movieTimeline);
@@ -58,7 +58,7 @@ Meteor.methods({
 			upvoters: {$ne: user._id}
 		}, {
 			$addToSet: {upvoters: user._id},
-			$inc: {votes: 1}
+			$inc: {vote_count: 1}
 		});
 	}
 });

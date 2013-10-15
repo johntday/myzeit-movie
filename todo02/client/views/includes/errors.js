@@ -4,6 +4,12 @@ Template.tmplErrors.helpers({
 	}
 });
 
+Template.tmplError.helpers({
+	snark: function() {
+		return Meteor.MyClientModule.getRandomSnarkText();
+	}
+});
+
 Template.tmplError.rendered = function() {
 	var error = this.data;
 	Meteor.defer(function() {

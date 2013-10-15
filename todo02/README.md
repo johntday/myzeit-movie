@@ -19,3 +19,81 @@ the ones in subdirectories are loaded earlier.
 
 ### Notes
 - 10/10/2013: first pull
+
+## Standards
+### Prefixes
+- **pubsub**: name of Meteor.publish and/or Meteor.subscribe
+- **tmpl**: name of template
+- **coll**: name of Collection
+
+
+
+```
+http://handlebarsjs.com/expressions.html
+
+Handlebars.registerHelper('link', function(text, options) {
+  var attrs = [];
+
+  for(var prop in options.hash) {
+    attrs.push(prop + '="' + options.hash[prop] + '"');
+  }
+
+  return new Handlebars.SafeString(
+    "<a " + attrs.join(" ") + ">" + text + "</a>"
+  );
+});
+```
+
+## Data models
+### Movie timeline
+
+```
+		var movieTimeline =
+			{
+				movieId: testId,
+				userId: userId,
+				author: "John T Day",
+				created: now,
+				//updated: null,
+				description: "My description",
+				comment_count: 10,
+				upvoters: [steve._id, albert._id],
+				vote_count: 2,
+				data: [
+					{
+						'start': new Date(2010,7,23),
+						'content': 'Conversation'
+					},
+					{
+						'start': new Date(2010,7,23,23,0,0),
+						'content': 'Mail from boss'
+					},
+					{
+						'start': new Date(2010,7,24,16,0,0),
+						'content': 'Report'
+					},
+					{
+						'start': new Date(2010,7,26),
+						'end': new Date(2010,8,2),
+						'content': 'Traject A'
+					},
+					{
+						'start': new Date(2010,7,28),
+						'content': 'Memo'
+					},
+					{
+						'start': new Date(2010,7,29),
+						'content': 'Phone call'
+					},
+					{
+						'start': new Date(2010,7,31),
+						'end': new Date(2010,8,3),
+						'content': 'Traject B'
+					},
+					{
+						'start': new Date(2010,8,4,12,0,0),
+						'content': 'Report'
+					}
+				]
+			};
+```

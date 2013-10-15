@@ -5,12 +5,28 @@ if (Meteor.isClient) {
     Meteor.MyClientModule = (function () {
         var oPublic = {};
         var debug = false; // change me to true to get log performance to console
+	    var snark = ["hi ho", "yo", "blah, blah, blah..."];
 
 		/*
 		 APP CONFIG PARMS
 		 */
 	    oPublic.appConfig = {
 		    pageLimit: 10, pageLimitMid: 400, pageLimitMax: 1000
+	    };
+
+	    /*
+	     * Get a random snarky text snippet
+	     */
+	    oPublic.getRandomSnarkText = function() {
+		    var i = Math.floor(Random.fraction() * snark.length);
+		    return snark[i];
+	    };
+
+	    /*
+	     * Scroll to top of page FAST
+	     */
+	    oPublic.scrollToTopOfPageFast = function() {
+		    $('html, body').animate({ scrollTop: 0 }, 'fast');
 	    };
 
         // Returns an event map that handles the "escape" and "return" keys and
@@ -48,9 +64,18 @@ if (Meteor.isClient) {
             input.select();
         };
 
-        /*
-         performance log for collection
-         */
+	    oPublic.Breadcrumb = function Breadcrumb (title, link, isActive) {
+		    this.title = title;
+		    this.link = link;
+		    this.isActive = isActive;
+	    };
+
+	    oPublic.isReadOnly = function() {
+		    return !(Session.get("form_update") && Session.get("form_create")) ? "readonly" : "";
+	    };
+	 /*
+	 performance log for collection
+	 */
 //        oPublic.performanceCollectionLog = function () {
 //            if (debug) {
 //                var wrappedFind = Meteor.Collection.prototype.find;

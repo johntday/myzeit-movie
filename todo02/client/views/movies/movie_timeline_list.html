@@ -12,6 +12,7 @@
 		{{/if}}
 </template>
 
+
 <template name="tmplSortedMovieTimelineList">
 	{{> tmplMovieTimelineList options}}
 </template>
@@ -20,8 +21,11 @@
 <template name="tmplMovieTimeline2">
 	<div class="post">
 		<div class="post-content">
-			<h4>{{description}}</h4>
-			<p>{{author}}</p>
+			<h4><a href="/movieTimeline/{{_id}}">{{description}}</a></h4>
+			<p>{{_id}}</p>
+			<p>{{author}}, created: {{created}}, createdAgo: {{createdAgo}}, comment_count: {{comment_count}},
+				vote_count: {{vote_count}}, upvoters: [{{upvoters}}]
+			</p>
 		</div>
 	</div>
 </template>

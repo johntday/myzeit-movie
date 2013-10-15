@@ -17,15 +17,15 @@ Template.tmplHeader.events({
 
 		//console.log("event: {type: '"+ e.type+"' value: '"+value+"'}");
 		Session.set("search_text", value);
-	},
-	// CLICK RESET BUTTON
-	'click #header-search-reset': function(e) {
-		e.preventDefault();
-		moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
-		Session.set("search_text", "");
 	}
+	// CLICK RESET BUTTON
+//	'click #header-search-reset': function(e) {
+//		e.preventDefault();
+//		moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
+//		Session.set("search_text", "");
+//	}
 });
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmplHeader.helpers({
 	searchText: function() {
 		return Session.get("search_text");

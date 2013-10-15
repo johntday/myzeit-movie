@@ -1,5 +1,10 @@
 Meteor.startup(function () {
 
+	// RANDOM INTEGER BETWEEN 0 AND n
+	var randomInt = function(n) {
+		return Math.floor(Random.fraction() * n) + 1;
+	};
+
 	// MOVIES
 	if (Movies.find().count() === 0) {
 //		Movies.insert(
@@ -9008,6 +9013,20 @@ Meteor.startup(function () {
 
 	// MOVIE TIMELINES
 	if (MovieTimelines.find().count() === 0) {
+		// CREATE 3 USERS
+		var steveId = Meteor.users.insert({
+			profile: { name: 'Stephen Hawkings' }
+		});
+		var steve = Meteor.users.findOne(steveId);
+		var albertId = Meteor.users.insert({
+			profile: { name: 'Albert Einstein' }
+		});
+		var albert = Meteor.users.findOne(albertId);
+		var marieId = Meteor.users.insert({
+			profile: { name: 'Marie Curie' }
+		});
+		var marie = Meteor.users.findOne(marieId);
+
 		var now = new Date().getTime();
 		//var results = Movies.find({title: {$regex: 'space odyssey', $options: 'i'}});
 		var results = Movies.find({id: 62});//id=62, space odyssey
@@ -9024,11 +9043,12 @@ Meteor.startup(function () {
 				movieId: testId,
 				userId: null,
 				created: now,
+				//updated: null,
 				description: "My description",
 				author: "John T Day",
-				commentsCount: 0,
-				upvoters: [],
-				votes: 0,
+				comment_count: 10,
+				upvoters: [steve._id, albert._id],
+				vote_count: 2,
 				data: [
 					{
 						'start': new Date(2010,7,23),
@@ -9074,6 +9094,21 @@ Meteor.startup(function () {
 		}
 
 		console.log("Count of MovieTimelines: " + MovieTimelines.find({}).count());
+
+		// UPDATE MOVIE
+		Movies.update({
+			id: 62 //2001: A Space Odyssey
+		}, {
+			$addToSet: {upvoters: { $each: [steve._id, albert._id] } },
+			$set: {
+				created: now,
+				updated: now,
+				userId: steve._id,
+				author: "John T Day",
+				comment_count: 22
+			}
+		});
+
 	}
 
 		// POSTS

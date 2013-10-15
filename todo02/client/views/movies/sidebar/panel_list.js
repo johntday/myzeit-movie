@@ -6,13 +6,7 @@ Template.tmplSortedMovies.helpers({
             sort: {title: 1},
             handle: moviesHandle
         }
-    },
-	breadcrumbs: function() {
-		return {breadcrumbs: [
-			new Meteor.MyClientModule.Breadcrumb("home","/",false),
-			new Meteor.MyClientModule.Breadcrumb("SciFi","/sciFiMovies",true)
-		]};
-	}
+    }
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmplMoviesList.helpers({
@@ -26,9 +20,11 @@ Template.tmplMoviesList.helpers({
 	        return movie;
         });
     },
+
     moviesReady: function() {
         return this.handle.ready();
     },
+
     allMoviesLoaded: function() {
 	    //console.log("count: "+Movies.find().count());
 	    //console.log("loaded: "+this.handle.loaded());
@@ -43,19 +39,3 @@ Template.tmplMoviesList.events({
         this.handle.loadNextPage();
     }
 });
-
-/*
-Template.tmplMoviesList.rendered = function() {
-    var self = this.data;
-    $(this.find('.load-more')).waypoint(function() {
-            Meteor.setTimeout(function(){
-	            //if ( !(self.handle.ready() && Movies.find().count() < self.handle.loaded()) ) {
-		            self.handle.loadNextPage();
-	            //}
-            }, 1000);
-        }, {offset: function() {
-            return $(window).height() - $(this).height();
-        }}
-    );
-};
-*/

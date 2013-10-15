@@ -6,7 +6,7 @@ Template.notifications.helpers({
   	return Notifications.find({userId: Meteor.userId(), read: false}).count();
   }
 });
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 Template.notification.events({
   'click a': function() {
     Notifications.update(this._id, {$set: {read: true}});

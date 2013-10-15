@@ -1,4 +1,5 @@
 <template name="tmplMovieDetail">
+	{{> tmpl_breadcrumbs breadcrumbs}}
 
 	<div class="panel panel-primary">
 		<div class="panel-heading">
@@ -7,40 +8,103 @@
 		<div class="panel-body">
 
 
-	<form class="add modal-nav-box box-hide panel well form-horizontal" id="form_addCustomer">
-		{{#if editing_movie}}
-		{{#each data}}
-		<input type="hidden" value="{{_id}}" name="id"/>
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Title</label>
-			<div class="col-sm-10">
-				<input type="text" value="{{title}}" class="form-control" name="title" required pattern="[a-zA-Z. ]*" />
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Release Date</label>
-			<div class="col-sm-10">
-				<input type="text" value="{{release_date}}" class="form-control" name="release_date"  required pattern="[0-9-]*" />
-			</div>
-		</div>
-		{{/each}}
-		{{else}}
-		<div class="form-group">
-			{{#if isAdmin}}<div class="col-sm-8">{{_id}}</div>{{/if}}
-			<div class="col-sm-8">{{release_date}}</div>
-		</div>
-		{{/if}}
-		<div class="form-group">
-			<div class="col-offset-8 col-sm-4">
-				{{#if editing_movie}}
-				<button type="button" class="btn btn-primary" id="btnUpdateCustomer">Update</button>
-				<button type="button" class="btn btn-primary" id="btnCancel">Cancel</button>
+			<form class="add modal-nav-box box-hide form-horizontal" id="form_movie">
+
+				{{#if isAdmin}}
+				<div class="form-group row">
+					<label for="_id" class="col-sm-2 control-label">_id</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="_id" value="{{_id}}" readonly />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="id" class="col-sm-2 control-label">id(MyMovieDB)</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="id" value="{{id}}" readonly />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="voters" class="col-sm-2 control-label">voters</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="voters" value="{{upvoters}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="backdrop_path" class="col-sm-2 control-label">backdrop_path</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="backdrop_path" value="{{backdrop_path}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="poster_path" class="col-sm-2 control-label">poster_path</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="poster_path" value="{{poster_path}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="popularity" class="col-sm-2 control-label">popularity</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="popularity" value="{{popularity}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="vote_average" class="col-sm-2 control-label">vote_average</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="vote_average" value="{{vote_average}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="vote_count" class="col-sm-2 control-label">vote_count</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="vote_count" value="{{vote_count}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="comment_count" class="col-sm-2 control-label">comment_count</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="comment_count" value="{{comment_count}}" {{isReadOnly}} />
+					</div>
+				</div>
 				{{else}}
-				<button type="submit" class="btn btn-primary" id="btnAddCustomer">Add</button>
+				<input type="hidden" value="{{_id}}" name="_id"/>
 				{{/if}}
-			</div>
-		</div>
-	</form>
+				<div class="form-group row">
+					<label for="title" class="col-sm-2 control-label">title</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="title" value="{{title}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="adult" class="col-sm-2 control-label">adult</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="adult" value="{{adult}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="original_title" class="col-sm-2 control-label">original_title</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="original_title" value="{{original_title}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="release_date" class="col-sm-2 control-label">release_date</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="release_date" value="{{release_date}}" {{isReadOnly}} />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-offset-2 col-sm-4">
+						{{#if form_update}}
+						<button type="button" class="btn btn-primary" id="btnUpdateMovie">Update</button>
+						<button type="button" class="btn btn-primary" id="btnCancelMovie">Cancel</button>
+						{{/if}}
+						{{#if form_create}}
+						<button type="submit" class="btn btn-primary" id="btnCreateMovie">Create</button>
+						{{/if}}
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 

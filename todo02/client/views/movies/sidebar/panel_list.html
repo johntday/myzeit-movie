@@ -1,7 +1,7 @@
-<template name="tmplMoviesList">
+<template name="tmpl_panel_list">
 	<div class="posts">
         {{#each movies}}
-	        {{> tmplMovieItem}}
+	        {{> tmpl_panel_item}}
         {{/each}}
 
         {{#if moviesReady}}
@@ -14,9 +14,6 @@
     </div>
 </template>
 
-
-<template name="tmplSortedMovies">
-	{{> tmpl_breadcrumbs breadcrumbs}}
-
-	{{> tmplMoviesList options}}
+<template name="tmpl_sorted_panel_list">
+    {{> tmpl_panel_list options}}
 </template>
