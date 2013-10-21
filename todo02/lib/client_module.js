@@ -5,7 +5,7 @@ if (Meteor.isClient) {
     Meteor.MyClientModule = (function () {
         var oPublic = {};
         var debug = false; // change me to true to get log performance to console
-	    var snark = ["hi ho", "yo", "blah, blah, blah..."];
+	    var snark = ["hi ho", "yo", "blah, blah, blah", "$#!*", "when pigs fly"];
 
 		/*
 		 APP CONFIG PARMS
@@ -20,6 +20,19 @@ if (Meteor.isClient) {
 	    oPublic.getRandomSnarkText = function() {
 		    var i = Math.floor(Random.fraction() * snark.length);
 		    return snark[i];
+	    };
+
+	    oPublic.toString = function(myobject) {
+		    if (typeof myobject === 'undefined')
+		        return "undefined";
+		    if (myobject === null)
+			    return "null";
+//		    var s = "";
+//		    for(var propertyName in myobject) {
+//			    s += propertyName + ":'" + myobject[propertyName] + "', ";
+//		    }
+		    //return s.substring(0, s.length-2);
+		    return JSON.stringify(myobject);
 	    };
 
 	    /*
@@ -63,12 +76,6 @@ if (Meteor.isClient) {
             input.focus();
             input.select();
         };
-
-	    oPublic.Breadcrumb = function Breadcrumb (title, link, isActive) {
-		    this.title = title;
-		    this.link = link;
-		    this.isActive = isActive;
-	    };
 
 	    oPublic.isReadOnly = function() {
 		    return !(Session.get("form_update") && Session.get("form_create")) ? "readonly" : "";

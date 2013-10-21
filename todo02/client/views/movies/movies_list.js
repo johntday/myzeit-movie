@@ -8,10 +8,11 @@ Template.tmplSortedMovies.helpers({
         }
     },
 	breadcrumbs: function() {
-		return {breadcrumbs: [
-			new Meteor.MyClientModule.Breadcrumb("home","/",false),
-			new Meteor.MyClientModule.Breadcrumb("SciFi","/sciFiMovies",true)
-		]};
+		Session.set('breadcrumbs', {breadcrumbs: [
+			{title:"home", link:"/", isActive:false},
+			{title:"SciFi", link:"/sciFiMovies", isActive:true}
+		]});
+		return Session.get("breadcrumbs");
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/

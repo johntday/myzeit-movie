@@ -1,0 +1,20 @@
+<template name="tmpl_persons_list">
+	<div class="posts">
+		{{#each persons}}
+			{{> tmpl_person_item}}
+		{{/each}}
+
+		{{#if personsReady}}
+		{{#unless allPersonsLoaded}}
+		<a id="persons" class="load-more" href="#">Load more</a>
+		{{/unless}}
+		{{else}}
+		<div>{{> spinner}}</div>
+		{{/if}}
+	</div>
+</template>
+
+
+<template name="tmpl_sorted_persons_list">
+	{{> tmpl_persons_list options}}
+</template>

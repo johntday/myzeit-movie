@@ -1,0 +1,147 @@
+<!-- LIST -->
+<template name="tmplMovieTimelineList">
+	{{> tmpl_breadcrumbs breadcrumbs}}
+
+	<ul class="nav nav-tabs nav-justified">
+		<li><a href="/sciFiMovies/{{movieId}}">Movie</a></li>
+		<li class="active"><a href="#">Timelines</a></li>
+	</ul>
+
+	<h1 id="admintimeline-title">Official Timeline</h1>
+	<div id="admintimeline"></div>
+
+	<h2 id="mytimeline-title">My Timeline</h2>
+	<h4 id="mytimeline-description">My Timeline</h4>
+	<input id="mytimeline-description-edit" type="text" class="form-control" />
+
+	<div id="mytimeline"></div>
+	<br/>
+	<button id="create-movie-timeline" type="button" class="btn btn-primary">Create A New Movie Timeline Diagram</button>
+
+	<br/>
+
+	<div id="form" class="form-group row">
+		<h3 id="form-title"></h3>
+		<div class="control-group">
+			<label for="form-content" class="col-sm-2 control-label">Event Text</label>
+			<div class='col-sm-6'>
+				<input id="form-content" type="text" class="form-control" />
+			</div>
+		</div>
+		<div class="form-actions">
+			<button id="update-movie-event" type="button" class="btn btn-primary">Update</button>
+		</div>
+	</div>
+
+	<br/>
+	<button id="update-data" type="button" class="btn btn-primary">Save Changes</button>
+	<button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#div-help">HELP, How Do I Use This?</button>
+
+	<div id="div-help" class="collapse">
+		<h2>Help</h2>
+		<h3>Definitions</h3>
+		<ul>
+			<li><strong>Event</strong> - Text for specific time (no range)</li>
+			<li><strong>Timeline</strong> - Text for a time range</li>
+			<li><strong>Red line</strong> - Date and time for now</li>
+		</ul>
+		<h3>Actions</h3>
+		<ul>
+			<li><strong>Click on Event / Timeline</strong> - Edit details or delete</li>
+			<li><strong>Mouse Scroll-Wheel</strong> - Zoom in and out</li>
+			<li><strong>Mouse Drag Left or Right</strong> - Move timeline left or right</li>
+			<li><strong>Mouse Drag Selected Event / Timeline</strong> - Move Event / Timeline left or right</li>
+			<li><strong>Mouse Drag Selected Timeline Edge</strong> - Increase / decrease size of timeline</li>
+			<li><strong>Double-Click</strong> - Creates a new event</li>
+			<li><strong>Click New Icon</strong> - <img src="/img/16/new.png"/> Creates a new timeline</li>
+			<li><strong>Click Zoom-In Icon</strong> - <img src="/img/16/zoomin.png"/> Zoom in</li>
+			<li><strong>Click Zoom-Out Icon</strong> - <img src="/img/16/zoomout.png"/> Zoom out</li>
+			<li><strong>Click Left Icon</strong> - <img src="/img/16/moveleft.png"/> Move timeline left</li>
+			<li><strong>Click Right Icon</strong> - <img src="/img/16/moveright.png"/> Move timeline right</li>
+		</ul>
+	</div>
+
+	<div id="info"></div>
+
+</template>
+
+<!-- LIST ITEM -->
+<template name="tmplMovieTimelineItem">
+	<div class="post">
+		<div class="post-content">
+			<h4><a href="/movieTimeline/{{_id}}">{{description}}</a></h4>
+			<p>{{_id}}</p>
+			<p>{{author}}, created: {{created}}, createdAgo: {{createdAgo}}, comment_count: {{comment_count}},
+				vote_count: {{vote_count}}, upvoters: [{{upvoters}}]
+			</p>
+		</div>
+	</div>
+</template>
+
+<!-- DETAIL -->
+<template name="tmplMovieTimeline">
+
+	<h1>Movie Timeline</h1>
+
+	<p class="lead">{{description}}</p>
+
+	<div id="mytimeline"></div>
+	<br/>
+
+	???
+	<button id="create-movie-diagram" type="button" class="btn btn-primary">Create New Movie Diagram</button>
+
+</template>
+
+<template name="tmpl_movie_timeline_detail">
+	{{> tmpl_breadcrumbs breadcrumbs}}
+
+	<div class="panel panel-primary">
+		<div class="panel-body">
+
+			<form class="add modal-nav-box box-hide form-horizontal" id="form_movie_timeline">
+
+				{{#if isAdmin}}
+				<div class="form-group row">
+					<label for="_id" class="col-sm-2 control-label">_id</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="_id" value="{{_id}}" readonly />
+					</div>
+				</div>
+				{{else}}
+				<input type="hidden" value="{{_id}}" name="_id"/>
+				{{/if}}
+				<div class="form-group row">
+					<label for="description" class="col-sm-2 control-label">description</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="description" value="{{description}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="author" class="col-sm-2 control-label">author</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="author" value="{{author}}" {{isReadOnly}} />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="data" class="col-sm-2 control-label">data</label>
+					<div class="col-sm-6">
+						<input type="textarea" class="form-control" id="data" value="{{data}}" {{isReadOnly}} />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-offset-2 col-sm-4">
+						{{#if form_update}}
+						<button type="button" class="btn btn-primary" id="btnUpdateMovieTimeline">Update</button>
+						<button type="button" class="btn btn-primary" id="btnCancelMovieTimeline">Cancel</button>
+						{{/if}}
+						{{#if form_create}}
+						<button type="submit" class="btn btn-primary" id="btnCreateMovieTimeline">Create</button>
+						{{/if}}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</template>

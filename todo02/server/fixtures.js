@@ -1,50 +1,78 @@
 Meteor.startup(function () {
 
-	// RANDOM INTEGER BETWEEN 0 AND n
-	var randomInt = function(n) {
-		return Math.floor(Random.fraction() * n) + 1;
-	};
+	// PERSONS
+	if (Persons.find().count() === 0) {
+		var persons = [
+			{
+				name: "Stanley Kubrick",
+				overview: "Visionary director of movies characterized by his cold, visual style.",
+				roles: [
+					"Director"
+				],
+				birth_year:null,
+				birth_place: null,
+				movies: [
+					{
+						movie_id: null,
+						job: "Director",
+						title: "2001: A Space Odyssey",
+						year: 1968
+					}
+				]
+			}
+		];
+
+		for (var i=0; i < persons.length; i++) {
+			var person = _.extend(persons[i], {
+				userId: "admin",
+				author: "John T Day",
+				created: new Date().getTime(),
+				comment_count: 0,
+				vote_count: 0,
+				vote_average: 0
+			});
+
+			return Persons.insert(person);
+		}
+
+		// UPDATE ALL PERSONS
+//		Persons.update({},
+//		{
+//			$addToSet: {upvoters: { $each: [steve._id, albert._id] } },
+//			$set: {
+//				created: now,
+//				updated: now,
+//				userId: "admin",
+//				author: "John T Day",
+//				comment_count: 22
+//			}
+//		}, {
+//			upset: false,
+//			multi: true
+//		});
+		console.log("Persons.find().count()="+Persons.find().count());
+	}
 
 	// MOVIES
 	if (Movies.find().count() === 0) {
-//		Movies.insert(
-//			{"adult":false,"backdrop_path":"/yBYmjAKALazmQ1vN6OokOv7s5nh.jpg","belongs_to_collection":null,"budget":36000000,"genres":[{"id":9648,"name":"Mystery"},{"id":878,"name":"Science Fiction"},{"id":53,"name":"Thriller"},{"id":10749,"name":"Romance"}],"homepage":"","id":782,"imdb_id":"tt0119177","original_title":"Gattaca","overview":"Science fiction drama about a future society in the era of indefinite eugenics where humans are set on a life course depending on their DNA. The young Vincent Freeman is born with a condition that would prevent him from space travel, yet he is determined to infiltrate the GATTACA space program.","popularity":3.72036965915241,"poster_path":"/Aq0ZKWRa6OXyGhH3qiJpC2x8vaU.jpg","production_companies":[{"name":"Columbia Pictures","id":5}],"production_countries":[{"iso_3166_1":"US","name":"United States of America"}],"release_date":"1997-10-23","revenue":0,"runtime":106,"spoken_languages":[{"iso_639_1":"en","name":"English"},{"iso_639_1":"eo","name":""}],"status":"Released","tagline":"There is no gene for the human spirit.","title":"Gattaca","vote_average":6.9,"vote_count":341}
-//		);
-//		Movies.insert(
-//			{"adult":false,"backdrop_path":"/2sStySEMtDgfi5kbr7xW0NZxyAU.jpg","belongs_to_collection":{"id":4438,"name":"The Space Odyssey Series","poster_path":"/i1WdRtc6aObiwGz5NU8WWPW3r1N.jpg","backdrop_path":"/15FumSExI9SRoL7QJWZAsA0b10c.jpg"},"budget":10500000,"genres":[{"id":12,"name":"Adventure"},{"id":878,"name":"Science Fiction"},{"id":53,"name":"Thriller"}],"homepage":"","id":62,"imdb_id":"tt0062622","original_title":"2001: A Space Odyssey","overview":"Mankind finds a mysterious, obviously artificial, artifact buried on the moon and, with the intelligent computer HAL, sets off on a quest.","popularity":5.62000483546857,"poster_path":"/rRwaupUfNmkx54DbEU3zOnifxz5.jpg","production_companies":[{"name":"MGM","id":5899},{"name":"Stanley Kubrick Productions","id":385}],"production_countries":[{"iso_3166_1":"GB","name":"United Kingdom"},{"iso_3166_1":"US","name":"United States of America"}],"release_date":"1968-04-05","revenue":56715371,"runtime":141,"spoken_languages":[{"iso_639_1":"en","name":"English"},{"iso_639_1":"ru","name":"Pусский"},{"iso_639_1":"de","name":"Deutsch"}],"status":"Released","tagline":"The Ultimate Trip.","title":"2001: A Space Odyssey","vote_average":7.0,"vote_count":535}
-//		);
-//		Movies.insert(
-//			{"adult":false,"backdrop_path":"/pZVwWtXM7u9n0etJR5GlcB20mSX.jpg","belongs_to_collection":null,"budget":0,"genres":[{"id":18,"name":"Drama"},{"id":878,"name":"Science Fiction"}],"homepage":"","id":34276,"imdb_id":"tt0058100","original_title":"First Men In The Moon","overview":"Based on the HG Wells story. The world is delighted when a space craft containing a crew made up of the world's astronauts lands on the moon, they think for the first time. But the delight turns to shock when the astronauts discover an old British flag and a document declaring that the moon is taken for Queen Victoria proving that the astronauts were not the first men on the moon.","popularity":0.6,"poster_path":"/m6o8oxkhlv6buF3cTPJhgB14VPq.jpg","production_companies":[{"name":"Ameran Films","id":8488},{"name":"Columbia Pictures Corporation","id":441}],"production_countries":[{"iso_3166_1":"GB","name":"United Kingdom"}],"release_date":"1964-11-20","revenue":0,"runtime":103,"spoken_languages":[{"iso_639_1":"en","name":"English"}],"status":"Released","tagline":"H.G. Wells' Astounding Adventure in Dynamation!","title":"First Men In The Moon","vote_average":0.0,"vote_count":0}
-//		);
-//		Movies.insert(
-//			{"adult":false,"backdrop_path":"/eTxgy8eROB5Ly7ZXKLukQoF6tKl.jpg","belongs_to_collection":null,"budget":382000,"genres":[{"id":27,"name":"Horror"},{"id":878,"name":"Science Fiction"}],"homepage":"","id":11549,"imdb_id":"tt0049366","original_title":"Invasion of the Body Snatchers","overview":"A small-town doctor learns that the population of his community is being replaced by emotionless alien duplicates.","popularity":7.10572387067358,"poster_path":"/4oj0G2Zr6tQKBDOzKaLuefdeBsG.jpg","production_companies":[{"name":"Allied Artists Pictures","id":4928},{"name":"Walter Wanger Productions","id":10096}],"production_countries":[{"iso_3166_1":"US","name":"United States of America"}],"release_date":"1956-02-05","revenue":3000000,"runtime":80,"spoken_languages":[{"iso_639_1":"en","name":"English"}],"status":"Released","tagline":"\"Something is happening! Send your men of science quick!\" The panic stricken cry went over the phone to Washington D. C. until the lines went dead!......","title":"Invasion of the Body Snatchers","vote_average":8.1,"vote_count":25}
-//		);
-//		Movies.insert(
-//			{"adult":false,"backdrop_path":"/3idsO3tSMP9cHgfffuWpc1vbtop.jpg","belongs_to_collection":null,"budget":5000000,"genres":[{"id":18,"name":"Drama"},{"id":9648,"name":"Mystery"},{"id":878,"name":"Science Fiction"},{"id":53,"name":"Thriller"},{"id":10769,"name":"Foreign"}],"homepage":"http://www.sonyclassics.com/moon/","id":17431,"imdb_id":"tt1182345","original_title":"Moon","overview":"With only three weeks left in his three year contract, Sam Bell is getting anxious to finally return to Earth. He is the only occupant of a Moon-based manufacturing facility along with his computer and assistant, GERTY. The long period of time alone however has resulted in him talking to himself for the most part, or to his plants. Direct communication with Earth is not possible due to a long-standing communication malfunction but he does get an occasional message from his wife Tess. When he has an accident however, he wakens to find that he is not alone. He also comes to realize that his world is not what he thought it was.","popularity":3.41407328557102,"poster_path":"/xbDTUt1O2Cy4WuM2QGVC9gnrJOf.jpg","production_companies":[{"name":"Liberty Films UK","id":3316},{"name":"Xingu Films","id":3318},{"name":"Limelight Fund","id":12018},{"name":"Lunar Industries","id":3317}],"production_countries":[{"iso_3166_1":"GB","name":"United Kingdom"}],"release_date":"2009-07-17","revenue":7191615,"runtime":97,"spoken_languages":[{"iso_639_1":"en","name":"English"},{"iso_639_1":"es","name":"Español"}],"status":"Released","tagline":"The last place you'd ever expect to find yourself.","title":"Moon","vote_average":7.2,"vote_count":304}
-//		);
-//		Movies.insert(
-//			{"adult":false,"backdrop_path":"/5tWscTLcGG4J5GPD1pZ66g6zcww.jpg","belongs_to_collection":null,"budget":3000000,"genres":[{"id":28,"name":"Action"},{"id":35,"name":"Comedy"},{"id":27,"name":"Horror"},{"id":878,"name":"Science Fiction"},{"id":53,"name":"Thriller"}],"homepage":"","id":18462,"imdb_id":"tt0087799","original_title":"Night of the Comet","overview":"Two girls from the Valley wake up to find that a passing comet has eradicated their world and left behind a mysterious red-dust and a pack of cannibal mutants. With the help of a friendly truck driver, the girls save the earth from a villainous \"think tank,\" karate chop their way through flesh-eating zombies, and, of course, find time to go to the mall.","popularity":1.212842386,"poster_path":"/it9yhWmAW4pj0NEfXHp3s8ByKwB.jpg","production_companies":[{"name":"Thomas Coleman and Michael Rosenblatt Productions","id":16274},{"name":"Film Development Fund","id":16275}],"production_countries":[{"iso_3166_1":"US","name":"United States of America"}],"release_date":"1984-11-16","revenue":14418922,"runtime":95,"spoken_languages":[{"iso_639_1":"en","name":"English"}],"status":"Released","tagline":"They came. They Shopped. They saved the world!","title":"Night of the Comet","vote_average":6.3,"vote_count":5}
-//		);
-//		Movies.insert(
-//			{"adult":false,"backdrop_path":"/39nstYsfjR6ggyKTtB4Joga2fs8.jpg","belongs_to_collection":{"id":748,"name":"X-Men Collection","poster_path":"/31rqs6ZxFdi5nWZZaFPIr17q8jt.jpg","backdrop_path":"/Abnosho2v3bcdvDww6T7Hfeczm1.jpg"},"budget":160000000,"genres":[{"id":28,"name":"Action"},{"id":12,"name":"Adventure"},{"id":14,"name":"Fantasy"},{"id":878,"name":"Science Fiction"}],"homepage":"http://www.x-menfirstclassmovie.com/","id":49538,"imdb_id":"tt1270798","original_title":"X-Men: First Class","overview":"Before Charles Xavier and Erik Lensherr took the names Professor X and Magneto, they were two young men discovering their powers for the first time. Before they were arch-enemies, they were closest of friends, working together with other mutants (some familiar, some new), to stop the greatest threat the world has ever known.","popularity":7.53659951724033,"poster_path":"/l2cBQTfbVEWUXW8nKWCgq0ct7WU.jpg","production_companies":[{"name":"Twentieth Century Fox Film Corporation","id":306},{"name":"Marvel Studios","id":420}],"production_countries":[{"iso_3166_1":"US","name":"United States of America"}],"release_date":"2011-05-24","revenue":344420111,"runtime":132,"spoken_languages":[{"iso_639_1":"en","name":"English"},{"iso_639_1":"de","name":"Deutsch"},{"iso_639_1":"fr","name":"Français"},{"iso_639_1":"es","name":"Español"},{"iso_639_1":"ru","name":"Pусский"}],"status":"Released","tagline":"Witness the moment that will change our world.","title":"X-Men: First Class","vote_average":6.7,"vote_count":1993}
-//		);
 
 		// Dropbox\PluralSight\John-Day\Fundamentals-of-Meteor\data\movieDataSummary.js
 		var movieDataSummary = [{
 			"id":878,
 			"page":1,
-			"results":[{
-				"adult":false,
-				"backdrop_path":"/kFW1TJQ6k9W5bVV5slQISr8czrf.jpg",
-				"id":20803,
-				"original_title":"???? ?????????? ?????? ?????????",
-				"release_date":"1973-01-01",
-				"poster_path":"/f1y86qb0GAcUn0Vc7TQzglePxj8.jpg",
-				"popularity":7.76342526447017,
-				"title":"Ivan Vasilievich: Back to the Future",
-				"vote_average":9.4,
-				"vote_count":10
-			},
+			"results":[
+				{
+					"adult":false,
+					"backdrop_path":"/kFW1TJQ6k9W5bVV5slQISr8czrf.jpg",
+					"id":20803,
+					"original_title":"???? ?????????? ?????? ?????????",
+					"release_date":"1973-01-01",
+					"poster_path":"/f1y86qb0GAcUn0Vc7TQzglePxj8.jpg",
+					"popularity":7.76342526447017,
+					"title":"Ivan Vasilievich: Back to the Future",
+					"vote_average":9.4,
+					"vote_count":10
+				},
 				{
 					"adult":false,
 					"backdrop_path":"/fH5oiUyCzw1ut0iaZ9OIw1pELU6.jpg",
@@ -9009,6 +9037,7 @@ Meteor.startup(function () {
 				Movies.insert( movieSummaryPage[j] );
 			}
 		}
+		console.log("Movies.find().count()="+Movies.find().count());
 	}
 
 	// MOVIE TIMELINES
@@ -9041,11 +9070,11 @@ Meteor.startup(function () {
 		var movieTimelines = [
 			{
 				movieId: testId,
-				userId: null,
+				userId: "admin",
+				author: "John T Day",
 				created: now,
 				//updated: null,
 				description: "My description",
-				author: "John T Day",
 				comment_count: 10,
 				upvoters: [steve._id, albert._id],
 				vote_count: 2,
@@ -9103,15 +9132,16 @@ Meteor.startup(function () {
 			$set: {
 				created: now,
 				updated: now,
-				userId: steve._id,
+				userId: "admin",
 				author: "John T Day",
 				comment_count: 22
 			}
 		});
 
+		console.log("MovieTimelines.find().count()="+MovieTimelines.find().count());
 	}
 
-		// POSTS
+	// POSTS
 	if (Posts.find().count() === 0) {
 	  var now = new Date().getTime();
 
@@ -9182,6 +9212,7 @@ Meteor.startup(function () {
 	      upvoters: [], votes: 0
 	    });
 	  }
+		console.log("Posts.find().count()="+Posts.find().count());
 	}
 
 });

@@ -7,6 +7,11 @@ MovieTimelines.allow({
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Meteor.methods({
+	/**
+	 * Insert
+	 * @param movieTimelineAttr
+	 * @returns {*|insert}
+	 */
 	createMovieTimeline: function(movieTimelineAttr) {
 		var user = Meteor.user();
 
@@ -46,6 +51,46 @@ Meteor.methods({
 		return movieTimelineId;
 	},
 
+	updateMovieTimelineDescription: function(_id, description, userId) {
+		var user = Meteor.user();
+
+		if (!user)
+			throw new Meteor.Error(401, "You need to login to update a Movie Timeline");
+		if (!isAdmin() && user._id !== userId)
+			throw new Meteor.Error(401, "Your not the owner of this Movie Timeline");
+		if (!description)
+			throw new Meteor.Error(422, 'Your Description is empty');
+
+		MovieTimelines.update({
+			_id: _id
+		}, {
+			$set: {
+				description: description,
+				updated: new Date().getTime()
+			}
+		});
+	},
+
+	updateMovieTimelineData: function(_id, data, userId) {
+		var user = Meteor.user();
+
+		if (!user)
+			throw new Meteor.Error(401, "You need to login to update a Movie Timeline");
+		if (!isAdmin() && user._id !== userId)
+			throw new Meteor.Error(401, "Your not the owner of this Movie Timeline");
+		if (!data)
+			throw new Meteor.Error(422, 'Your Movie Timeline data is empty');
+
+		MovieTimelines.update({
+			_id: _id
+		}, {
+			$set: {
+				data: data,
+				updated: new Date().getTime()
+			}
+		});
+	},
+
 	upvoteMovieTimeline: function(movieId) {
 		var user = Meteor.user();
 
@@ -57,7 +102,7 @@ Meteor.methods({
 			_id: movieId,
 			upvoters: {$ne: user._id}
 		}, {
-			$addToSet: {upvoters: user._id},
+			$set: {upvoters: user._id},
 			$inc: {vote_count: 1}
 		});
 	}

@@ -1,6 +1,8 @@
 <template name="tmplMovieDetail">
 	{{> tmpl_breadcrumbs breadcrumbs}}
 
+	{{> tmpl_tabs tabs}}
+
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h2 class="panel-title">{{title}}</h2>
@@ -43,8 +45,6 @@
 			</form>
 		</div>
 	</div>
-
-	{{> tmplSortedMovieTimelineList}}
 
 </template>
 

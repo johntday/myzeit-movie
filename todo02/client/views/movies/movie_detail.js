@@ -6,13 +6,13 @@ Template.tmplMovieDetail.helpers({
 		return Meteor.MyClientModule.isReadOnly();
 	},
 	breadcrumbs: function() {
+		return Session.get("breadcrumbs");
+	},
+	tabs: function() {
 		Meteor.MyClientModule.scrollToTopOfPageFast();
-
-		return {breadcrumbs: [
-			new Meteor.MyClientModule.Breadcrumb("home","/",false),
-			new Meteor.MyClientModule.Breadcrumb("SciFi","/sciFiMovies",false),
-			new Meteor.MyClientModule.Breadcrumb(this.title,"",true)
+		return {tabs: [
+			{title:"Movie", link:null, isActive:true},
+			{title:"Timelines", link:"/sciFiMovies/timelines/"+this._id, isActive:false}
 		]};
 	}
 });
-
