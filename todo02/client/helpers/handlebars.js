@@ -3,10 +3,24 @@
  */
 Handlebars.registerHelper('form_input', function(name, value) {
 
+	if (value && (typeof value === "string") && value.length > 50) {
+
+		return new Handlebars.SafeString(
+			"<div class='form-group row'>" +
+				"<label for='" + name + "' class='col-sm-2 control-label'>" + name + "</label>"+
+				"<div class='col-sm-9'>"+
+				"<textarea type='text' class='form-control' id='" + name + "' " + Meteor.MyClientModule.isReadOnly() + ">" +
+				value +
+				"</textarea>"+
+				"</div>"+
+				"</div>"
+		);
+	}
+
 	return new Handlebars.SafeString(
-		"<div class='form-group row'>"+
+		"<div class='form-group row'>" +
 			"<label for='" + name + "' class='col-sm-2 control-label'>" + name + "</label>"+
-			"<div class='col-sm-6'>"+
+			"<div class='col-sm-9'>"+
 			"<input type='text' class='form-control' id='" + name + "' value='" + value + "' " + Meteor.MyClientModule.isReadOnly() + " />"+
 			"</div>"+
 			"</div>"
@@ -14,7 +28,7 @@ Handlebars.registerHelper('form_input', function(name, value) {
 });
 
 /**
- * Template to generate bootstrap-v3 alert class
+ * Template to generate bootstrap-v3 alert class. Defaults to "danger".
  */
 Handlebars.registerHelper('alert_class', function(messageType) {
 	var alertClass = "alert alert-dismissable alert-";

@@ -1,0 +1,136 @@
+<template name="managedUsers">
+    {{#if managedUserError}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong>Error</strong> {{managedUserError}}
+    </div>
+    {{/if}}
+    <div class="row">
+        <div class="table-responsive col-md-8">
+            <table class="table table-hover" id="managedUsers-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Email Address</th>
+                        <th><span class="glyphicon glyphicon-wrench"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each systemUsers}}
+                    <tr>
+                        <td>
+                            <span class="username">{{username}}</span>
+                        </td>
+                        <td>
+                            <span class="fullName">{{profile.name}}</span>
+                        </td>
+                        <td>
+                            <span class="emailAddress">
+                                {{emailAddress this}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="glyphicon glyphicon-edit editUser" data-toggle="modal" data-target="#{{_id}}_edit"></span>&nbsp;
+                            <span class="glyphicon glyphicon-remove remove-user"></span>
+                            {{> managedUserEditModal}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <form id="newUser" class="well form-horizontal col-md-8" role="form">
+            <legend>New User</legend>
+            {{#isolate}}
+            {{#if newManagedUserError}}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Error</strong> {{newManagedUserError}}
+            </div>
+            {{/if}}
+            {{/isolate}}
+            {{> managedUserForm}}
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-2">
+                    <button id="submit" type="button" class="btn btn-primary">Save changes</button>
+                    <button id="cancel" type="button" class="btn">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</template>
+
+<template name="managedUserEditModal">
+    <div id="{{_id}}_edit" class="modal fade editModal" role="dialog" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Edit User</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="well form-horizontal">
+                        {{#isolate}}
+                        {{#if editManagedUserError}}
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Error</strong> {{editManagedUserError}}
+                        </div>
+                        {{/if}}
+                        {{/isolate}}
+                        {{> managedUserForm}}
+                    </form>
+                    <div class="row">
+                        <span class="col-md-1 col-md-offset-7">
+                            <button class="btn btn-link passwordReset">Send Password Reset Email</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary editSave">Save changes</button>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+</template>
+
+<template name="managedUserForm">
+    <fieldset>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="username">Username</label>
+            <div class="col-md-6">
+                <input class="username form-control" type="text" placeholder="Username"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="name">Full Name</label>
+            <div class="col-md-6">
+                <input class="name form-control" type="text" placeholder="Full Name"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="email">Email</label>
+            <div class="col-md-6">
+                <input class="email form-control" type="email" placeholder="Email"/>
+            </div>
+        </div>
+        {{#if permissions}}
+        <div class="form-group">
+            <label class="control-label col-md-2">Permissions</label>
+            <div class="permissions col-md-6">
+                {{#each permissions}}
+                <div class="checkbox">
+                    <label>
+                        <input class="{{name}} permission" type="checkbox">{{description}}
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{/if}}
+    </fieldset>
+</template>

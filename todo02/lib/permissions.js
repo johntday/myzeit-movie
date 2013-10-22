@@ -2,12 +2,12 @@
 ownsDocument = function(userId, doc) {
   return doc && doc.userId === userId;
 };
+ownsDocumentOrAdmin = function(userId, doc) {
+	return doc && (isAdmin() || doc.userId === userId );
+};
 /*------------------------------------------------------------------------------------------------------------------------------*/
 // check if admin
-isAdmin = function(userId) {
-	if (!userId)
-		userId = Meteor.userId();
-	var adminUser = Meteor.users.findOne({username:"admin"});
-	return (userId && adminUser && userId === adminUser._id);
+isAdmin = function() {
+	return (Meteor.user() &&  (Meteor.user().username === "admin"));
 };
 

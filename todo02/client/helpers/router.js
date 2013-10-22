@@ -29,11 +29,12 @@ Router.map(function ()
 		}
 	});
 
-	this.route('tmplHome',         {path: '/'});
-	this.route('tmplSortedMovies', {path: '/sciFiMovies'});
-	this.route('tmpl_about',       {path: '/about'});
-	this.route('tmpl_help',        {path: '/help'});
-	this.route('tmpl_settings',    {path: '/settings'});
+	this.route('tmplHome'           ,{path: '/'});
+	this.route('tmplSortedMovies'   ,{path: '/sciFiMovies'});
+	this.route('tmpl_about'         ,{path: '/about'});
+	this.route('tmpl_help'          ,{path: '/help'});
+	this.route('tmpl_settings'      ,{path: '/settings'});
+	this.route('tmpl_users_manage'  ,{path: '/usersManage'});
 
 	this.route('tmplMovieDetail', {
 		path  : '/sciFiMovies/:_id',
@@ -82,5 +83,30 @@ Router.map(function ()
 		}
 	});
 
+	this.route('tmplMovieCastList', {
+		path  : '/sciFiMovies/cast/:_id',
+		waitOn: function ()
+		{
+			Session.set('selected_movie_id', this.params._id);
+			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
+		},
+		data  : function ()
+		{
+			return Movies.findOne(this.params._id);
+		}
+	});
+
+	this.route('tmplMovieFactsList', {
+		path  : '/sciFiMovies/facts/:_id',
+		waitOn: function ()
+		{
+			Session.set('selected_movie_id', this.params._id);
+			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
+		},
+		data  : function ()
+		{
+			return Movies.findOne(this.params._id);
+		}
+	});
 
 });

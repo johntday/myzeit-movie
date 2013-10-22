@@ -21,13 +21,15 @@
 
 			<!-- SIDEBAR
 			================================================== -->
+			{{#if hasSidebar}}
 			<div class="col-sm-4">
 				{{> tmplSidebar}}
 			</div>
+			{{/if}}
 
 			<!-- MAIN
 			================================================== -->
-			<div class="col-sm-8" role="main">
+			<div class="{{mainDivClass}}" role="main">
 				{{yield}}
 			</div>
 		</div>

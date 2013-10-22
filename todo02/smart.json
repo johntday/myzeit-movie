@@ -1,14 +1,14 @@
 {
-  "packages": {
-    "spin": {},
-    "mypaginator": {
-      "path": "/home/user/GitHub/meteor-mypaginator"
-    },
-	  "mytimeline": {
-		  "path": "/home/user/GitHub/myzeit-movie/meteor-mytimeline"
-	  },
-    "iron-router": {},
-    "bootstrap-3": {},
-	"moment": {}
-  }
+	"packages": {
+		"spin"       : {},
+		"mypaginator": {
+			"path": "/home/user/GitHub/meteor-mypaginator"
+		},
+		"mytimeline" : {
+			"path": "/home/user/GitHub/myzeit-movie/meteor-mytimeline"
+		},
+		"iron-router": {},
+		"bootstrap-3": {},
+		"moment"     : {}
+	}
 }

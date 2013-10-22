@@ -1,8 +1,12 @@
+/**
+ * SESSION VARIABLE DEFAULTS
+ */
 Session.setDefault('search_text', '');
 Session.setDefault('form_update', false);
 Session.setDefault('form_create', false);
 Session.setDefault('selected_movie_id', null);
 Session.setDefault('breadcrumbs', null);
+Session.setDefault('has_sidebar', true);
 /*------------------------------------------------------------------------------------------------------------------------------*/
 newPostsHandle  = Meteor.subscribeWithPagination('newPosts', 10);
 bestPostsHandle = Meteor.subscribeWithPagination('bestPosts', 10);
@@ -12,13 +16,44 @@ bestPostsHandle = Meteor.subscribeWithPagination('bestPosts', 10);
 //	Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
 //});
 
-                       Meteor.subscribe('pubsub_notification_list');
+/**
+ * Notifications
+ */
+Meteor.subscribe('pubsub_notification_list');
+/**
+ * Movies
+ */
 moviesHandle  = Meteor.subscribeWithPagination('pubsub_movie_list',  Meteor.MyClientModule.appConfig.pageLimit);
+/**
+ * Persons
+ */
 personsHandle = Meteor.subscribeWithPagination('pubsub_person_list', Meteor.MyClientModule.appConfig.pageLimit);
 
-//movieTimelinesHandle = Meteor.subscribeWithPagination('pubsub_movie_timeline_list', Meteor.MyClientModule.appConfig.pageLimit);
+/**
+ * layout template JS
+ */
+Template.layout.helpers({
+	hasSidebar: function() {
+		return Session.get('has_sidebar');
+	},
+	mainDivClass: function() {
+		return (Session.get('has_sidebar')) ? "col-sm-8" : "col-sm-12";
+	}
+});
 
 /*
- * set debug=true in "/lib/client_module.js" to log template render counts to console
+ * set debug=true in "/lib/client_module.js" to log template render counts to console.
+ * Set as last statement in "main.js"
  */
 Meteor.MyClientModule.performanceLogRenders();
+
+
+//TODO
+// publish dependent documents and simulate joins
+//Meteor.publish("roomAndMessages", function (roomId) {
+//	check(roomId, String);
+//	return [
+//		Rooms.find({_id: roomId}, {fields: {secretInfo: 0}}),
+//		Messages.find({roomId: roomId})
+//	];
+//});

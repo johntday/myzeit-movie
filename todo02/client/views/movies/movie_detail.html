@@ -1,9 +1,14 @@
 <template name="tmplMovieDetail">
 	{{> tmpl_breadcrumbs breadcrumbs}}
 
-	{{> tmpl_tabs tabs}}
+	<ul class="nav nav-tabs nav-justified">
+		<li class="active"><a href="#">Movie</a></li>
+		<li><a href="/sciFiMovies/timelines/{{_id}}">Timelines</a></li>
+		<li><a href="/sciFiMovies/cast/{{_id}}">Cast</a></li>
+		<li><a href="/sciFiMovies/facts/{{_id}}">Facts</a></li>
+	</ul>
 
-	<div class="panel panel-primary">
+	<div class="panel panel-purple">
 		<div class="panel-heading">
 			<h2 class="panel-title">{{title}}</h2>
 		</div>
@@ -13,21 +18,19 @@
 
 				{{#if isAdmin}}
 					{{form_input "_id" _id}}
-					{{form_input "id(MyMovieDB)" id}}
-					{{form_input "upvoters" upvoters}}
-					{{form_input "backdrop_path" backdrop_path}}
-					{{form_input "poster_path" poster_path}}
-					{{form_input "popularity" popularity}}
-					{{form_input "vote_average" vote_average}}
-					{{form_input "vote_count" vote_count}}
-					{{form_input "comment_count" comment_count}}
+					{{form_input "mpaa_rating" mpaa_rating}}
+					{{form_input "runtime" runtime}}
+					{{form_input "year" year}}
+					{{form_input "tagline" tagline}}
+					{{form_input "status" status}}
+					{{form_input "overview" overview}}
+					{{form_input "adult" adult}}
 				{{else}}
 					<input type="hidden" value="{{_id}}" name="_id"/>
 				{{/if}}
 
 				<!-- COMMON FIELDS -->
 				{{form_input "title" title}}
-				{{form_input "adult" adult}}
 				{{form_input "original_title" original_title}}
 				{{form_input "release_date" release_date}}
 

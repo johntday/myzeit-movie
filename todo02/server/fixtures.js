@@ -1,4 +1,9 @@
 Meteor.startup(function () {
+	// Verify that the admin user account exists (should be created on the first run)
+	var u = Meteor.users.findOne({username: "admin"}); // find the admin user
+	if(!u) {
+		Accounts.createUser({username: "admin", password: "877669", profile: {name: "John T Day"}});
+	}
 
 	// PERSONS
 	if (Persons.find().count() === 0) {
@@ -61,6 +66,75 @@ Meteor.startup(function () {
 			"id":878,
 			"page":1,
 			"results":[
+				{
+					"title": "test",
+					"year": 1968,
+					"mpaa_rating": "G",
+					"runtime": 139,
+					"budget": 10500000,
+					"revenue": 56715371,
+					"tagline": "The Ultimate Trip.",
+					"status": "Released",
+					"original_title":"2001: A Space Odyssey",
+					"release_date":"1968-04-05",
+					"vote_average":7,
+					"vote_count":535,
+					"overview": "Mankind finds a mysterious, obviously artificial, artifact buried on the moon and, with the intelligent computer HAL, sets off on a quest.",
+					"critics_consensus": "One of the most influential of all sci-fi films -- and one of the most controversial -- Stanley Kubrick's 2001 is a delicate, poetic meditation on the ingenuity -- and folly -- of mankind.",
+					"synopsis": "A mind-bending sci-fi symphony, Stanley Kubrick's landmark 1968 epic pushed the limits of narrative and special effects toward a meditation on technology and humanity. Based on Arthur C. Clarke's story The Sentinel, Kubrick and Clarke's screenplay is structured in four movements. At the \"Dawn of Man,\" a group of hominids encounters a mysterious black monolith alien to their surroundings. To the strains of Strauss's 1896 Also sprach Zarathustra, a hominid invents the first weapon, using a bone to kill prey. As the hominid tosses the bone in the air, Kubrick cuts to a 21st century spacecraft hovering over the Earth, skipping ahead millions of years in technological development. U.S. scientist Dr. Heywood Floyd (William Sylvester) travels to the moon to check out the discovery of a strange object on the moon's surface: a black monolith. As the sun's rays strike the stone, however, it emits a piercing, deafening sound that fills the investigators' headphones and stops them in their path. Cutting ahead 18 months, impassive astronauts David Bowman (Keir Dullea) and Frank Poole (Gary Lockwood) head toward Jupiter on the spaceship Discovery, their only company three hibernating astronauts and the vocal, man-made HAL 9000 computer running the entire ship. When the all-too-human HAL malfunctions, however, he tries to murder the astronauts to cover his error, forcing Bowman to defend himself the only way he can. Free of HAL, and finally informed of the voyage's purpose by a recording from Floyd, Bowman journeys to \"Jupiter and Beyond the Infinite,\" through the psychedelic slit-scan star-gate to an 18th century room, and the completion of the monolith's evolutionary mission.With assistance from special-effects expert Douglas Trumbull, Kubrick spent over two years meticulously creating the most \"realistic\" depictions of outer space ever seen, greatly advancing cinematic technology for a story expressing grave doubts about technology itself. Despite some initial critical reservations that it was too long and too dull, 2001 became one of the most popular films of 1968, underlining the generation gap between young moviegoers who wanted to see something new and challenging and oldsters who \"didn't get it.\" Provocatively billed as \"the ultimate trip,\" 2001 quickly caught on with a counterculture youth audience open to a contemplative (i.e. chemically enhanced) viewing experience of a film suggesting that the way to enlightenment was to free one's mind of the U.S. military-industrial-technological complex. ~ Lucia Bozzola, Rovi",
+					"posters": {
+						"thumbnail": "http://content6.flixster.com/movie/11/16/80/11168008_mob.jpg",
+						"profile": "http://content6.flixster.com/movie/11/16/80/11168008_pro.jpg",
+						"detailed": "http://content6.flixster.com/movie/11/16/80/11168008_det.jpg",
+						"original": "http://content6.flixster.com/movie/11/16/80/11168008_ori.jpg"
+					},
+					"directors": [
+						{
+							"name": "Stanley Kubrick",
+							"person_id": "???"
+						}
+					],
+					"cast": [
+						{
+							"name": "Keir Dullea",
+							"person_id": "???",
+							"characters": [
+								"Bowman"
+							]
+						},
+						{
+							"name": "Gary Lockwood",
+							"person_id": "???",
+							"characters": [
+								"Poole"
+							]
+						},
+						{
+							"name": "William Sylvester",
+							"person_id": "???",
+							"characters": [
+								"Dr. Heywood Floyd"
+							]
+						},
+						{
+							"name": "Daniel Richter",
+							"person_id": "???",
+							"characters": [
+								"Moonwatcher the Man-Ape"
+							]
+						},
+						{
+							"name": "Douglas Rain",
+							"person_id": "???",
+							"characters": [
+								"HAL 9000"
+							]
+						}
+					],
+					"alternate_ids": {
+						"imdb": "tt0062622", "rotten_tomatoes": "9917", "mymoviedb": "62"
+					}
+				},
 				{
 					"adult":false,
 					"backdrop_path":"/kFW1TJQ6k9W5bVV5slQISr8czrf.jpg",
@@ -9141,78 +9215,65 @@ Meteor.startup(function () {
 		console.log("MovieTimelines.find().count()="+MovieTimelines.find().count());
 	}
 
-	// POSTS
-	if (Posts.find().count() === 0) {
-	  var now = new Date().getTime();
+	console.log("MOVIE-PERSON");
+	// MOVIE-PERSON ASSC
+	var assc = {name: "Stanley Kubrick", title:"2001: A Space Odyssey"};
+	var person = getPersonID(assc.person_name);
+	var movie  = getMovieID(assc.movie_title);
+	if (person && person.movies && movie) {
+		for (var i=0; i < person.movies.length; i++) {
+			var m = Movies.findOne( {title: person.movies[i].title} );
 
-	  // create two users
-	  var tomId = Meteor.users.insert({
-	    profile: { name: 'Tom Coleman' }
-	  });
-	  var tom = Meteor.users.findOne(tomId);
-	  var sachaId = Meteor.users.insert({
-	    profile: { name: 'Sacha Greif' }
-	  });
-	  var sacha = Meteor.users.findOne(sachaId);
+			// UPDATE PERSON - person.movies[i].movie_id
 
-	  var telescopeId = Posts.insert({
-	    title: 'Introducing Telescope',
-	    userId: sacha._id,
-	    author: sacha.profile.name,
-	    url: 'http://sachagreif.com/introducing-telescope/',
-	    submitted: now - 7 * 3600 * 1000,
-	    commentsCount: 2,
-	    upvoters: [], votes: 0
-	  });
+			// UPDATE MOVIE - m.directors
+			if (person.movies[i].job === "Director") {
+				Meteor.call('addMovieDirector', m._id, assc.name, function(error) {
+					if (error)
+						console.log(JSON.stringify(error));
+					else
+						console.log("Updated Movie with Person assc: " + JSON.stringify(assc));
+				});
 
-	  Comments.insert({
-	    postId: telescopeId,
-	    userId: tom._id,
-	    author: tom.profile.name,
-	    submitted: now - 5 * 3600 * 1000,
-	    body: 'Interesting project Sacha, can I get involved?'
-	  });
+			} else if (person.movies[i].job === "Actor") {
+				//TODO
+			}
 
-	  Comments.insert({
-	    postId: telescopeId,
-	    userId: sacha._id,
-	    author: sacha.profile.name,
-	    submitted: now - 3 * 3600 * 1000,
-	    body: 'You sure can Tom!'
-	  });
-
-	  Posts.insert({
-	    title: 'Meteor',
-	    userId: tom._id,
-	    author: tom.profile.name,
-	    url: 'http://meteor.com',
-	    submitted: now - 10 * 3600 * 1000,
-	    commentsCount: 0,
-	    upvoters: [], votes: 0
-	  });
-
-	  Posts.insert({
-	    title: 'The Meteor Book',
-	    userId: tom._id,
-	    author: tom.profile.name,
-	    url: 'http://themeteorbook.com',
-	    submitted: now - 12 * 3600 * 1000,
-	    commentsCount: 0,
-	    upvoters: [], votes: 0
-	  });
-
-	  for (var i = 0; i < 10; i++) {
-	    Posts.insert({
-	      title: 'Test post #' + i,
-	      author: sacha.profile.name,
-	      userId: sacha._id,
-	      url: 'http://google.com/?q=test-' + i,
-	      submitted: now - i * 3600 * 1000 + 1,
-	      commentsCount: 0,
-	      upvoters: [], votes: 0
-	    });
-	  }
-		console.log("Posts.find().count()="+Posts.find().count());
+			m = Movies.findOne( {title: person.movies[i].title} );
+			console.log( JSON.stringify(m) );
+		}
+	} else {
+		if (!person)
+			console.log("Person not found for name:'"+assc.person_name+"'");
+		else if (!person.movies)
+			console.log("Person.movies not found for name:'"+assc.person_name+"'");
+		if (!movie)
+			console.log("Movie not found for title:'"+assc.movie_title+"'");
 	}
 
+	// FUNCTIONS
+	function getPersonID (name) {
+		return Persons.findOne( {name: name}, {fields: {movies: 1}} );
+	};
+	function getMovieID (title) {
+		return Movies.findOne( {title: title}, {fields: {_id: 1}} );
+	};
 });
+
+/*
+"directors": [
+	{
+		"name": "Stanley Kubrick"
+		"person_id": "???"
+	}
+],
+	"cast": [
+	{
+		"name": "Keir Dullea",
+		"person_id": "162658493",
+		"characters": [
+			"Bowman"
+		]
+	},
+	{
+*/

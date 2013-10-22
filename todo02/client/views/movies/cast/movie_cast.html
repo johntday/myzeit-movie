@@ -1,0 +1,20 @@
+<template name="tmplMovieCastList">
+	{{> tmpl_breadcrumbs breadcrumbs}}
+
+	<ul class="nav nav-tabs nav-justified">
+		<li><a href="/sciFiMovies/{{movieId}}">Movie</a></li>
+		<li><a href="/sciFiMovies/timelines/{{movieId}}">Timelines</a></li>
+		<li class="active"><a href="#">Cast</a></li>
+		<li><a href="/sciFiMovies/facts/{{movieId}}">Facts</a></li>
+	</ul>
+
+	<div class="panel panel-purple">
+		<div class="panel-heading">
+			<h2 class="panel-title">{{title}}</h2>
+		</div>
+		<div class="panel-body">
+			Cast not added yet.
+		</div>
+	</div>
+
+</template>

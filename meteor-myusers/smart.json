@@ -1,0 +1,11 @@
+{
+    "name": "myusers",
+    "description": "Package to manage users based on bootstrap-3",
+    "homepage": "https://github.com/johntday/meteor-myusers",
+    "author": "John T Day <johntday@gmail.com> (http://lucidservices.com)",
+    "version": "0.1.0",
+    "git": "https://github.com/johntday/meteor-myusers.git",
+    "packages": {
+        "bootstrap-3": "0.3.5"
+    }
+}

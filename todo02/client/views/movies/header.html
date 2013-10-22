@@ -12,8 +12,14 @@
 			</div>
 			<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 				<ul class="nav navbar-nav">
+					{{#if hasNoSidebar}}
+					<li>
+						<button id="show-sidebar" type="button" class="btn btn-default navbar-btn" title="Show side-bar"><span class="glyphicon glyphicon-chevron-right"></span>
+						</button>
+					</li>
+					{{/if}}
 					<li class="{{activeRouteClass  'tmplSortedMovies'}}">
-						<a href="{{pathFor 'tmplSortedMovies'}}">SciFi</a>
+						<a href="{{pathFor 'tmplSortedMovies'}}" title="SciFi Movies">SciFi</a>
 					</li>
 					{{#if currentUser}}
 					<li class="dropdown">
@@ -25,7 +31,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Users</a></li>
+							<li><a href="/usersManage">Users</a></li>
 						</ul>
 					</li>
 					{{/if}}
@@ -33,10 +39,13 @@
 
 				<div class="navbar-form navbar-left" role="search">
 					<div class="form-group">
-						<input id="header-search" type="text" class="form-control" placeholder="Search" value="{{searchText}}" />
+						<input id="header-search" type="text" class="form-control" placeholder="Search" value="{{searchText}}" title="Movie search" />
 					</div>
 					<!--<button id="header-search-reset" type="button" class="btn btn-default">Reset</button>-->
 				</div>
+				<button id="btn-search" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"></span>
+				</button>
+
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/help">Help</a></li>
 					<li><a href="/about">About</a></li>

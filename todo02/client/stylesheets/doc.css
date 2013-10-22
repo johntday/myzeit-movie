@@ -476,7 +476,7 @@ h1[id] {
     border-color: #563d7c;
 }
 .panel-purple > .panel-body {
-    background: #eee;
+    background: #f9f9f9;
 }
 .panel-purple > .panel-heading + .panel-collapse .panel-body {
     border-top-color: #563d7c;

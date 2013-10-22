@@ -11,7 +11,8 @@ if (Meteor.isClient) {
 		 APP CONFIG PARMS
 		 */
 	    oPublic.appConfig = {
-		    pageLimit: 10, pageLimitMid: 400, pageLimitMax: 1000
+		    pageLimit: 10, pageLimitMid: 400, pageLimitMax: 1000,
+		    panelLimit: 5, panelLimitMid: 400, panelLimitMax: 1000
 	    };
 
 	    /*
