@@ -8,9 +8,10 @@ Template.tmplHeader.events({
 			moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
 		else if (e.which === 27/*ESC*/)
 			return;
-		else if (e.which === 13/*ENTER*/ && value.length > 1)
+		else if (e.which === 13/*ENTER*/ && value.length > 1) {
 			moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimitMax);
-		else if (value.length < 3)
+			Router.go('/sciFiMovies');
+		} else if (value.length < 3)
 			moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimitMid);
 		else
 			moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimitMax);

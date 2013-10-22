@@ -22,6 +22,7 @@ Template.tmplMovieTimelineList.events({
 			if (error)
 				throwError(error.reason);
 		});
+		Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -72,6 +73,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 	 */
 	$("#mytimeline-description")[0].innerHTML = (myMovieTimeline.description) ? myMovieTimeline.description : "";
 	$( "#mytimeline-description-edit" ).hide();
+	(myMovieTimeline._id) ? $( "#delete" ).show() : $( "#delete" ).hide();
 	$( "#update-data" ).hide();
 	$("#form").hide();
 	$("#update-movie-event").hide();
@@ -106,6 +108,15 @@ Template.tmplMovieTimelineList.rendered = function() {
 		});
 		Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
 	});
+	$( "#delete" ).click(function() {
+		Meteor.call('deleteMovieTimeline', myMovieTimeline._id, myMovieTimeline.userId, function(error) {
+			if (error)
+				throwError(error.reason);
+			else
+				$(this).hide();
+		});
+		Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
+	});
 	$( "#update-movie-event" ).click(function() {
 		var row = getSelectedRow();
 		if ( $("#form").is(':visible') && $( "#form-content" ).val() !== timeline.getData()[row].content ) {
@@ -133,6 +144,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 			if (error)
 				throwError(error.reason);
 		});
+		Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
 	});
 	$( "#mytimeline-description-edit" ).keyup(function(e) {
 		if (e.which == 13) {
@@ -143,6 +155,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 	Meteor.MyTimelineModule.links.events.addListener(timeline, 'select', onselect);
 	Meteor.MyTimelineModule.links.events.addListener(timeline, 'delete', ondelete);
 	Meteor.MyTimelineModule.links.events.addListener(timeline, 'add', onadd);
+	Meteor.MyTimelineModule.links.events.addListener(timeline, 'timechanged', onchange);
 
 	/**
 	 * FUNCTIONS
@@ -184,6 +197,9 @@ Template.tmplMovieTimelineList.rendered = function() {
 
 		onselect(event);
 	};
+	function onchange(event) {
+		$( "#update-data" ).show();
+	};
 	function ondelete(event) {
 		$( "#update-data" ).show();
 		var row = getSelectedRow();
@@ -193,7 +209,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 		}
 	};
 
-	Meteor.MyClientModule.scrollToTopOfPageFast();
+	//Meteor.MyClientModule.scrollToTopOfPageFast();
 };
 
 /**
@@ -301,7 +317,7 @@ Template.tmplMovieTimeline.rendered = function() {
 		// Draw our timeline with the created data and options
 		timeline.draw(movieTimelineData, options);
 	};
-	Meteor.MyClientModule.scrollToTopOfPageFast();
+	//Meteor.MyClientModule.scrollToTopOfPageFast();
 };
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmplMovieTimeline.events({

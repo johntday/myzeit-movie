@@ -7,11 +7,6 @@ MovieTimelines.allow({
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Meteor.methods({
-	/**
-	 * Insert
-	 * @param movieTimelineAttr
-	 * @returns {*|insert}
-	 */
 	createMovieTimeline: function(movieTimelineAttr) {
 		var user = Meteor.user();
 
@@ -88,6 +83,19 @@ Meteor.methods({
 				data: data,
 				updated: new Date().getTime()
 			}
+		});
+	},
+
+	deleteMovieTimeline: function(_id, userId) {
+		var user = Meteor.user();
+
+		if (!user)
+			throw new Meteor.Error(401, "You need to login to delete a Movie Timeline");
+		if (!isAdmin() && user._id !== userId)
+			throw new Meteor.Error(401, "Your not the owner of this Movie Timeline");
+
+		MovieTimelines.remove({
+			_id: _id
 		});
 	},
 
