@@ -27,9 +27,9 @@ Meteor.publish('pubsub_movie_list', function(limit) {
 Meteor.publish('pubsub_selected_movie', function(id) {
 	return id && Movies.find(id);
 });
-Meteor.publish('pubsub_movie_list_sortedUpdatedDesc', function(limit) {
-	return Movies.find({}, {sort: {updated: -1}, limit: limit});
-});
+//Meteor.publish('pubsub_movie_list_sortedUpdatedDesc', function(limit) {
+//	return Movies.find({}, {sort: {updated: -1, created: -1}, limit: limit});
+//});
 
 /**
  * Persons
