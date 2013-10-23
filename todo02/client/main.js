@@ -7,6 +7,7 @@ Session.setDefault('form_create', false);
 Session.setDefault('selected_movie_id', null);
 Session.setDefault('breadcrumbs', null);
 Session.setDefault('has_sidebar', true);
+Session.setDefault('is_example_timeline', false);
 /*------------------------------------------------------------------------------------------------------------------------------*/
 newPostsHandle  = Meteor.subscribeWithPagination('newPosts', 10);
 bestPostsHandle = Meteor.subscribeWithPagination('bestPosts', 10);

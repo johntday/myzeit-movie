@@ -79,6 +79,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/timelines/:_id',
 		waitOn: function ()
 		{
+			Session.set("is_example_timeline", false);
 			Session.set('selected_movie_id', this.params._id);
 			Meteor.subscribe('pubsub_selected_movie', this.params._id);
 			return Meteor.subscribe('pubsub_user_movie_timeline_list', this.params._id, Meteor.userId());
@@ -136,6 +137,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/timelines/example/:mymovie_id',
 		waitOn: function ()
 		{
+			Session.set("is_example_timeline", true);
 			return Meteor.subscribe('pubsub_selected_movie_alternateId', this.params.mymovie_id)
 				&& Meteor.subscribe('pubsub_selected_movie_timeline_alternateId', this.params.mymovie_id);
 		},

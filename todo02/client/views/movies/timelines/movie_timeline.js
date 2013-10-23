@@ -48,9 +48,9 @@ Template.tmplMovieTimelineList.rendered = function() {
 			isAdminTimeline = true;
 			var options = _.extend(common_options,
 				{
-					editable: isAdmin(),
-					enableKeys: isAdmin(),
-					showButtonNew: isAdmin()
+					editable: isAdmin() || Session.get("is_example_timeline"),
+					enableKeys: isAdmin() || Session.get("is_example_timeline"),
+					showButtonNew: isAdmin() || Session.get("is_example_timeline")
 				}
 			);
 			drawVisualization("#admintimeline", movieTimeline.data, options);
@@ -82,7 +82,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 	} else {
 		if (!isAdminTimeline)
 			$("#admintimeline-title").hide();
-		if (isMyTimeline)
+		if (isMyTimeline || Session.get("is_example_timeline"))
 			$("#create-movie-timeline").hide();
 	}
 
@@ -100,13 +100,17 @@ Template.tmplMovieTimelineList.rendered = function() {
 			$("#update-movie-event").hide();
 	});
 	$( "#update-data" ).click(function() {
-		Meteor.call('updateMovieTimelineData', myMovieTimeline._id, timeline.getData(), myMovieTimeline.userId, function(error) {
-			if (error)
-				throwError(error.reason);
-			else
-				$(this).hide();
-		});
-		Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
+		if (Session.get("is_example_timeline"))
+			$(this).hide();
+		else {
+			Meteor.call('updateMovieTimelineData', myMovieTimeline._id, timeline.getData(), myMovieTimeline.userId, function(error) {
+				if (error)
+					throwError(error.reason);
+				else
+					$(this).hide();
+			});
+		}
+			Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
 	});
 	$( "#delete" ).click(function() {
 		Meteor.call('deleteMovieTimeline', myMovieTimeline._id, myMovieTimeline.userId, function(error) {
