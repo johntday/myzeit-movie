@@ -1,4 +1,6 @@
 Meteor.startup(function () {
+	var ROTTENTOMATOE = false;
+
 	// Verify that the admin user account exists (should be created on the first run)
 	var u = Meteor.users.findOne({username: "admin"}); // find the admin user
 	if(!u) {
@@ -343,6 +345,7 @@ Meteor.startup(function () {
 					"adult":false,
 					"backdrop_path":"/mARHM8LUcmLdSqHxLRFK4fjAOkv.jpg",
 					"id":9606,
+					"mymovie_id":"metropolis",
 					"original_title":"Metoroporisu",
 					"release_date":"2001-05-26",
 					"poster_path":"/nrzOLktLY0kAfL9jgl7ZvM83A0m.jpg",
@@ -590,6 +593,7 @@ Meteor.startup(function () {
 						"adult":false,
 						"backdrop_path":"/ffHO6uyrvnwa2nzKstHtqMFtJjX.jpg",
 						"id":229,
+						"mymovie_id":"the_bride_of_frankenstein",
 						"original_title":"The Bride of Frankenstein",
 						"release_date":"1935-04-22",
 						"poster_path":"/a0fOHhABxfvAuR4PTAzqKW5xQ4d.jpg",
@@ -717,6 +721,7 @@ Meteor.startup(function () {
 						"adult":false,
 						"backdrop_path":"/giKKwrQU41KV3B92MvojMpaW1Np.jpg",
 						"id":8974,
+						"mymovie_id":"the_war_of_the_worlds",
 						"original_title":"The War of the Worlds",
 						"release_date":"1953-08-13",
 						"poster_path":"/yxHeXGprvMaoVzEIKb67XSKlPw.jpg",
@@ -1139,6 +1144,7 @@ Meteor.startup(function () {
 						"adult":false,
 						"backdrop_path":"/3idsO3tSMP9cHgfffuWpc1vbtop.jpg",
 						"id":17431,
+						"mymovie_id":"moon",
 						"original_title":"Moon",
 						"release_date":"2009-07-17",
 						"poster_path":"/xbDTUt1O2Cy4WuM2QGVC9gnrJOf.jpg",
@@ -1386,6 +1392,7 @@ Meteor.startup(function () {
 						"adult":false,
 						"backdrop_path":"/2sStySEMtDgfi5kbr7xW0NZxyAU.jpg",
 						"id":62,
+						"mymovie_id":"2001_a_space_odyssey",
 						"original_title":"2001: A Space Odyssey",
 						"release_date":"1968-04-05",
 						"poster_path":"/rRwaupUfNmkx54DbEU3zOnifxz5.jpg",
@@ -1530,6 +1537,7 @@ Meteor.startup(function () {
 						"adult":false,
 						"backdrop_path":"/vMNl7mDS57vhbglfth5JV7bAwZp.jpg",
 						"id":348,
+						"mymovie_id":"alien",
 						"original_title":"Alien",
 						"release_date":"1979-05-25",
 						"poster_path":"/uU9R1byS3USozpzWJ5oz7YAkXyk.jpg",
@@ -1717,6 +1725,7 @@ Meteor.startup(function () {
 						"adult":false,
 						"backdrop_path":"/uExEupzfV7Ffau0H98aefUU0zcG.jpg",
 						"id":828,
+						"mymovie_id":"the_day_the_earth_stood_still",
 						"original_title":"The Day the Earth Stood Still",
 						"release_date":"1951-09-18",
 						"poster_path":"/tyujnQl6topN3O9lPnGMpzGsYQM.jpg",
@@ -2398,6 +2407,7 @@ Meteor.startup(function () {
 						"adult":false,
 						"backdrop_path":"/vise7XoPrUGV9hmdK8Gt3BWGkym.jpg",
 						"id":1272,
+						"mymovie_id":"sunshine",
 						"original_title":"Sunshine",
 						"release_date":"2007-03-16",
 						"poster_path":"/fAqme02eg4PfWFUDqFQgyJKgLzp.jpg",
@@ -2741,6 +2751,7 @@ Meteor.startup(function () {
 						"adult":false,
 						"backdrop_path":"/yUztTrOARxj1lgcPyrSCeGWigZO.jpg",
 						"id":170,
+						"mymovie_id":"28_days_later",
 						"original_title":"28 Days Later...",
 						"release_date":"2002-11-01",
 						"poster_path":"/n1D7AHJosiq1CqKUP1U6vP0NGNy.jpg",
@@ -5682,6 +5693,7 @@ Meteor.startup(function () {
 						"backdrop_path":"/eMgtd5ELPxrRdHDixRyTyiYPRjw.jpg",
 						"id":9739,
 						"original_title":"Demolition Man",
+						"mymovie_id":"demolition_man",
 						"release_date":"1993-10-06",
 						"poster_path":"/k0PN3Ho12cGGIVJW7SCS7apLYaP.jpg",
 						"popularity":2.82487139386198,
@@ -9108,7 +9120,54 @@ Meteor.startup(function () {
 		for (var i=0; i < movieDataSummary.length; i++) {
 			var movieSummaryPage = movieDataSummary[i].results;
 			for (var j=0; j < movieSummaryPage.length; j++) {
-				Movies.insert( movieSummaryPage[j] );
+				var _id;
+				_id = Movies.insert( movieSummaryPage[j] );
+				if (ROTTENTOMATOE && ! movieSummaryPage[j].year) {
+					var id_rt = null;
+
+					Meteor.call('getMovieFromRottenTomatoes', movieSummaryPage[j].title, function(error, result) {
+						if (error) {
+							id_rt = null;
+							console.log(JSON.stringify(error));
+						} else {
+							var x = result.data.movies[0];
+							id_rt = x.id;
+							var updateObject = {
+								year: x.year,
+								mpaa_rating: x.mpaa_rating,
+								runtime: x.runtime,
+								critics_consensus: x.critics_consensus,
+								ratings: x.ratings,
+								synopsis: x.synopsis,
+								posters: x.posters
+							};
+							//console.log(JSON.stringify(updateObject));
+
+							Movies.update({
+								_id: _id
+							}, {
+								$set: updateObject
+							});
+						}
+					});
+
+					Meteor.call('getCastFromRottenTomatoes', id_rt, function(error, result) {
+						if (error) {
+							console.log(JSON.stringify(error));
+						} else {
+							var cast = result.data.cast;
+
+							Movies.update({
+								_id: _id
+							}, {
+								$set: {
+									cast: cast
+								}
+							});
+						}
+					});
+
+				}
 			}
 		}
 		console.log("Movies.find().count()="+Movies.find().count());
@@ -9143,6 +9202,7 @@ Meteor.startup(function () {
 
 		var movieTimelines = [
 			{
+				mymovie_id: "2001_a_space_odyssey",
 				movieId: testId,
 				userId: "admin",
 				author: "John T Day",
@@ -9154,38 +9214,17 @@ Meteor.startup(function () {
 				vote_count: 2,
 				data: [
 					{
-						'start': new Date(2010,7,23),
-						'content': 'Conversation'
+						'start': new Date(2001,7,23,23,0,0),
+						'content': 'Monolith found on moon'
 					},
 					{
-						'start': new Date(2010,7,23,23,0,0),
-						'content': 'Mail from boss'
+						'start': new Date(2001,12,26),
+						'end': new Date(2002,12,2),
+						'content': 'Discovery One voyage to Jupiter'
 					},
 					{
-						'start': new Date(2010,7,24,16,0,0),
-						'content': 'Report'
-					},
-					{
-						'start': new Date(2010,7,26),
-						'end': new Date(2010,8,2),
-						'content': 'Traject A'
-					},
-					{
-						'start': new Date(2010,7,28),
-						'content': 'Memo'
-					},
-					{
-						'start': new Date(2010,7,29),
-						'content': 'Phone call'
-					},
-					{
-						'start': new Date(2010,7,31),
-						'end': new Date(2010,8,3),
-						'content': 'Traject B'
-					},
-					{
-						'start': new Date(2010,8,4,12,0,0),
-						'content': 'Report'
+						'start': new Date(2002,12,4,12,0,0),
+						'content': 'Hal lobotimized'
 					}
 				]
 			}
@@ -9215,6 +9254,7 @@ Meteor.startup(function () {
 		console.log("MovieTimelines.find().count()="+MovieTimelines.find().count());
 	}
 
+	/*
 	console.log("MOVIE-PERSON");
 	// MOVIE-PERSON ASSC
 	var assc = {name: "Stanley Kubrick", title:"2001: A Space Odyssey"};
@@ -9258,22 +9298,46 @@ Meteor.startup(function () {
 	function getMovieID (title) {
 		return Movies.findOne( {title: title}, {fields: {_id: 1}} );
 	};
+	*/
+
+
+
+
 });
 
-/*
-"directors": [
-	{
-		"name": "Stanley Kubrick"
-		"person_id": "???"
-	}
-],
-	"cast": [
-	{
-		"name": "Keir Dullea",
-		"person_id": "162658493",
-		"characters": [
-			"Bowman"
-		]
+
+Meteor.methods({
+	getMovieFromRottenTomatoes: function (q) {
+		console.log("at getMovieFromRottenTomatoes");
+		//			check(userId, String);
+		this.unblock();
+		try {
+			console.log("q='"+q+"'");
+			var apikey = "9gxg34a7w2efakdhxmepxm8e";
+			var page_limit = 1;
+			var page = 1;
+			return HTTP.call("GET", "http://api.rottentomatoes.com/api/public/v1.0/movies.json",
+				{params: {q: q, apikey: apikey, page_limit: page_limit, page: page}});
+		} catch (e) {
+			// Got a network error, time-out or HTTP error in the 400 or 500 range.
+			console.log(JSON.stringify(e));
+			return false;
+		}
 	},
-	{
-*/
+	getCastFromRottenTomatoes: function (id_rt) {
+		console.log("at getCastFromRottenTomatoes");
+		if (! id_rt || id_rt.length == 0)
+			return false;
+		this.unblock();
+		try {
+			var apikey = "9gxg34a7w2efakdhxmepxm8e";
+			return HTTP.call("GET", "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id_rt + "/cast.json",
+				{params: {apikey: apikey}});
+		} catch (e) {
+			// Got a network error, time-out or HTTP error in the 400 or 500 range.
+			console.log(JSON.stringify(e));
+			return false;
+		}
+	}
+
+});

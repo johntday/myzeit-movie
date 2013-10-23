@@ -18,21 +18,21 @@
 
 				{{#if isAdmin}}
 					{{form_input "_id" _id}}
-					{{form_input "mpaa_rating" mpaa_rating}}
-					{{form_input "runtime" runtime}}
-					{{form_input "year" year}}
-					{{form_input "tagline" tagline}}
-					{{form_input "status" status}}
-					{{form_input "overview" overview}}
 					{{form_input "adult" adult}}
 				{{else}}
 					<input type="hidden" value="{{_id}}" name="_id"/>
 				{{/if}}
 
 				<!-- COMMON FIELDS -->
-				{{form_input "title" title}}
-				{{form_input "original_title" original_title}}
+				{{form_input "year" year}}
 				{{form_input "release_date" release_date}}
+				{{form_input "original_title" original_title}}
+				{{form_input "mpaa_rating" mpaa_rating}}
+				{{form_input "runtime" runtime}}
+				{{form_input "tagline" tagline}}
+				{{form_input "status" status}}
+				{{form_input "overview" overview}}
+				{{form_input "critics consensus" critics_consensus}}
 
 				<div class="form-group">
 					<div class="col-offset-2 col-sm-4">

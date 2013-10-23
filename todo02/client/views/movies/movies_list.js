@@ -16,6 +16,24 @@ Template.tmplSortedMovies.helpers({
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
+//Template.tmplSortedMovies_updated.helpers({
+//	options: function() {
+//		return {
+//			reactive: true,
+//			selector: {},
+//			sort: {release_date: 1},
+//			handle: moviesSortUpdatedHandle
+//		}
+//	},
+//	breadcrumbs: function() {
+//		Session.set('breadcrumbs', {breadcrumbs: [
+//			{title:"home", link:"/", isActive:false},
+//			{title:"SciFi", link:"/sciFiMovies", isActive:true}
+//		]});
+//		return Session.get("breadcrumbs");
+//	}
+//});
+/*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmplMoviesList.helpers({
     movies: function() {
 	    var i = 0;

@@ -2,6 +2,9 @@
  * Template to generate input form elements
  */
 Handlebars.registerHelper('form_input', function(name, value) {
+	var showField = value || isAdmin();
+	if (! showField)
+		return;
 
 	if (value && (typeof value === "string") && value.length > 50) {
 

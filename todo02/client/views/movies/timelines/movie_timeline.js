@@ -44,7 +44,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 	var myMovieTimeline = {};
 
 	movieTimelines.forEach(function (movieTimeline) {
-		if (movieTimeline.userId === "admin") {
+		if (movieTimeline.userId === "admin" && !isAdmin()) {
 			isAdminTimeline = true;
 			var options = _.extend(common_options,
 				{
@@ -54,7 +54,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 				}
 			);
 			drawVisualization("#admintimeline", movieTimeline.data, options);
-		} else if (movieTimeline.userId === Meteor.userId()) {
+		} else if (movieTimeline.userId === Meteor.userId() || isAdmin()) {
 			myMovieTimeline = movieTimeline;
 			isMyTimeline = true;
 			var options = _.extend(common_options,
@@ -155,7 +155,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 	Meteor.MyTimelineModule.links.events.addListener(timeline, 'select', onselect);
 	Meteor.MyTimelineModule.links.events.addListener(timeline, 'delete', ondelete);
 	Meteor.MyTimelineModule.links.events.addListener(timeline, 'add', onadd);
-	Meteor.MyTimelineModule.links.events.addListener(timeline, 'timechanged', onchange);
+	Meteor.MyTimelineModule.links.events.addListener(timeline, 'change', onchange);
 
 	/**
 	 * FUNCTIONS

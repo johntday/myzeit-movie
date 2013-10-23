@@ -13,7 +13,9 @@
 			<h2 class="panel-title">{{title}}</h2>
 		</div>
 		<div class="panel-body">
-			Cast not added yet.
+			{{#each cast}}
+				{{> tmplMovieCastItem}}
+			{{/each}}
 		</div>
 	</div>
 

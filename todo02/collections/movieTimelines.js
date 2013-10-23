@@ -33,7 +33,7 @@ Meteor.methods({
 					'content': 'My Event'
 				}
 			],
-			userId: user._id,
+			userId: (isAdmin()) ? "admin" : user._id,
 			author: user.username,
 			created: new Date().getTime(),
 			comment_count: 0,

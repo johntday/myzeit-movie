@@ -23,7 +23,8 @@ Meteor.subscribe('pubsub_notification_list');
 /**
  * Movies
  */
-moviesHandle  = Meteor.subscribeWithPagination('pubsub_movie_list',  Meteor.MyClientModule.appConfig.pageLimit);
+moviesHandle             = Meteor.subscribeWithPagination('pubsub_movie_list',  Meteor.MyClientModule.appConfig.pageLimit);
+//moviesSortUpdatedHandle  = Meteor.subscribeWithPagination('pubsub_movie_list_sortUpdated',  5);
 /**
  * Persons
  */
@@ -46,14 +47,3 @@ Template.layout.helpers({
  * Set as last statement in "main.js"
  */
 Meteor.MyClientModule.performanceLogRenders();
-
-
-//TODO
-// publish dependent documents and simulate joins
-//Meteor.publish("roomAndMessages", function (roomId) {
-//	check(roomId, String);
-//	return [
-//		Rooms.find({_id: roomId}, {fields: {secretInfo: 0}}),
-//		Messages.find({roomId: roomId})
-//	];
-//});

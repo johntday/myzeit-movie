@@ -24,8 +24,14 @@ Meteor.publish('pubsub_notification_list', function() {
 Meteor.publish('pubsub_movie_list', function(limit) {
 	return Movies.find({}, {sort: {title: 1}, limit: limit});
 });
+Meteor.publish('pubsub_movie_list_sortUpdated', function(limit) {
+	return Movies.find({}, {sort: {release_date: 1}, limit: limit});
+});
 Meteor.publish('pubsub_selected_movie', function(id) {
 	return id && Movies.find(id);
+});
+Meteor.publish('pubsub_selected_movie_alternateId', function(mymovie_id) {
+	return mymovie_id && Movies.find({mymovie_id: mymovie_id});
 });
 //Meteor.publish('pubsub_movie_list_sortedUpdatedDesc', function(limit) {
 //	return Movies.find({}, {sort: {updated: -1, created: -1}, limit: limit});
@@ -49,4 +55,7 @@ Meteor.publish('pubsub_user_movie_timeline_list', function(movieId, userId) {
 });
 Meteor.publish('pubsub_selected_movie_timeline', function(id) {
 	return id && MovieTimelines.find(id);
+});
+Meteor.publish('pubsub_selected_movie_timeline_alternateId', function(mymovie_id) {
+	return mymovie_id && MovieTimelines.find({mymovie_id: mymovie_id});
 });
