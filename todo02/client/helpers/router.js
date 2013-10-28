@@ -1,14 +1,9 @@
 Router.configure({
-	layout         : 'layout',
+	layoutTemplate : 'layout',
 	loadingTemplate: 'loading'
-	//renderTemplates: {
-		/* render the templated named 'footer' to the 'footer' yield */
+	//yieldTemplates: {
 		//'footer': { to: 'footer' },
-
-		/* render the templated named 'header' to the 'header' yield */
 		//'tmplHeader': { to: 'header' }
-
-		/* render the template named sidebar to the 'sidebar' yield */
 		//'sidebar': { to: 'sidebar' }
 	//}
 });
@@ -31,7 +26,6 @@ Router.map(function ()
 
 	this.route('tmplHome'                 ,{path: '/'});
 	this.route('tmplSortedMovies'         ,{path: '/sciFiMovies'});
-//	this.route('tmplSortedMovies_updated' ,{path: '/sciFiMovies/updated'});
 	this.route('tmpl_about'               ,{path: '/about'});
 	this.route('tmpl_help'                ,{path: '/help'});
 	this.route('tmpl_settings'            ,{path: '/settings'});
