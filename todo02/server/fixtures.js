@@ -42,27 +42,11 @@ Meteor.startup(function () {
 			return Persons.insert(person);
 		}
 
-		// UPDATE ALL PERSONS
-//		Persons.update({},
-//		{
-//			$addToSet: {upvoters: { $each: [steve._id, albert._id] } },
-//			$set: {
-//				created: now,
-//				updated: now,
-//				userId: "admin",
-//				author: "John T Day",
-//				comment_count: 22
-//			}
-//		}, {
-//			upset: false,
-//			multi: true
-//		});
 		console.log("Persons.find().count()="+Persons.find().count());
 	}
 
 	// MOVIES
 	if (Movies.find().count() === 0) {
-
 		// Dropbox\PluralSight\John-Day\Fundamentals-of-Meteor\data\movieDataSummary.js
 		var movieDataSummary = [{
 			"id":878,
@@ -9120,12 +9104,24 @@ Meteor.startup(function () {
 		for (var i=0; i < movieDataSummary.length; i++) {
 			var movieSummaryPage = movieDataSummary[i].results;
 			for (var j=0; j < movieSummaryPage.length; j++) {
+
+				var movie = _.extend(movieSummaryPage[j], {
+					userId: "admin",
+					author: "John T Day",
+					created: getNow(),
+					votes: 0,
+					comments: 0,
+					baseScore: 0,
+					score: 0,
+					status: STATUS_APPROVED
+				});
+
 				var _id;
-				_id = Movies.insert( movieSummaryPage[j] );
-				if (ROTTENTOMATOE && ! movieSummaryPage[j].year) {
+				_id = Movies.insert( movie );
+				if (ROTTENTOMATOE && ! movie.year) {
 					var id_rt = null;
 
-					Meteor.call('getMovieFromRottenTomatoes', movieSummaryPage[j].title, function(error, result) {
+					Meteor.call('getMovieFromRottenTomatoes', movie.title, function(error, result) {
 						if (error) {
 							id_rt = null;
 							console.log(JSON.stringify(error));
@@ -9259,7 +9255,7 @@ Meteor.startup(function () {
 	// MOVIE-PERSON ASSC
 	var assc = {name: "Stanley Kubrick", title:"2001: A Space Odyssey"};
 	var person = getPersonID(assc.person_name);
-	var movie  = getMovieID(assc.movie_title);
+-	var movie  = getMovieID(assc.movie_title);
 	if (person && person.movies && movie) {
 		for (var i=0; i < person.movies.length; i++) {
 			var m = Movies.findOne( {title: person.movies[i].title} );
@@ -9299,45 +9295,5 @@ Meteor.startup(function () {
 		return Movies.findOne( {title: title}, {fields: {_id: 1}} );
 	};
 	*/
-
-
-
-
-});
-
-
-Meteor.methods({
-	getMovieFromRottenTomatoes: function (q) {
-		console.log("at getMovieFromRottenTomatoes");
-		//			check(userId, String);
-		this.unblock();
-		try {
-			console.log("q='"+q+"'");
-			var apikey = "9gxg34a7w2efakdhxmepxm8e";
-			var page_limit = 1;
-			var page = 1;
-			return HTTP.call("GET", "http://api.rottentomatoes.com/api/public/v1.0/movies.json",
-				{params: {q: q, apikey: apikey, page_limit: page_limit, page: page}});
-		} catch (e) {
-			// Got a network error, time-out or HTTP error in the 400 or 500 range.
-			console.log(JSON.stringify(e));
-			return false;
-		}
-	},
-	getCastFromRottenTomatoes: function (id_rt) {
-		console.log("at getCastFromRottenTomatoes");
-		if (! id_rt || id_rt.length == 0)
-			return false;
-		this.unblock();
-		try {
-			var apikey = "9gxg34a7w2efakdhxmepxm8e";
-			return HTTP.call("GET", "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id_rt + "/cast.json",
-				{params: {apikey: apikey}});
-		} catch (e) {
-			// Got a network error, time-out or HTTP error in the 400 or 500 range.
-			console.log(JSON.stringify(e));
-			return false;
-		}
-	}
 
 });

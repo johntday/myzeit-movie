@@ -1,5 +1,6 @@
 Router.configure({
-	layoutTemplate : 'layout',
+	//layoutTemplate : 'layout', //v0.6.0
+	layout : 'layout',
 	loadingTemplate: 'loading'
 	//yieldTemplates: {
 		//'footer': { to: 'footer' },
@@ -30,6 +31,7 @@ Router.map(function ()
 	this.route('tmpl_help'                ,{path: '/help'});
 	this.route('tmpl_settings'            ,{path: '/settings'});
 	this.route('tmpl_users_manage'        ,{path: '/usersManage'});
+	this.route('tmpl_movie_add'           ,{path: '/movieAdd'});
 
 	this.route('tmplMovieDetail', {
 		path  : '/sciFiMovies/:_id',

@@ -7,6 +7,9 @@ Template.tmplMovieTimelineList.helpers({
 	},
 	movieId: function() {
 		return Session.get("selected_movie_id");
+	},
+	canEdit: function() {
+		return canEdit(Meteor.user(), this);
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -85,6 +88,8 @@ Template.tmplMovieTimelineList.rendered = function() {
 		if (isMyTimeline || Session.get("is_example_timeline"))
 			$("#create-movie-timeline").hide();
 	}
+	if (Session.get("is_example_timeline"))
+		$("#mytimeline-title").hide();
 
 	/**
 	 * EVENTS

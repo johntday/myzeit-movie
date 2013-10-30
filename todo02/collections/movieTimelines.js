@@ -1,4 +1,4 @@
-MovieTimelines = new Meteor.Collection('movieTimelines');
+MovieTimelines = new Meteor.Collection('coll_movieTimelines');
 /*------------------------------------------------------------------------------------------------------------------------------*/
 MovieTimelines.allow({
 	insert: isAdmin,

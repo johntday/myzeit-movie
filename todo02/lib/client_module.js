@@ -5,7 +5,7 @@ if (Meteor.isClient) {
     Meteor.MyClientModule = (function () {
         var oPublic = {};
         var debug = false; // change me to true to get log performance to console
-	    var snark = ["hi ho", "yo", "blah, blah, blah", "$#!*", "when pigs fly"];
+	    var snark = ["hi ho", "yo", "blah, blah, blah", "$#!*", "when pigs fly", "good grief"];
 
 		/*
 		 APP CONFIG PARMS
@@ -78,9 +78,6 @@ if (Meteor.isClient) {
             input.select();
         };
 
-	    oPublic.isReadOnly = function() {
-		    return !(Session.get("form_update") && Session.get("form_create")) ? "readonly" : "";
-	    };
 	 /*
 	 performance log for collection
 	 */

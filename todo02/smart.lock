@@ -9,7 +9,9 @@
       "mytimeline": {
         "path": "../meteor-mytimeline"
       },
-      "iron-router": {},
+      "iron-router": {
+        "version": "0.5.4"
+      },
       "bootstrap-3": {},
       "moment": {}
     },

@@ -2,15 +2,15 @@
  * SESSION VARIABLE DEFAULTS
  */
 Session.setDefault('search_text', '');
-Session.setDefault('form_update', false);
-Session.setDefault('form_create', false);
+//Session.setDefault('form_update', false);
+//Session.setDefault('form_create', false);
 Session.setDefault('selected_movie_id', null);
 Session.setDefault('breadcrumbs', null);
 Session.setDefault('has_sidebar', true);
 Session.setDefault('is_example_timeline', false);
 /*------------------------------------------------------------------------------------------------------------------------------*/
-newPostsHandle  = Meteor.subscribeWithPagination('newPosts', 10);
-bestPostsHandle = Meteor.subscribeWithPagination('bestPosts', 10);
+//newPostsHandle  = Meteor.subscribeWithPagination('newPosts', 10);
+//bestPostsHandle = Meteor.subscribeWithPagination('bestPosts', 10);
 
 //Deps.autorun(function() {
 //	Meteor.subscribe('selectedMovieTimeline', Session.get('selected_movie_id'));
@@ -24,8 +24,7 @@ Meteor.subscribe('pubsub_notification_list');
 /**
  * Movies
  */
-moviesHandle             = Meteor.subscribeWithPagination('pubsub_movie_list',  Meteor.MyClientModule.appConfig.pageLimit);
-//moviesSortUpdatedHandle  = Meteor.subscribeWithPagination('pubsub_movie_list_sortUpdated',  5);
+moviesHandle = Meteor.subscribeWithPagination('pubsub_movie_list',  Meteor.MyClientModule.appConfig.pageLimit);
 /**
  * Persons
  */

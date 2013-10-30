@@ -19,9 +19,12 @@
 					</li>
 					{{/if}}
 					<li class="{{activeRouteClass  'tmplSortedMovies'}}">
-						<a href="{{pathFor 'tmplSortedMovies'}}" title="SciFi Movies">SciFi</a>
+						<a href="{{pathFor 'tmplSortedMovies'}}" title="Browse SciFi movie library">SciFi</a>
 					</li>
 					{{#if currentUser}}
+					<li class="{{activeRouteClass  'tmpl_movie_add'}}">
+						<a href="{{pathFor 'tmpl_movie_add'}}" title="Add a movie to library">Add Movie</a>
+					</li>
 					<li class="dropdown">
 						{{> notifications}}
 					</li>
@@ -41,7 +44,6 @@
 					<div class="form-group">
 						<input id="header-search" type="text" class="form-control" placeholder="Search" value="{{searchText}}" title="Movie search" />
 					</div>
-					<!--<button id="header-search-reset" type="button" class="btn btn-default">Reset</button>-->
 				</div>
 				<button id="btn-search" type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"></span>
 				</button>

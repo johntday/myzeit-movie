@@ -15,33 +15,38 @@
 		<div class="panel-body">
 
 			<form class="add modal-nav-box box-hide form-horizontal" id="form_movie">
+				{{#constant}}
 
 				{{#if isAdmin}}
-					{{form_input "_id" _id}}
-					{{form_input "adult" adult}}
+					{{form_input "_id" "_id" _id false}}
+					{{form_select "Status" "status" status statusOptions "" canEdit true}}
 				{{else}}
 					<input type="hidden" value="{{_id}}" name="_id"/>
 				{{/if}}
 
 				<!-- COMMON FIELDS -->
-				{{form_input "year" year}}
-				{{form_input "release_date" release_date}}
-				{{form_input "original_title" original_title}}
-				{{form_input "mpaa_rating" mpaa_rating}}
-				{{form_input "runtime" runtime}}
-				{{form_input "tagline" tagline}}
-				{{form_input "status" status}}
-				{{form_input "overview" overview}}
-				{{form_input "critics consensus" critics_consensus}}
+				{{form_input "Year" "year" year canEdit false}}
+				{{form_input "Release Date" "release_date" release_date canEdit false}}
+				{{form_input "Original Title" "original_title" original_title canEdit false}}
+				{{form_select "MPAA Rating" "mpaa_rating" mpaa_rating options "" canEdit true}}
+				{{form_input "Runtime" "runtime" runtime canEdit false}}
+				{{form_input "Tagline" "tagline" tagline canEdit false}}
+				{{form_textarea "Overview" "overview" overview canEdit false}}
+				{{form_textarea "Critics Consensus" "critics_consensus" critics_consensus canEdit false}}
+				{{form_checkbox "Adult Content" "adult" adult canEdit true}}
 
+				{{form_static "Created" "created" createdAgo true}}
+				{{form_static "Author" "author" author true}}
+				{{#if isAdmin}}
+					{{form_static "Author UserId" "userId" userId true}}
+				{{/if}}
+
+				{{/constant}}
 				<div class="form-group">
 					<div class="col-offset-2 col-sm-4">
-						{{#if form_update}}
-						<button type="button" class="btn btn-primary" id="btnUpdateMovie">Update</button>
-						<button type="button" class="btn btn-primary" id="btnCancelMovie">Cancel</button>
-						{{/if}}
-						{{#if form_create}}
-						<button type="submit" class="btn btn-primary" id="btnCreateMovie">Create</button>
+						{{#if canEdit}}
+							<button type="button" class="btn btn-primary" id="btnUpdateMovie">Update</button>
+							<button type="button" class="btn btn-danger" id="btnDeleteMovie">Delete</button>
 						{{/if}}
 					</div>
 				</div>
@@ -156,12 +161,10 @@
 
 				<div class="form-group">
 					<div class="col-offset-2 col-sm-4">
-						{{#if form_update}}
+						{{#if canEdit}}
 						<button type="button" class="btn btn-primary" id="btnUpdateMovie">Update</button>
 						<button type="button" class="btn btn-primary" id="btnCancelMovie">Cancel</button>
-						{{/if}}
-						{{#if form_create}}
-						<button type="submit" class="btn btn-primary" id="btnCreateMovie">Create</button>
+						<button type="button" class="btn btn-danger" id="btnDeleteMovie">Delete</button>
 						{{/if}}
 					</div>
 				</div>

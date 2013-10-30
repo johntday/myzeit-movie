@@ -1,0 +1,36 @@
+<template name="tmpl_movie_add">
+
+	<div class="panel panel-purple">
+		<div class="panel-heading">
+			<h2 class="panel-title">Add Movie</h2>
+		</div>
+		<div class="panel-body">
+
+			<form class="add modal-nav-box box-hide form-horizontal">
+				{{#constant}}
+
+				<!-- COMMON FIELDS -->
+				{{form_input "Title" "title" "" canCreateMovie true}}
+				{{form_input "Year" "year" "" canCreateMovie true}}
+				{{form_input "Release Date" "release_date" "" canCreateMovie true}}
+				{{form_input "Original Title" "original_title" "" canCreateMovie true}}
+				{{form_select "MPAA Rating" "mpaa_rating" "" options "" canCreateMovie true}}
+				{{form_input "Runtime" "runtime" "" canCreateMovie true}}
+				{{form_input "Tagline" "tagline" "" canCreateMovie true}}
+				{{form_textarea "Overview" "overview" "" canCreateMovie true}}
+				{{form_textarea "Critics Consensus" "critics_consensus" "" canCreateMovie true}}
+				{{form_checkbox "Adult Content" "adult" "" canCreateMovie true}}
+
+				{{/constant}}
+				<div class="form-group">
+					<div class="col-offset-2 col-sm-4">
+						{{#if canCreateMovie}}
+							<button type="button" class="btn btn-primary" id="btnCreateMovie">Create</button>
+						{{/if}}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</template>

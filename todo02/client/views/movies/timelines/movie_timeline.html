@@ -139,12 +139,9 @@
 
 				<div class="form-group">
 					<div class="col-offset-2 col-sm-4">
-						{{#if form_update}}
+						{{#if canEdit}}
 						<button type="button" class="btn btn-primary" id="btnUpdateMovieTimeline">Update</button>
 						<button type="button" class="btn btn-primary" id="btnCancelMovieTimeline">Cancel</button>
-						{{/if}}
-						{{#if form_create}}
-						<button type="submit" class="btn btn-primary" id="btnCreateMovieTimeline">Create</button>
 						{{/if}}
 					</div>
 				</div>
