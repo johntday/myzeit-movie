@@ -12,11 +12,17 @@ Template.tmplMovieDetail.helpers({
 	createdAgo: function() {
 		return moment(this.created).fromNow();
 	},
+	updatedAgo: function() {
+		return (this.updated) ? moment(this.updated).fromNow() : this.updated;
+	},
 	options: function() {
 		return getMpaaOptions();
 	},
 	statusOptions: function() {
 		return getMovieStatusOptions();
+	},
+	formattedReleaseDate: function() {
+		return formatReleaseDateForDisplay(this.release_date);
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -31,20 +37,82 @@ Template.tmplMovieDetail.events({
 			return false;
 		}
 
-		Meteor.call('deleteMovie', this._id, function(error, movieId) {
+		Meteor.call('deleteMovie', this._id, function(error) {
 			if(error){
 				throwError(error.reason);
 				$(e.target).removeClass('disabled');
 			}else{
-				trackEvent("delete movie", {'_id': movieId});
+				trackEvent("delete movie", {'_id': this._id});
 				Router.go('/sciFiMovies');
 			}
 		});
+	},
 
+	'click #btnUpdateMovie': function(e) {
+		e.preventDefault();
+		$(e.target).addClass('disabled');
 
+		if(!Meteor.user()){
+			throwError('You must login to update a movie');
+			$(e.target).removeClass('disabled');
+			return false;
+		}
+
+		// GET INPUT
+		var _id = this._id;
+		var title= $('#title').val();
+		var year = $('#year').val();
+		var release_date = formatReleaseDateForSave( $('#release_date').val() );
+		var original_title= $('#original_title').val();
+		var mpaa_rating= $('#mpaa_rating').val();
+		var runtime= $('#runtime').val();
+		var tagline= $('#tagline').val();
+		var overview= $('#overview').val();
+		var critics_consensus= $('#critics_consensus').val();
+		var adult = $('#adult').prop('checked');
+
+		var properties = {
+			title: title
+			, year: year
+			, release_date: release_date
+			, original_title: original_title
+			, mpaa_rating: mpaa_rating
+			, runtime: runtime
+			, tagline: tagline
+			, overview: overview
+			, critics_consensus: critics_consensus
+			, adult: adult
+		};
+
+		// VALIDATE
+		var isInputError = validateMovie(properties);
+		if (isInputError) {
+			$(e.target).removeClass('disabled');
+			return false;
+		}
+
+		// TRANSFORM AND DEFAULTS
+		transformMovie(properties);
+
+		Meteor.call('updateMovie', _id, properties, function(error, movie) {
+			if(error){
+				console.log(JSON.stringify(error));
+				throwError(error.reason);
+				$(e.target).removeClass('disabled');
+			}else{
+				trackEvent("updated movie", {'_id': _id, 'title': movie.title});
+//				throwError("Movie updated", "s", true);
+				Router.go('/sciFiMovies/'+_id);
+			}
+		});
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
-//Template.tmplMovieDetail.rendered = function() {
-//	$('#critics_consensus').css('overflow', 'hidden').autogrow();
-//};
+Template.tmplMovieDetail.rendered = function() {
+	$("#title").focus();
+
+	$('#div-release_date .input-append.date').datepicker({
+		autoclose: true,
+		todayHighlight: true
+	});
+};

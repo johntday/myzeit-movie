@@ -13,7 +13,8 @@
         "version": "0.5.4"
       },
       "bootstrap-3": {},
-      "moment": {}
+      "moment": {},
+      "bootstrap-datepicker2": {}
     },
     "packages": {
       "spin": {
@@ -41,6 +42,11 @@
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.2.1",
         "commit": "9ee12e714afe56b189f53076447b7b54f3012065"
+      },
+      "bootstrap-datepicker2": {
+        "git": "https://github.com/deepwell/meteor-bootstrap-datepicker.git",
+        "tag": "v1.2.0",
+        "commit": "b7de18a7cc651ea665cda75048663f90d1a11d10"
       }
     }
   }

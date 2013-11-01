@@ -8,7 +8,6 @@ standard-app-packages
 bootstrap-3
 accounts-base
 accounts-ui
-#accounts-ui-bootstrap-dropdown
 accounts-password
 spin
 iron-router
@@ -17,3 +16,7 @@ moment
 mypaginator
 mytimeline
 http
+bootstrap-datepicker2
+#router
+#page-js-ie-support
+HTML5-History-API

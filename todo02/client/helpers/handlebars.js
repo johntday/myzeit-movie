@@ -2,17 +2,44 @@
  * Template to generate INPUT form elements.
  */
 Handlebars.registerHelper('form_input', function(label, name, value, canEdit, showEmpty) {
-//	var showField = (value || canEdit || (showEmpty === true));
-//	if (! showField)
-//		return;
+	// CHECK FOR Integer UNKNOWN value
+	if (typeof value === 'number' && value == -1)
+		value = "";
 	if (canEdit) {
 		return new Handlebars.SafeString(
 			"<div class='form-group row'>" +
 				"<label for='" + name + "' class='col-sm-3 control-label'>" + label + "</label>"+
 				"<div class='col-sm-8'>"+
-				"<input type='text' class='form-control' id='" + name + "' value='" + value + "' " + (canEdit ? "" : "readonly") + " />"+
+				"<input type='text' class='form-control' id='" + name + "' value='" + value + "' />"+
 				"</div>"+
 				"</div>"
+		);
+	} else if (value || showEmpty === true) {
+		return new Handlebars.SafeString(
+			"<div class='form-group row'>" +
+				"<label class='col-sm-3 control-label'>" + label + "</label>"+
+				"<div class='col-sm-8'>"+
+				"<p class='form-control-static'>" + value + "</p>"+
+				"</div>"+
+				"</div>"
+		);
+	}
+});
+/**
+ * Template to generate INPUT DATE form elements.
+ */
+Handlebars.registerHelper('form_date', function(label, name, value, canEdit, showEmpty) {
+	if (canEdit) {
+		return new Handlebars.SafeString(
+			"<div class='form-group row'>" +
+				"<label for='" + name + "' class='col-sm-3 control-label'>" + label + "</label>"+
+				"<div class='col-sm-8' id='div-" + name + "'>"+
+					"<div class='input-append date'>"+
+					"<input type='text' class='form-control' id='" + name + "' value='" + value + "' />"+
+					"<span class='add-on'></span>"+
+					"</div>"+
+				"</div>"+
+			"</div>"
 		);
 	} else if (value || showEmpty === true) {
 		return new Handlebars.SafeString(

@@ -75,61 +75,24 @@ Meteor.methods({
 		return movie;
 	},
 
-	updateMovie: function(properties){
-		//console.log("server: "+JSON.stringify(properties));
-		var user = Meteor.user(),
-			userId = getDocUserIdForSaving(properties, user);
+	updateMovie: function(_id, properties){
+		var user = Meteor.user();
 
 		if (!user)
-			throw new Meteor.Error(601, 'You need to login to create a new movie');
+			throw new Meteor.Error(601, 'You need to login to update a movie');
 		if(!properties.title)
 			throw new Meteor.Error(602, 'Please add a title');
 
-		// check that there are no previous posts with the same link
-		//		if(movie.title && movieWithSameTitle){
-		//			//Meteor.call('upvotePost', postWithSameLink._id);
-		//			throw new Meteor.Error(603, 'Already have a movie with title "' + movie.title + '"');
-		//		}
-
 		var movie = _.extend(properties, {
-			userId: userId,
-			author: getUserDisplayName(user),
-			created: getNow(),
-			votes: 0,
-			comments: 0,
-			baseScore: 0,
-			score: 0,
-			status: (isAdmin(user)) ? STATUS_APPROVED : STATUS_PENDING
+			updated: getNow()
 		});
 
-		console.log("server movie just before insert: "+JSON.stringify(movie));
+		console.log("server movie just before update: "+JSON.stringify(movie));
 
-		//		if(status == STATUS_APPROVED){
-		//			// if post is approved, set its submitted date (if post is pending, submitted date is left blank)
-		//			movie.submitted  = submitted;
-		//		}
-
-		movieId = Movies.insert(movie);
-
-		//		var movieAuthor =  Meteor.users.findOne(movie.userId);
-		//		Meteor.call('upvotePost', movieId,movieAuthor);
-		//
-		//		if(getSetting('newPostsNotifications')){
-		//			// notify admin of new posts
-		//			var properties = {
-		//				movieAuthorName : getDisplayName(movieAuthor),
-		//				movieAuthorId : movie.userId,
-		//				movieHeadline : headline,
-		//				movieId : movieId
-		//			}
-		//			var notification = getNotification('newPost', properties);
-		//			// call a server method because we do not have access to admin users' info on the client
-		//			Meteor.call('notifyAdmins', notification, Meteor.user(), function(error, result){
-		//				//run asynchronously
-		//			});
-		//		}
-
-		movie.movieId = movieId;
+		Movies.update(
+			{_id: _id},
+			{$set: movie}
+		);
 		return movie;
 	},
 

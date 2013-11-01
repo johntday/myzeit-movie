@@ -7,6 +7,9 @@ Template.tmpl_movie_add.helpers({
 	},
 	options: function() {
 		return getMpaaOptions();
+	},
+	formattedReleaseDate: function() {
+		return formatReleaseDateForDisplay(this.release_date);
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -14,8 +17,6 @@ Template.tmpl_movie_add.events({
 	'click #btnCreateMovie': function(e) {
 		e.preventDefault();
 		$(e.target).addClass('disabled');
-		var isInputError = false;
-		var NCHARS = 3;
 
 		if(!Meteor.user()){
 			throwError('You must login to create a movie');
@@ -23,9 +24,10 @@ Template.tmpl_movie_add.events({
 			return false;
 		}
 
+		// GET INPUT
 		var title= $('#title').val();
-		var year = parseInt( $('#year').val() );
-		var release_date = $('#release_date').val();
+		var year = $('#year').val();
+		var release_date = formatReleaseDateForSave( $('#release_date').val() );
 		var original_title= $('#original_title').val();
 		var mpaa_rating= $('#mpaa_rating').val();
 		var runtime= $('#runtime').val();
@@ -34,40 +36,32 @@ Template.tmpl_movie_add.events({
 		var critics_consensus= $('#critics_consensus').val();
 		var adult = $('#adult').prop('checked');
 
-		if (! title) {
-			isInputError = true;
-			throwError("Please add a title");
-		} else if (title.trim().length < NCHARS) {
-			isInputError = true;
-			throwError("Please add a title more than " + (NCHARS-1) + " characters");
-		}
-		if (year && !isValidMovieYear(year) ) {
-			isInputError = true;
-			throwError("Please enter a valid year (e.g. 1978)");
-		}
-		if (isInputError) {
-			$(e.target).removeClass('disabled');
-			return false;
-		}
-
-//		var sticky=!!$('#sticky').attr('checked');
-//		var submitted = $('#submitted_hidden').val();
-//		var status = parseInt($('input[name=status]:checked').val());
-
 		var properties = {
 			title: title
-			, year: setDefault(year, -1)
+			, year: year
 			, release_date: release_date
 			, original_title: original_title
 			, mpaa_rating: mpaa_rating
-			, runtime: setDefault(runtime, -1)
+			, runtime: runtime
 			, tagline: tagline
 			, overview: overview
 			, critics_consensus: critics_consensus
 			, adult: adult
 		};
 
-//		console.log("before call to server: "+JSON.stringify(properties));
+		// VALIDATE
+		var isInputError = validateMovie(properties);
+		if (isInputError) {
+			$(e.target).removeClass('disabled');
+			return false;
+		}
+
+		// TRANSFORM AND DEFAULTS
+		transformMovie(properties);
+
+//		var sticky=!!$('#sticky').attr('checked');
+//		var submitted = $('#submitted_hidden').val();
+//		var status = parseInt($('input[name=status]:checked').val());
 
 		Meteor.call('createMovie', properties, function(error, movie) {
 			if(error){
@@ -88,3 +82,13 @@ Template.tmpl_movie_add.events({
 
 	}
 });
+/*------------------------------------------------------------------------------------------------------------------------------*/
+Template.tmpl_movie_add.rendered = function() {
+	$("#title").focus();
+
+	$('#div-release_date .input-append.date').datepicker({
+		autoclose: true,
+		todayHighlight: true
+	});
+
+};

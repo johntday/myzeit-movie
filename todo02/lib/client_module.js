@@ -5,7 +5,7 @@ if (Meteor.isClient) {
     Meteor.MyClientModule = (function () {
         var oPublic = {};
         var debug = false; // change me to true to get log performance to console
-	    var snark = ["hi ho", "yo", "blah, blah, blah", "$#!*", "when pigs fly", "good grief"];
+	    var snark = ["hi ho", "yo", "blah, blah, blah", "$#!*", "when pigs fly", "good grief", "dude"];
 
 		/*
 		 APP CONFIG PARMS

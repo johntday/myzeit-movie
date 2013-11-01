@@ -12,10 +12,10 @@
 				<!-- COMMON FIELDS -->
 				{{form_input "Title" "title" "" canCreateMovie true}}
 				{{form_input "Year" "year" "" canCreateMovie true}}
-				{{form_input "Release Date" "release_date" "" canCreateMovie true}}
+				{{form_date "Release Date" "release_date" "" canCreateMovie true}}
 				{{form_input "Original Title" "original_title" "" canCreateMovie true}}
 				{{form_select "MPAA Rating" "mpaa_rating" "" options "" canCreateMovie true}}
-				{{form_input "Runtime" "runtime" "" canCreateMovie true}}
+				{{form_input "Runtime (Minutes)" "runtime" "" canCreateMovie true}}
 				{{form_input "Tagline" "tagline" "" canCreateMovie true}}
 				{{form_textarea "Overview" "overview" "" canCreateMovie true}}
 				{{form_textarea "Critics Consensus" "critics_consensus" "" canCreateMovie true}}
@@ -34,3 +34,5 @@
 	</div>
 
 </template>
+
+
