@@ -10,33 +10,38 @@
 
 	<div class="panel panel-purple">
 		<div class="panel-heading">
+
 			<h2 class="panel-title">{{title}}
-			<!-- <a class="pull-right" href="#"><span class="glyphicon glyphicon-heart"></span></a> -->
+				{{#if canEdit}}
+				<div class="pull-right" style="margin-top: -5px;">
+					<button type="button" class="btn btn-default btn-sm" id="btnEditToggle">&nbsp;&nbsp;Edit&nbsp;&nbsp;</button>
+				</div>
+				{{/if}}
+		<!--<div class="clearfix"></div>-->
 			</h2>
 		</div>
 		<div class="panel-body">
 
 			<form class="add modal-nav-box box-hide form-horizontal" id="form_movie">
-				{{#constant}}
 
 				{{#if isAdmin}}
 					{{form_input "_id" "_id" _id false}}
-					{{form_select "Status" "status" status statusOptions "" canEdit true}}
+					{{form_select "Status" "status" status statusOptions "" canEditAndEditToggle true}}
 				{{else}}
 					<input type="hidden" value="{{_id}}" name="_id"/>
 				{{/if}}
 
 				<!-- COMMON FIELDS -->
-				{{form_input "Title" "title" title canEdit true}}
-				{{form_input "Year" "year" year canEdit false}}
-				{{form_date "Release Date" "release_date" formattedReleaseDate canEdit true}}
-				{{form_input "Original Title" "original_title" original_title canEdit false}}
-				{{form_select "MPAA Rating" "mpaa_rating" mpaa_rating options "" canEdit true}}
-				{{form_input "Runtime (Minutes)" "runtime" runtime canEdit false}}
-				{{form_input "Tagline" "tagline" tagline canEdit false}}
-				{{form_textarea "Overview" "overview" overview canEdit false}}
-				{{form_textarea "Critics Consensus" "critics_consensus" critics_consensus canEdit false}}
-				{{form_checkbox "Adult Content" "adult" adult canEdit true}}
+				{{form_input "Title" "title" title canEditAndEditToggle true}}
+				{{form_input "Year" "year" year canEditAndEditToggle false}}
+				{{form_date "Release Date" "release_date" formattedReleaseDate canEditAndEditToggle true}}
+				{{form_input "Original Title" "original_title" original_title canEditAndEditToggle false}}
+				{{form_select "MPAA Rating" "mpaa_rating" mpaa_rating options "" canEditAndEditToggle true}}
+				{{form_input "Runtime (Minutes)" "runtime" runtime canEditAndEditToggle false}}
+				{{form_input "Tagline" "tagline" tagline canEditAndEditToggle false}}
+				{{form_textarea "Overview" "overview" overview canEditAndEditToggle false}}
+				{{form_textarea "Critics Consensus" "critics_consensus" critics_consensus canEditAndEditToggle false}}
+				{{form_checkbox "Adult Content" "adult" adult canEditAndEditToggle true}}
 
 				{{form_static "Author" "author" author true}}
 				{{#if isAdmin}}
@@ -45,10 +50,9 @@
 				{{form_static "Created" "created" createdAgo true}}
 				{{form_static "Updated" "updated" updatedAgo false}}
 
-				{{/constant}}
 				<div class="form-group">
 					<div class="col-offset-2 col-sm-4">
-						{{#if canEdit}}
+						{{#if canEditAndEditToggle}}
 							<button type="button" class="btn btn-primary" id="btnUpdateMovie">Update</button>
 							<button type="button" class="btn btn-danger" id="btnDeleteMovie">Delete</button>
 						{{/if}}
@@ -165,7 +169,7 @@
 
 				<div class="form-group">
 					<div class="col-offset-2 col-sm-4">
-						{{#if canEdit}}
+						{{#if canEditAndEditToggle}}
 						<button type="button" class="btn btn-primary" id="btnUpdateMovie">Update</button>
 						<button type="button" class="btn btn-primary" id="btnCancelMovie">Cancel</button>
 						<button type="button" class="btn btn-danger" id="btnDeleteMovie">Delete</button>

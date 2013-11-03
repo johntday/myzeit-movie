@@ -1,9 +1,8 @@
-// check that the userId specified owns the documents
 ownsDocument = function(userId, doc) {
-  return doc && userId && doc.userId === userId;
+	return (userId && doc && doc.userId === userId);
 };
 ownsDocumentOrAdmin = function(userId, doc) {
-	return doc && userId && (isAdmin() || doc.userId === userId );
+	return (ownsDocument(userId, doc) || isAdmin);
 };
 canEdit = function(user, doc){
 	var user=(typeof user === 'undefined') ? Meteor.user() : user;
@@ -21,9 +20,10 @@ canEdit = function(user, doc){
 canCreateMovie = function(user) {
 	return (user != null);
 };
-// check if admin
 isAdmin = function(user) {
 	var u=(typeof user === 'undefined') ? Meteor.user() : user;
 	return (u && u.username === "admin");
 };
-
+canEditById = function(userId, doc){
+	return userId && doc && (userId===doc.userId || isAdmin);
+};

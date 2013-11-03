@@ -9,6 +9,9 @@ Template.tmplMovieDetail.helpers({
 	canEdit: function() {
 		return canEdit(Meteor.user(), this);
 	},
+	canEditAndEditToggle: function() {
+		return canEdit(Meteor.user(), this) && Session.get('form_update');
+	},
 	createdAgo: function() {
 		return moment(this.created).fromNow();
 	},
@@ -46,6 +49,12 @@ Template.tmplMovieDetail.events({
 				Router.go('/sciFiMovies');
 			}
 		});
+	},
+
+	'click #btnEditToggle': function(e) {
+		e.preventDefault();
+
+		Session.set('form_update', !Session.get('form_update'));
 	},
 
 	'click #btnUpdateMovie': function(e) {
@@ -100,8 +109,7 @@ Template.tmplMovieDetail.events({
 				throwError(error.reason);
 				$(e.target).removeClass('disabled');
 			}else{
-				trackEvent("updated movie", {'_id': _id, 'title': movie.title});
-//				throwError("Movie updated", "s", true);
+				MyLog("movie_details.js/1", "updated movie", {'_id': _id, 'title': movie.title});
 				Router.go('/sciFiMovies/'+_id);
 			}
 		});
@@ -115,4 +123,10 @@ Template.tmplMovieDetail.rendered = function() {
 		autoclose: true,
 		todayHighlight: true
 	});
+
+	if ( Session.get('form_update') ) {
+		$("#btnEditToggle").addClass("active");
+	} else {
+		$("#btnEditToggle").removeClass("active");
+	}
 };

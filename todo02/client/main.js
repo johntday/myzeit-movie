@@ -2,8 +2,7 @@
  * SESSION VARIABLE DEFAULTS
  */
 Session.setDefault('search_text', '');
-//Session.setDefault('form_update', false);
-//Session.setDefault('form_create', false);
+Session.setDefault('form_update', false);
 Session.setDefault('selected_movie_id', null);
 Session.setDefault('breadcrumbs', null);
 Session.setDefault('has_sidebar', true);

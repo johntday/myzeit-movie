@@ -7,16 +7,43 @@ STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;
 /*------------------------------------------------------------------------------------------------------------------------------*/
+// Create a collection where users can only modify documents that
+// they own. Ownership is tracked by an 'userId' field on each
+// document. All documents must be owned by the user (or userId='admin') that created
+// them and ownership can't be changed. Only a document's owner (or userId='admin')
+// is allowed to delete it, and the 'locked' attribute can be
+// set on a document to prevent its accidental deletion.
+
 Movies.allow({
-    insert: isAdmin,
-    update: isAdmin,
-    remove: isAdmin
+	insert: function (userId, doc) {
+		//return ownsDocumentOrAdmin(userId, doc);
+		return false;
+	},
+	update: function (userId, doc, fields, modifier) {
+		return ownsDocumentOrAdmin(userId, doc);
+	},
+	remove: function (userId, doc) {
+		return ownsDocumentOrAdmin(userId, doc);
+	},
+	fetch: ['userId']
+});
+
+Movies.deny({
+	update: function (userId, docs, fields, modifier) {
+		// can't change owners
+		return _.contains(fields, 'userId');
+	},
+	remove: function (userId, doc) {
+		// can't remove locked documents
+		return doc.locked;
+	},
+	fetch: ['locked'] // no need to fetch 'userId'
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
 
 Meteor.methods({
 	createMovie: function(properties){
-		//console.log("server: "+JSON.stringify(properties));
+		MyLog("collections/movies.js/createMovie/1", "properties", properties);
 		var user = Meteor.user(),
 			userId = getDocUserIdForSaving(properties, user),
 			//movieWithSameTitle = Movies.findOne( {title: {$regex: movie.title, $options: 'i'}} ),
@@ -44,34 +71,18 @@ Meteor.methods({
 			status: (isAdmin(user)) ? STATUS_APPROVED : STATUS_PENDING
 		});
 
-		console.log("server movie just before insert: "+JSON.stringify(movie));
-
-		//		if(status == STATUS_APPROVED){
-//			// if post is approved, set its submitted date (if post is pending, submitted date is left blank)
-//			movie.submitted  = submitted;
-//		}
+		MyLog("collections/movies.js/createMovie/2", "movie", movie);
 
 		movieId = Movies.insert(movie);
-
-//		var movieAuthor =  Meteor.users.findOne(movie.userId);
-//		Meteor.call('upvotePost', movieId,movieAuthor);
-//
-//		if(getSetting('newPostsNotifications')){
-//			// notify admin of new posts
-//			var properties = {
-//				movieAuthorName : getDisplayName(movieAuthor),
-//				movieAuthorId : movie.userId,
-//				movieHeadline : headline,
-//				movieId : movieId
-//			}
-//			var notification = getNotification('newPost', properties);
-//			// call a server method because we do not have access to admin users' info on the client
-//			Meteor.call('notifyAdmins', notification, Meteor.user(), function(error, result){
-//				//run asynchronously
-//			});
-//		}
-
 		movie.movieId = movieId;
+
+		/**
+		 * NOTIFICATION
+		 */
+		if (! isAdmin(user)) {
+
+		}
+
 		return movie;
 	},
 

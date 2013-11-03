@@ -87,6 +87,10 @@ Template.tmplMovieTimelineList.rendered = function() {
 			$("#admintimeline-title").hide();
 		if (isMyTimeline || Session.get("is_example_timeline"))
 			$("#create-movie-timeline").hide();
+		else {
+			$("#mytimeline-title").hide();
+			$("#btn-help").hide();
+		}
 	}
 	if (Session.get("is_example_timeline"))
 		$("#mytimeline-title").hide();
@@ -108,23 +112,27 @@ Template.tmplMovieTimelineList.rendered = function() {
 		if (Session.get("is_example_timeline"))
 			$(this).hide();
 		else {
-			Meteor.call('updateMovieTimelineData', myMovieTimeline._id, timeline.getData(), myMovieTimeline.userId, function(error) {
-				if (error)
-					throwError(error.reason);
-				else
-					$(this).hide();
+			MyLog("movie_timeline.js/updateTimelineData/1", "doing data update");
+
+			MovieTimelines.update({
+				_id: myMovieTimeline._id
+			}, {
+				$set: {
+					data: timeline.getData()
+				}
 			});
+
+			$(this).hide();
 		}
-			Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
 	});
 	$( "#delete" ).click(function() {
-		Meteor.call('deleteMovieTimeline', myMovieTimeline._id, myMovieTimeline.userId, function(error) {
-			if (error)
-				throwError(error.reason);
-			else
-				$(this).hide();
+		MyLog("movie_timeline.js/$('#delete').click(function()/1", "doing timeline delete");
+
+		MovieTimelines.remove({
+			_id: myMovieTimeline._id
 		});
-		Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
+
+		$(this).hide();
 	});
 	$( "#update-movie-event" ).click(function() {
 		var row = getSelectedRow();
@@ -149,11 +157,12 @@ Template.tmplMovieTimelineList.rendered = function() {
 		$( "#mytimeline-description").show();
 		$(this).hide();
 
-		Meteor.call('updateMovieTimelineDescription', myMovieTimeline._id, myMovieTimeline.description, myMovieTimeline.userId, function(error) {
-			if (error)
-				throwError(error.reason);
+		MovieTimelines.update(
+			{_id: myMovieTimeline._id}, {
+			$set: {
+				description: myMovieTimeline.description
+			}
 		});
-		Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
 	});
 	$( "#mytimeline-description-edit" ).keyup(function(e) {
 		if (e.which == 13) {
