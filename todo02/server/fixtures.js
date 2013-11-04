@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-	var ROTTENTOMATOE = false;
+	var ROTTENTOMATOE = true;
 
 	// Verify that the admin user account exists (should be created on the first run)
 	var u = Meteor.users.findOne({username: "admin"}); // find the admin user
@@ -9153,6 +9153,7 @@ Meteor.startup(function () {
 						} else {
 							var cast = result.data.cast;
 
+							// UPDATE MOVIES
 							Movies.update({
 								_id: _id
 							}, {
@@ -9160,6 +9161,23 @@ Meteor.startup(function () {
 									cast: cast
 								}
 							});
+
+							for (var cast_i=0; i < cast.length; cast_i++) {
+
+								var p = {
+									movieId: _id,
+									job: "Actor",
+									title: movie.title,
+									year: movie.year
+								};
+								// INSERT/UPDATE (UPSERT) PERSONS
+								Persons.update(
+									{ name: cast[cast_i].name },
+									{ $addToSet: { movies: p } },
+									{ upsert: true }
+								);
+								MyLog("fixtures.js/Persons.update/1", "p", p);
+							}
 						}
 					});
 

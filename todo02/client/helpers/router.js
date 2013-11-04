@@ -27,6 +27,7 @@ Router.map(function ()
 
 	this.route('tmplHome'                 ,{path: '/'});
 	this.route('tmplSortedMovies'         ,{path: '/sciFiMovies'});
+	this.route('tmpl_sorted_persons_list' ,{path: '/persons'});
 	this.route('tmpl_about'               ,{path: '/about'});
 	this.route('tmpl_help'                ,{path: '/help'});
 	this.route('tmpl_settings'            ,{path: '/settings'});

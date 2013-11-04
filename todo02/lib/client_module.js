@@ -43,6 +43,11 @@ if (Meteor.isClient) {
 		    $('html, body').animate({ scrollTop: 0 }, 'fast');
 	    };
 
+	    oPublic.scrollToBottomOfPageFast = function(id) {
+		    if (id)
+		        $("html, body").animate({ scrollTop: $("#" + id).scrollTop() }, 'fast');
+	    };
+
         // Returns an event map that handles the "escape" and "return" keys and
         // "blur" events on a text input (given by selector) and interprets them
         // as "ok" or "cancel"

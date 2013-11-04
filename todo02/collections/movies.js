@@ -141,8 +141,8 @@ Meteor.methods({
 		// remove movie timelines
 		if(!this.isSimulation) {
 			MovieTimelines.remove({movieId: movieId});
-			Movies.remove(movieId);
 		}
+		Movies.remove(movieId);
 		return movieId;
 	}
 

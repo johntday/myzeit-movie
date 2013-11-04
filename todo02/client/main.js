@@ -19,15 +19,34 @@ Session.setDefault('is_example_timeline', false);
 /**
  * Notifications
  */
-Meteor.subscribe('pubsub_notification_list');
+// Notifications - only load if user is logged in
+if(Meteor.userId() != null) {
+	Meteor.subscribe('pubsub_notification_list');
+}
 /**
  * Movies
  */
 moviesHandle = Meteor.subscribeWithPagination('pubsub_movie_list',  Meteor.MyClientModule.appConfig.pageLimit);
+//???
 /**
  * Persons
  */
-personsHandle = Meteor.subscribeWithPagination('pubsub_person_list', Meteor.MyClientModule.appConfig.pageLimit);
+//personsHandle = Meteor.subscribeWithPagination('pubsub_person_list', Meteor.MyClientModule.appConfig.pageLimit);
+
+personListSubscription = function(find, options, per_page) {
+	var handle = Meteor.subscribeWithPagination('pubsub_person_list', find, options, per_page);
+	handle.fetch = function() {
+		var ourFind = _.isFunction(find) ? find() : find;
+		return limitDocuments(Persons.find(ourFind, options), handle.loaded());
+	}
+	return handle;
+};
+personsHandle = personListSubscription(
+	{},
+	{sort: {name: 1}},
+	10
+);
+//???
 
 /**
  * layout template JS

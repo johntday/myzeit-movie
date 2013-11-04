@@ -1,39 +1,131 @@
 Persons = new Meteor.Collection('coll_persons');
 /*------------------------------------------------------------------------------------------------------------------------------*/
-Movies.allow({
-	insert: isAdmin,
-	update: isAdmin,
-	remove: isAdmin
+//STATUS_PENDING=1;
+//STATUS_APPROVED=2;
+//STATUS_REJECTED=3;
+/*------------------------------------------------------------------------------------------------------------------------------*/
+Persons.allow({
+	insert: canEditById
+	, update: canEditById
+	, remove: canEditById
+});
+
+Persons.deny({
+	update: function(userId, doc, fieldNames) {
+		if(isAdminById(userId))
+			return false;
+		// may only edit the following fields:
+		return (_.without(fieldNames, 'fieldname1').length > 0);
+	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Meteor.methods({
-	createPerson: function(attrs) {
-		var user = Meteor.user();
+	createPerson: function(post){
+		var headline = cleanUp(post.headline),
+			body = cleanUp(post.body),
+			user = Meteor.user(),
+			userId = post.userId || user._id,
+			submitted = parseInt(post.submitted) || new Date().getTime(),
+			defaultStatus = getSetting('requirePostsApproval') ? STATUS_PENDING : STATUS_APPROVED,
+			status = post.status || defaultStatus,
+			postWithSameLink = Posts.findOne({url: post.url}),
+			timeSinceLastPost=timeSinceLast(user, Posts),
+			numberOfPostsInPast24Hours=numberOfItemsInPast24Hours(user, Posts),
+			postInterval = Math.abs(parseInt(getSetting('postInterval', 30))),
+			maxPostsPer24Hours = Math.abs(parseInt(getSetting('maxPostsPerDay', 30))),
+			postId = '';
 
-		// validate the user is logged in
-		if (!user)
-			throw new Meteor.Error(401, "You need to login to create a new Person");
+		// check that user can post
+		if (!user || !canPost(user))
+			throw new Meteor.Error(601, 'You need to login or be invited to post new stories.');
 
-		// validate data
-		//		if (!movieTimelineAttr.data)
-		//			throw new Meteor.Error(422, 'Your Movie Timeline is empty');
+		// check that user provided a headline
+		if(!post.headline)
+			throw new Meteor.Error(602, 'Please fill in a headline');
 
 		// check that there are no previous posts with the same link
-		//		if (movieTimelineAttr.url && postWithSameLink) {
-		//			throw new Meteor.Error(302,
-		//				'This link has already been posted',
-		//				postWithSameLink._id);
-		//		}
+		if(post.url && postWithSameLink){
+			Meteor.call('upvotePost', postWithSameLink._id);
+			throw new Meteor.Error(603, 'This link has already been posted', postWithSameLink._id);
+		}
 
-		var person = _.extend(attrs, {
-			userId: user._id,
-			author: user.username,
-			created: new Date().getTime(),
-			comment_count: 0,
-			vote_count: 0,
-			vote_average: 0
+		if(!isAdmin(Meteor.user())){
+			// check that user waits more than X seconds between posts
+			if(!this.isSimulation && timeSinceLastPost < postInterval)
+				throw new Meteor.Error(604, 'Please wait '+(postInterval-timeSinceLastPost)+' seconds before posting again');
+
+			// check that the user doesn't post more than Y posts per day
+			if(!this.isSimulation && numberOfPostsInPast24Hours > maxPostsPer24Hours)
+				throw new Meteor.Error(605, 'Sorry, you cannot submit more than '+maxPostsPer24Hours+' posts per day');
+		}
+
+		// shorten URL
+		if(!this.isSimulation && (token=getSetting('bitlyToken'))){
+			var shortenResponse = Meteor.http.get(
+				"https://api-ssl.bitly.com/v3/shorten?",
+				{
+					timeout: 5000,
+					params:{
+						"format": "json",
+						"access_token": token,
+						"longUrl": post.url
+					}
+				}
+			);
+			if(shortenResponse.statusCode == 200)
+				post.shortUrl = shortenResponse.data.data.url
+		}
+
+		post = _.extend(post, {
+			headline: headline,
+			body: body,
+			userId: userId,
+			author: getDisplayNameById(userId),
+			createdAt: new Date().getTime(),
+			votes: 0,
+			comments: 0,
+			baseScore: 0,
+			score: 0,
+			inactive: false,
+			status: status
 		});
 
-		return MovieTimelines.insert(person);
+		if(status == STATUS_APPROVED){
+			// if post is approved, set its submitted date (if post is pending, submitted date is left blank)
+			post.submitted  = submitted;
+		}
+
+		postId = Posts.insert(post);
+
+		var postAuthor =  Meteor.users.findOne(post.userId);
+		Meteor.call('upvotePost', postId,postAuthor);
+
+		if(getSetting('newPostsNotifications')){
+			// notify admin of new posts
+			var properties = {
+				postAuthorName : getDisplayName(postAuthor),
+				postAuthorId : post.userId,
+				postHeadline : headline,
+				postId : postId
+			}
+			var notification = getNotification('newPost', properties);
+			// call a server method because we do not have access to admin users' info on the client
+			Meteor.call('notifyAdmins', notification, Meteor.user(), function(error, result){
+				//run asynchronously
+			});
+		}
+
+		// add the post's own ID to the post object and return it to the client
+		post.postId = postId;
+		return post;
+	},
+	updatePerson: function(post){
+		//TO-DO: make post_edit server-side?
+	},
+	clickedPerson: function(post){
+		Persons.update(post._id, { $inc: { clicks: 1 }});
+	},
+	deletePerson: function(_id) {
+		Persons.remove(_id);
 	}
 });

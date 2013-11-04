@@ -28,7 +28,7 @@ Meteor.publish('pubsub_movie_list_sortUpdated', function(limit) {
 	return Movies.find({}, {sort: {release_date: 1}, limit: limit});
 });
 Meteor.publish('pubsub_selected_movie', function(id) {
-	return id && Movies.find(id);
+	return Movies.find(id);
 });
 Meteor.publish('pubsub_selected_movie_alternateId', function(mymovie_id) {
 	return mymovie_id && Movies.find({mymovie_id: mymovie_id});
@@ -40,11 +40,13 @@ Meteor.publish('pubsub_selected_movie_alternateId', function(mymovie_id) {
 /**
  * Persons
  */
-Meteor.publish('pubsub_person_list', function(limit) {
-	return Persons.find({}, {sort: {name: 1}, limit: limit});
+Meteor.publish('pubsub_person_list', function(query, options, limit) {
+	options = options || {};
+	options.limit = limit;
+	return Persons.find(query || {}, options);
 });
 Meteor.publish('pubsub_selected_person', function(id) {
-	return id && Persons.find(id);
+	return Persons.find(id);
 });
 
 /**

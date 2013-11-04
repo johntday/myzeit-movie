@@ -43,3 +43,7 @@ Template.tmpl_person_item.events({
 		Meteor.call('upvote', this._id);
 	}
 });
+
+Template.tmpl_person_item.preserve({
+	'.post': function (node) {return node.id; }
+});
