@@ -4,9 +4,11 @@
 Session.setDefault('search_text', '');
 Session.setDefault('form_update', false);
 Session.setDefault('selected_movie_id', null);
+Session.setDefault('selected_person_id', null);
 Session.setDefault('breadcrumbs', null);
 Session.setDefault('has_sidebar', true);
 Session.setDefault('is_example_timeline', false);
+//Session.setDefault('tab', null);
 /*------------------------------------------------------------------------------------------------------------------------------*/
 //newPostsHandle  = Meteor.subscribeWithPagination('newPosts', 10);
 //bestPostsHandle = Meteor.subscribeWithPagination('bestPosts', 10);

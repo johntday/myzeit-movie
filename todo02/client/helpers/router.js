@@ -33,6 +33,26 @@ Router.map(function ()
 	this.route('tmpl_settings'            ,{path: '/settings'});
 	this.route('tmpl_users_manage'        ,{path: '/usersManage'});
 	this.route('tmpl_movie_add'           ,{path: '/movieAdd'});
+	this.route('tmpl_person_add'          ,{path: '/personAdd'});
+
+	this.route('tmpl_person_detail', {
+		path  : '/person/:_id',
+		waitOn: function ()
+		{
+			Session.set('selected_person_id', this.params._id);
+			return Meteor.subscribe('pubsub_selected_person', this.params._id);
+		},
+		data  : function ()
+		{
+			var person = Persons.findOne(this.params._id);
+			Session.set('breadcrumbs', {breadcrumbs: [
+				{title:"home", link:"/", isActive:false},
+				{title:"People", link:"/persons", isActive:false},
+				{title:person.name, link:"", isActive:true}
+			]});
+			return person;
+		}
+	});
 
 	this.route('tmplMovieDetail', {
 		path  : '/sciFiMovies/:_id',

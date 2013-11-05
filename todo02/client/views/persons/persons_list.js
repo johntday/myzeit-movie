@@ -1,6 +1,13 @@
 Template.tmpl_sorted_persons_list.helpers({
 	personsHandle: function() {
 		return personsHandle;
+	},
+	breadcrumbs: function() {
+		Session.set('breadcrumbs', {breadcrumbs: [
+			{title:"home", link:"/", isActive:false},
+			{title:"People", link:"/persons", isActive:true}
+		]});
+		return Session.get("breadcrumbs");
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/

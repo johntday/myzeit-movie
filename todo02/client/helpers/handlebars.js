@@ -1,3 +1,20 @@
+Handlebars.registerHelper('tabss', function(tabList, activeTab, activeTabDefault) {
+	if (! tabList)
+		return;
+	if (! activeTab)
+		activeTab = activeTabDefault;
+
+	var html = "<ul class='nav nav-tabs nav-justified'>";
+	for (var i=0; i < tabList.length; i++) {
+		if (tabList[i].title === activeTabDefault) {
+			html += "<li class='active'><a href='#'>" + tabList[i].title + "</a></li>";
+		} else {
+			html += "<li><a href='" + tabList[i].link + "'>" + tabList[i].title + "</a></li>";
+		}
+	}
+	html += "</ul>";
+	return new Handlebars.SafeString(html);
+});
 /**
  * Template to generate INPUT form elements.
  */

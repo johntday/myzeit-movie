@@ -115,3 +115,26 @@ transformMovie = function(movie) {
 	movie.runtime = setDefault( parseInt( movie.runtime ), -1 );
 	return movie;
 };
+validatePersonName = function(name) {
+	if (name) {
+		var nameArray = name.split(" ", 4);
+		if (nameArray.length > 1) {/*more than 1 word*/
+			for (var i=0; i < nameArray.length; i++) {
+				if (nameArray[i].length > 2)/*more than 2 chars*/
+					return false;
+			}
+		}
+	}
+	throwError("Please enter valid name");
+	return true;
+};
+validatePerson = function(person) {
+	var hasInputError = validatePersonName(person.name);
+	return hasInputError;
+};
+/**
+ * Transform person before save.
+ */
+transformPerson = function(person) {
+	return person;
+};

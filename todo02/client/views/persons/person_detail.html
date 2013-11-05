@@ -2,16 +2,14 @@
 	{{> tmpl_breadcrumbs breadcrumbs}}
 
 	<ul class="nav nav-tabs nav-justified">
-		<li class="active"><a href="#">Movie</a></li>
-		<li><a href="/sciFiMovies/timelines/{{_id}}">Timelines</a></li>
-		<li><a href="/sciFiMovies/cast/{{_id}}">Cast</a></li>
-		<li><a href="/sciFiMovies/facts/{{_id}}">Facts</a></li>
+		<li class="active"><a href="#">Person</a></li>
+		<li><a href="/person/crap/{{_id}}">Crap</a></li>
 	</ul>
 
 	<div class="panel panel-purple">
 		<div class="panel-heading">
 
-			<h2 class="panel-title">{{title}}
+			<h2 class="panel-title">{{name}}
 				{{#if canEdit}}
 				<div class="pull-right" style="margin-top: -5px;">
 					<button type="button" class="btn btn-default btn-sm" id="btnEditToggle">&nbsp;&nbsp;Edit&nbsp;&nbsp;</button>
@@ -22,39 +20,38 @@
 		</div>
 		<div class="panel-body">
 
-			<form class="add modal-nav-box box-hide form-horizontal" id="form_movie">
+			<form class="add modal-nav-box box-hide form-horizontal" id="form_person">
 
 				{{#if isAdmin}}
 					{{form_input "_id" "_id" _id false}}
 					{{form_select "Status" "status" status statusOptions "" canEditAndEditToggle true}}
-				{{else}}
-					<input type="hidden" value="{{_id}}" name="_id"/>
 				{{/if}}
 
 				<!-- COMMON FIELDS -->
-				{{form_input "Title" "title" title canEditAndEditToggle true}}
-				{{form_input "Year" "year" year canEditAndEditToggle false}}
-				{{form_date "Release Date" "release_date" formattedReleaseDate canEditAndEditToggle true}}
-				{{form_input "Original Title" "original_title" original_title canEditAndEditToggle false}}
-				{{form_select "MPAA Rating" "mpaa_rating" mpaa_rating options "" canEditAndEditToggle true}}
-				{{form_input "Runtime (Minutes)" "runtime" runtime canEditAndEditToggle false}}
-				{{form_input "Tagline" "tagline" tagline canEditAndEditToggle false}}
-				{{form_textarea "Overview" "overview" overview canEditAndEditToggle false}}
-				{{form_textarea "Critics Consensus" "critics_consensus" critics_consensus canEditAndEditToggle false}}
-				{{form_checkbox "Adult Content" "adult" adult canEditAndEditToggle true}}
+				{{form_input "Name" "name" name canEditAndEditToggle true}}
+				{{form_date "Birth Date" "birth_date" formattedBirthDate canEditAndEditToggle false}}
 
-				{{form_static "Author" "author" author true}}
+				{{form_static "Author" "author" author false}}
 				{{#if isAdmin}}
 					{{form_static "Author UserId" "userId" userId true}}
 				{{/if}}
-				{{form_static "Created" "created" createdAgo true}}
+				{{form_static "Created" "created" createdAgo false}}
 				{{form_static "Updated" "updated" updatedAgo false}}
+
+				{{#if hasMovies}}
+				<h3>Movies</h3>
+					<ul>
+						{{#each movies}}
+							<li><a href="/sciFiMovies/{{movieId}}">{{title}}</a></li>
+						{{/each}}
+					</ul>
+				{{/if}}
 
 				<div class="form-group">
 					<div class="col-offset-2 col-sm-4">
 						{{#if canEditAndEditToggle}}
-							<button type="button" class="btn btn-primary" id="btnUpdateMovie">Update</button>
-							<button type="button" class="btn btn-danger" id="btnDeleteMovie">Delete</button>
+							<button type="button" class="btn btn-primary" id="btnUpdatePerson">Update</button>
+							<button type="button" class="btn btn-danger" id="btnDeletePerson">Delete</button>
 						{{/if}}
 					</div>
 				</div>

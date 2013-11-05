@@ -60,7 +60,9 @@ Template.tmplMoviesList.events({
     'click .load-more': function(e) {
         e.preventDefault();
         this.handle.loadNextPage();
-    }
+    },
+	'click #a-people': function(e) {
+	}
 });
 
 /*

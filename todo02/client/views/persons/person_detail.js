@@ -13,40 +13,40 @@ Template.tmpl_person_detail.helpers({
 		return canEdit(Meteor.user(), this) && Session.get('form_update');
 	},
 	createdAgo: function() {
-		return moment(this.created).fromNow();
+		return (this.created) ? moment(this.created).fromNow() : this.created;
 	},
 	updatedAgo: function() {
 		return (this.updated) ? moment(this.updated).fromNow() : this.updated;
 	},
-	options: function() {
-		return getMpaaOptions();
-	},
 	statusOptions: function() {
 		return getMovieStatusOptions();
 	},
-	formattedReleaseDate: function() {
-		return formatReleaseDateForDisplay(this.release_date);
+	formattedBirthDate: function() {
+		return formatReleaseDateForDisplay(this.birth_date);
+	},
+	hasMovies: function() {
+		return (this.movies && this.movies.length > 0);
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmpl_person_detail.events({
-	'click #btnDeleteMovie': function(e) {
+	'click #btnDeletePerson': function(e) {
 		e.preventDefault();
 		$(e.target).addClass('disabled');
 
 		if(!Meteor.user()){
-			throwError('You must login to delete a movie');
+			throwError('You must login to delete a Person');
 			$(e.target).removeClass('disabled');
 			return false;
 		}
 
-		Meteor.call('deleteMovie', this._id, function(error) {
+		Meteor.call('deletePerson', this._id, function(error) {
 			if(error){
 				throwError(error.reason);
 				$(e.target).removeClass('disabled');
 			}else{
-				trackEvent("delete movie", {'_id': this._id});
-				Router.go('/sciFiMovies');
+				trackEvent("delete Person", {'_id': this._id});
+				Router.go('/persons');
 			}
 		});
 	},
@@ -57,69 +57,57 @@ Template.tmpl_person_detail.events({
 		Session.set('form_update', !Session.get('form_update'));
 	},
 
-	'click #btnUpdateMovie': function(e) {
+	'click #btnUpdatePerson': function(e) {
 		e.preventDefault();
 		$(e.target).addClass('disabled');
 
 		if(!Meteor.user()){
-			throwError('You must login to update a movie');
+			throwError('You must login to update a Person');
 			$(e.target).removeClass('disabled');
 			return false;
 		}
 
 		// GET INPUT
-		var _id = this._id;
-		var title= $('#title').val();
-		var year = $('#year').val();
-		var release_date = formatReleaseDateForSave( $('#release_date').val() );
-		var original_title= $('#original_title').val();
-		var mpaa_rating= $('#mpaa_rating').val();
-		var runtime= $('#runtime').val();
-		var tagline= $('#tagline').val();
-		var overview= $('#overview').val();
-		var critics_consensus= $('#critics_consensus').val();
-		var adult = $('#adult').prop('checked');
+		var name= $('#name').val();
+		var birth_date = formatReleaseDateForSave( $('#birth_date').val() );
 
 		var properties = {
-			title: title
-			, year: year
-			, release_date: release_date
-			, original_title: original_title
-			, mpaa_rating: mpaa_rating
-			, runtime: runtime
-			, tagline: tagline
-			, overview: overview
-			, critics_consensus: critics_consensus
-			, adult: adult
+			name: name
+			, birth_date: birth_date
 		};
 
 		// VALIDATE
-		var isInputError = validateMovie(properties);
+		var isInputError = validatePerson(properties);
 		if (isInputError) {
 			$(e.target).removeClass('disabled');
 			return false;
 		}
 
 		// TRANSFORM AND DEFAULTS
-		transformMovie(properties);
+		transformPerson(properties);
 
-		Meteor.call('updateMovie', _id, properties, function(error, movie) {
-			if(error){
-				console.log(JSON.stringify(error));
-				throwError(error.reason);
-				$(e.target).removeClass('disabled');
-			}else{
-				MyLog("movie_details.js/1", "updated movie", {'_id': _id, 'title': movie.title});
-				Router.go('/sciFiMovies/'+_id);
-			}
+//		Meteor.call('updatePerson', _id, properties, function(error, person) {
+//			if(error){
+//				console.log(JSON.stringify(error));
+//				throwError(error.reason);
+//				$(e.target).removeClass('disabled');
+//			}else{
+//				MyLog("person_details.js/1", "updated person", {'_id': _id, 'title': person.name});
+//				Router.go('/person/'+_id);
+//			}
+//		});
+		Persons.update({
+			_id: this._id
+		}, {
+			$set: properties
 		});
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmpl_person_detail.rendered = function() {
-	$("#title").focus();
+	$("#name").focus();
 
-	$('#div-release_date .input-append.date').datepicker({
+	$('#div-birth_date .input-append.date').datepicker({
 		autoclose: true,
 		todayHighlight: true
 	});
