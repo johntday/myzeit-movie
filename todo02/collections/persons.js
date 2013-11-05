@@ -10,14 +10,14 @@ Persons.allow({
 	, remove: canEditById
 });
 
-Persons.deny({
-	update: function(userId, doc, fieldNames) {
-		if(isAdminById(userId))
-			return false;
-		// may only edit the following fields:
-		return (_.without(fieldNames, 'fieldname1').length > 0);
-	}
-});
+//Persons.deny({
+//	update: function(userId, doc, fieldNames) {
+//		if(isAdminById(userId))
+//			return false;
+//		// may only edit the following fields:
+//		return (_.without(fieldNames, 'fieldname1').length > 0);
+//	}
+//});
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Meteor.methods({
 	createPerson: function(properties){

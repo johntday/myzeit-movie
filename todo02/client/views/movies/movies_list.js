@@ -60,6 +60,8 @@ Template.tmplMoviesList.events({
     'click .load-more': function(e) {
         e.preventDefault();
         this.handle.loadNextPage();
+
+	    Meteor.MyClientModule.scrollToBottomOfPageFast( $('div[class="post"]').last() );
     },
 	'click #a-people': function(e) {
 	}

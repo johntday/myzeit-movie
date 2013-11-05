@@ -45,12 +45,28 @@ Template.tmplHeader.events({
 			 */
 			if (!value) {
 				moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
+				personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
 				Session.set("search_text", value);
 				Router.go('/sciFiMovies');
+
+				personsHandle = personListSubscription(
+					{},
+					{sort: {name: 1}},
+					Meteor.MyClientModule.appConfig.pageLimitMax
+				);
+
 			} else if (e.which === 13) {
 				moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimitMax);
+				personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
 				Session.set("search_text", value);
 				Router.go('/sciFiMovies');
+
+				personsHandle = personListSubscription(
+					{name: {$regex: Session.get('search_text'), $options: 'i'}},
+					{sort: {name: 1}},
+					Meteor.MyClientModule.appConfig.pageLimitMax
+				);
+
 			}
 		}
 	},
@@ -64,14 +80,40 @@ Template.tmplHeader.events({
 	'click #btn-search': function(e, template) {
 		var value = String($("#header-search").val() || "");
 		if (!value) {
-			moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
+			moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimitMax);
+			personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
 			Session.set("search_text", value);
 			Router.go('/sciFiMovies');
+
+			personsHandle = personListSubscription(
+				{name: {$regex: Session.get('search_text'), $options: 'i'}},
+				{sort: {name: 1}},
+				Meteor.MyClientModule.appConfig.pageLimitMax
+			);
 		} else {
 			moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimitMax);
+			personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
 			Session.set("search_text", value);
 			Router.go('/sciFiMovies');
+
+			personsHandle = personListSubscription(
+				{name: {$regex: Session.get('search_text'), $options: 'i'}},
+				{sort: {name: 1}},
+				Meteor.MyClientModule.appConfig.pageLimitMax
+			);
 		}
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
+doSearch = function(value) {
+	moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
+	personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
+	Session.set("search_text", value);
+	Router.go('/sciFiMovies');
+
+	personsHandle = personListSubscription(
+		{},
+		{sort: {name: 1}},
+		Meteor.MyClientModule.appConfig.pageLimit
+	);
+};

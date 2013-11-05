@@ -11,7 +11,7 @@ if (Meteor.isClient) {
 		 APP CONFIG PARMS
 		 */
 	    oPublic.appConfig = {
-		    pageLimit: 10, pageLimitMid: 400, pageLimitMax: 1000,
+		    pageLimit: 20, pageLimitMid: 400, pageLimitMax: 1000,
 		    panelLimit: 5, panelLimitMid: 400, panelLimitMax: 1000
 	    };
 
@@ -43,9 +43,10 @@ if (Meteor.isClient) {
 		    $('html, body').animate({ scrollTop: 0 }, 'fast');
 	    };
 
-	    oPublic.scrollToBottomOfPageFast = function(id) {
-		    if (id)
-		        $("html, body").animate({ scrollTop: $("#" + id).scrollTop() }, 'fast');
+	    oPublic.scrollToBottomOfPageFast = function(selector, animationSpeed) {
+		    animationSpeed = (animationSpeed) ? animationSpeed : 1000;
+		    if (selector)
+		        $("html, body").animate({ scrollTop: $(selector).offset().top - 60 }, animationSpeed);
 	    };
 
         // Returns an event map that handles the "escape" and "return" keys and

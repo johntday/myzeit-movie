@@ -26,6 +26,12 @@ Template.tmpl_person_detail.helpers({
 	},
 	hasMovies: function() {
 		return (this.movies && this.movies.length > 0);
+	},
+	thumbnail: function() {
+		return this.posters.thumbnail;
+	},
+	movieLink: function() {
+		return "/sciFiMovies/" + this._id;
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -101,6 +107,9 @@ Template.tmpl_person_detail.events({
 		}, {
 			$set: properties
 		});
+		Session.set('form_update', false);
+		MyLog("person_details.js/1", "updated person", {'_id': this._id, 'name': this.name});
+		//Router.go('/person/'+this._id);
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/

@@ -29,5 +29,7 @@ Template.tmpl_persons_list.events({
 	'click #persons.load-more': function(e) {
 		e.preventDefault();
 		this.loadNextPage();
+
+		Meteor.MyClientModule.scrollToBottomOfPageFast( $('div[class="post"]').last() );
 	}
 });

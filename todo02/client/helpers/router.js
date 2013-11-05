@@ -137,6 +137,19 @@ Router.map(function ()
 		}
 	});
 
+	this.route('tmplMoviePoster', {
+		path  : '/sciFiMovies/poster/:_id',
+		waitOn: function ()
+		{
+			Session.set('selected_movie_id', this.params._id);
+			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
+		},
+		data  : function ()
+		{
+			return Movies.findOne(this.params._id);
+		}
+	});
+
 	this.route('tmplMovieTimeline', {
 		path  : '/movieTimeline/:_id',
 		waitOn: function ()

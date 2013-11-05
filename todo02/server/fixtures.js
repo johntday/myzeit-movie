@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-	var ROTTENTOMATOE = true;
+	var ROTTENTOMATOE = false;
 
 	// Verify that the admin user account exists (should be created on the first run)
 	var u = Meteor.users.findOne({username: "admin"}); // find the admin user

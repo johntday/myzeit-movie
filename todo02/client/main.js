@@ -46,7 +46,7 @@ personListSubscription = function(find, options, per_page) {
 personsHandle = personListSubscription(
 	{},
 	{sort: {name: 1}},
-	10
+	Meteor.MyClientModule.appConfig.pageLimit
 );
 //???
 

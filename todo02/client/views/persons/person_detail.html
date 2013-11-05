@@ -39,10 +39,10 @@
 				{{form_static "Updated" "updated" updatedAgo false}}
 
 				{{#if hasMovies}}
-				<h3>Movies</h3>
+					<h3>Movies</h3>
 					<ul>
 						{{#each movies}}
-							<li><a href="/sciFiMovies/{{movieId}}">{{title}}</a></li>
+							<li><a href="/sciFiMovies/{{movieId}}">{{title}}{{#if year}}({{year}}){{/if}}</a></li>
 						{{/each}}
 					</ul>
 				{{/if}}

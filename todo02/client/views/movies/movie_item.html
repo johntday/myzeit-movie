@@ -1,11 +1,15 @@
 <template name="tmplMovieItem">
-    <div class="post">
-        <div class="post-content">
-            <!--<img src="{{thumbnail}}" />-->
-            <h4>
-	            <a href="{{movieLink}}">{{title}}</a>
-            </h4>
-	        <span>{{year}}</span>
-        </div>
-    </div>
+
+	<div class="post">
+	<div class="media">
+		<a class="pull-left" href="{{movieLink}}">
+			<img class="media-object" src="{{thumbnail}}" alt="thumbnail poster">
+		</a>
+		<div class="media-body">
+			<h4 class="media-heading">{{title}}</h4>
+			<span>{{year}}</span>
+		</div>
+	</div>
+	</div>
+
 </template>
