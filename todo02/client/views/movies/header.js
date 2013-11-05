@@ -43,77 +43,34 @@ Template.tmplHeader.events({
 			/**
 			 * no type-ahead.  just search on <enter>.
 			 */
-			if (!value) {
-				moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
-				personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
-				Session.set("search_text", value);
-				Router.go('/sciFiMovies');
-
-				personsHandle = personListSubscription(
-					{},
-					{sort: {name: 1}},
-					Meteor.MyClientModule.appConfig.pageLimitMax
-				);
-
-			} else if (e.which === 13) {
-				moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimitMax);
-				personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
-				Session.set("search_text", value);
-				Router.go('/sciFiMovies');
-
-				personsHandle = personListSubscription(
-					{name: {$regex: Session.get('search_text'), $options: 'i'}},
-					{sort: {name: 1}},
-					Meteor.MyClientModule.appConfig.pageLimitMax
-				);
-
-			}
+			doSearch(value, (e.which === 13));
 		}
 	},
 	// SHOW SIDEBAR
 	'click #show-sidebar': function(e, template) {
 		e.preventDefault();
-
 		Session.set('has_sidebar', true);
 	},
 	// SEARCH BUTTON
 	'click #btn-search': function(e, template) {
 		var value = String($("#header-search").val() || "");
-		if (!value) {
-			moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimitMax);
-			personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
-			Session.set("search_text", value);
-			Router.go('/sciFiMovies');
-
-			personsHandle = personListSubscription(
-				{name: {$regex: Session.get('search_text'), $options: 'i'}},
-				{sort: {name: 1}},
-				Meteor.MyClientModule.appConfig.pageLimitMax
-			);
-		} else {
-			moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimitMax);
-			personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
-			Session.set("search_text", value);
-			Router.go('/sciFiMovies');
-
-			personsHandle = personListSubscription(
-				{name: {$regex: Session.get('search_text'), $options: 'i'}},
-				{sort: {name: 1}},
-				Meteor.MyClientModule.appConfig.pageLimitMax
-			);
-		}
+		doSearch(value, true);
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
-doSearch = function(value) {
-	moviesHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
-	personsHandle.reset(Meteor.MyClientModule.appConfig.pageLimit);
-	Session.set("search_text", value);
-	Router.go('/sciFiMovies');
-
-	personsHandle = personListSubscription(
-		{},
-		{sort: {name: 1}},
-		Meteor.MyClientModule.appConfig.pageLimit
-	);
+doSearch = function(value, isEnter) {
+	if (!value || isEnter) {
+		Session.set("search_text", value);
+		Router.go('/sciFiMovies');
+		personsHandle = personListSubscription(
+			{name: {$regex: Session.get('search_text'), $options: 'i'}},
+			{sort: {name: 1}},
+			Meteor.MyClientModule.appConfig.pageLimit
+		);
+		moviesHandle = movieListSubscription(
+			{title: {$regex: Session.get('search_text'), $options: 'i'}},
+			{sort: {title: 1}},
+			Meteor.MyClientModule.appConfig.pageLimit
+		);
+	}
 };

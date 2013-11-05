@@ -1,6 +1,5 @@
-mySelect = function (properties) {
-	var find = {};
-	return find;
+regexQuery = function (searchText) {
+	return {$regex: searchText, $options: 'i'};
 };
 mySort = function (sortProperty, sortOrder) {
 	var sort = {sort: {}};

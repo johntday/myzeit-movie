@@ -30,6 +30,7 @@ Template.tmplMovieTimelineList.events({
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmplMovieTimelineList.rendered = function() {
+	var iconId = "";
 	var isDebug = false;
 	var timeline;
 	var movieTimelines = this.data;
@@ -134,10 +135,22 @@ Template.tmplMovieTimelineList.rendered = function() {
 
 		$(this).hide();
 	});
+	$("#dropdown-icon > li").click(function(e) {
+		var iconId = $(this).data("iconName");
+
+//		if (isDirty) {
+			var row = getSelectedRow();
+			timeline.getData()[row].content = getIconText(iconId) + " " + getEventText();
+			timeline.redraw();
+			$(this).hide();
+			$("#form").hide();
+//		}
+		$( "#update-data" ).show();
+	});
 	$( "#update-movie-event" ).click(function() {
 		var row = getSelectedRow();
-		if ( $("#form").is(':visible') && $( "#form-content" ).val() !== timeline.getData()[row].content ) {
-			timeline.getData()[row].content = $( "#form-content" ).val();
+		if ( $("#form").is(':visible') && getEventText() !== timeline.getData()[row].content ) {
+			timeline.getData()[row].content = getEventText();
 			timeline.redraw();
 			$(this).hide();
 			$("#form").hide();
@@ -203,7 +216,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 			var isTimeline = timeline.getData()[row].hasOwnProperty("end");
 			var $input = $("#form-content");
 			$("#form-title")[0].innerHTML = isTimeline ? "Edit Timeline" : "Edit Event";
-			$input.val( timeline.getData()[row].content );
+			$input.val( getEventText( timeline.getData()[row].content ) );
 			$("#form").show();
 			$input.focus();
 		} else {
@@ -225,6 +238,17 @@ Template.tmplMovieTimelineList.rendered = function() {
 			$( "#update-movie-event").hide();
 			$("#form").hide();
 		}
+	};
+	function getEventText(s) {
+		var text = (s) ? s : $( "#form-content" ).val();
+		var index = text.indexOf("</span>");
+		if (index === -1) {
+			return text;
+		}
+		return text.substring(index+8);
+	};
+	function getIconText(iconId) {
+		return (iconId) ? "<span class='glyphicon glyphicon-"+iconId+"'></span>" : "";
 	};
 
 	//Meteor.MyClientModule.scrollToTopOfPageFast();

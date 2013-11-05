@@ -8,11 +8,7 @@ Session.setDefault('selected_person_id', null);
 Session.setDefault('breadcrumbs', null);
 Session.setDefault('has_sidebar', true);
 Session.setDefault('is_example_timeline', false);
-//Session.setDefault('tab', null);
 /*------------------------------------------------------------------------------------------------------------------------------*/
-//newPostsHandle  = Meteor.subscribeWithPagination('newPosts', 10);
-//bestPostsHandle = Meteor.subscribeWithPagination('bestPosts', 10);
-
 //Deps.autorun(function() {
 //	Meteor.subscribe('selectedMovieTimeline', Session.get('selected_movie_id'));
 //	Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
@@ -28,13 +24,10 @@ if(Meteor.userId() != null) {
 /**
  * Movies
  */
-moviesHandle = Meteor.subscribeWithPagination('pubsub_movie_list',  Meteor.MyClientModule.appConfig.pageLimit);
-//???
+//moviesHandle = Meteor.subscribeWithPagination('pubsub_movie_list',  Meteor.MyClientModule.appConfig.pageLimit);
 /**
  * Persons
  */
-//personsHandle = Meteor.subscribeWithPagination('pubsub_person_list', Meteor.MyClientModule.appConfig.pageLimit);
-
 personListSubscription = function(find, options, per_page) {
 	var handle = Meteor.subscribeWithPagination('pubsub_person_list', find, options, per_page);
 	handle.fetch = function() {
@@ -48,7 +41,20 @@ personsHandle = personListSubscription(
 	{sort: {name: 1}},
 	Meteor.MyClientModule.appConfig.pageLimit
 );
-//???
+
+movieListSubscription = function(find, options, per_page) {
+	var handle = Meteor.subscribeWithPagination('pubsub_movie_list', find, options, per_page);
+	handle.fetch = function() {
+		var ourFind = _.isFunction(find) ? find() : find;
+		return limitDocuments(Movies.find(ourFind, options), handle.loaded());
+	}
+	return handle;
+};
+moviesHandle = movieListSubscription(
+	{},
+	{sort: {title: 1}},
+	Meteor.MyClientModule.appConfig.pageLimit
+);
 
 /**
  * layout template JS

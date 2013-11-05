@@ -1,8 +1,5 @@
 Movies = new Meteor.Collection('coll_movies');
 
-//MoviesSearch = new Meteor.Collection('coll_movies_search');
-
-
 STATUS_PENDING=1;
 STATUS_APPROVED=2;
 STATUS_REJECTED=3;

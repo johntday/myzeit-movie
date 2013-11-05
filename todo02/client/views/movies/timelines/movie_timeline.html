@@ -25,12 +25,27 @@
 
 	<div id="form" class="form-group row">
 		<h3 id="form-title"></h3>
-		<div class="control-group">
 			<label for="form-content" class="col-sm-2 control-label">Event Text</label>
 			<div class='col-sm-6'>
-				<input id="form-content" type="text" class="form-control" />
+				<div class="input-group">
+					<div class="input-group-btn">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Icon <span class="caret"></span></button>
+						<ul id="dropdown-icon" class="dropdown-menu">
+							<li data-icon-name="star"><a href="#"><span class="glyphicon glyphicon-star"></span> star</a></li>
+							<li data-icon-name="flash"><a href="#"><span class="glyphicon glyphicon-flash"></span> flash</a></li>
+							<li data-icon-name="flag"><a href="#"><span class="glyphicon glyphicon-flag"></span> flag</a></li>
+							<li data-icon-name="exclamation-sign"><a href="#"><span class="glyphicon glyphicon-exclamation-sign"></span> exclamation</a></li>
+							<li data-icon-name="comment"><a href="#"><span class="glyphicon glyphicon-comment"></span> comment</a></li>
+							<li data-icon-name="heart"><a href="#"><span class="glyphicon glyphicon-heart"></span> heart</a></li>
+							<li data-icon-name="sign"><a href="#"><span class="glyphicon glyphicon-info-sign"></span> info</a></li>
+							<li data-icon-name="fire"><a href="#"><span class="glyphicon glyphicon-fire"></span> fire</a></li>
+							<li data-icon-name="time"><a href="#"><span class="glyphicon glyphicon-time"></span> time</a></li>
+							<li data-icon-name=""><a href="#">no icon</a></li>
+						</ul>
+					</div><!-- /btn-group -->
+					<input id="form-content" type="text" class="form-control" />
+				</div>
 			</div>
-		</div>
 		<div class="form-actions">
 			<button id="update-movie-event" type="button" class="btn btn-primary">Update</button>
 		</div>

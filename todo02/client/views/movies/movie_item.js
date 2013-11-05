@@ -1,9 +1,6 @@
 Template.tmplMovieItem.helpers({
     thumbnail: function() {
-//        var base_url = 'http://d3gtl9l2a4fn1j.cloudfront.net/t/p/';
-//        var poster_size = 'w92';
-//        return base_url + poster_size + this.poster_path;
-	    return this.posters.thumbnail;
+	    return (this.posters && this.posters.thumbnail) ? this.posters.thumbnail : "/img/notfound.png";
     },
 	movieLink: function() {
 		return "/sciFiMovies/" + this._id;
