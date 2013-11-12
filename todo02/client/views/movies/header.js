@@ -62,15 +62,15 @@ doSearch = function(value, isEnter) {
 	if (!value || isEnter) {
 		Session.set("search_text", value);
 		Router.go('/sciFiMovies');
-		personsHandle = personListSubscription(
-			{name: {$regex: Session.get('search_text'), $options: 'i'}},
-			{sort: {name: 1}},
-			Meteor.MyClientModule.appConfig.pageLimit
-		);
-		moviesHandle = movieListSubscription(
-			{title: {$regex: Session.get('search_text'), $options: 'i'}},
-			{sort: {title: 1}},
-			Meteor.MyClientModule.appConfig.pageLimit
-		);
+//		personsHandle = personListSubscription(
+//			{name: {$regex: Session.get('search_text'), $options: 'i'}},
+//			{sort: {name: 1}},
+//			Meteor.MyClientModule.appConfig.pageLimit
+//		);
+//		moviesHandle = movieListSubscription(
+//			{title: {$regex: Session.get('search_text'), $options: 'i'}},
+//			{sort: {title: 1}},
+//			Meteor.MyClientModule.appConfig.pageLimit
+//		);
 	}
 };

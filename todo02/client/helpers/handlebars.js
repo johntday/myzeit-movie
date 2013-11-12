@@ -1,3 +1,19 @@
+/**
+ * class="active".
+ */
+Handlebars.registerHelper('is_active', function(value1, value2) {
+	if (value1 === value2)
+		return new Handlebars.SafeString( " class='active' " );
+	else
+		return;
+});
+
+/**
+ * Bootstrap v3 glyphicon.
+ */
+Handlebars.registerHelper('glyphicon', function(iconNameTrue, iconNameFalse, htmlElementId, isTrue) {
+	return new Handlebars.SafeString( "<span id='" + htmlElementId + "' class='glyphicon glyphicon-" + ((isTrue) ? iconNameTrue : iconNameFalse) + "'></span>" );
+});
 Handlebars.registerHelper('tabss', function(tabList, activeTab, activeTabDefault) {
 	if (! tabList)
 		return;
@@ -137,7 +153,7 @@ Handlebars.registerHelper('form_select', function(label, name, value, options, d
 	if (canEdit && options && options.length !=0) {
 		var s = "";
 		for (var i=0; i < options.length; i++) {
-			s += "<option value='"+ options[i].id +"'" + ((options[i].id === value) ? " selected" : "") + ">" + options[i].label + "</option>";
+			s += "<option value='"+ options[i].id +"'" + ((options[i].id == value) ? " selected" : "") + ">" + options[i].label + "</option>";
 		}
 		return new Handlebars.SafeString(
 			"<div class='form-group row'>" +
@@ -150,11 +166,16 @@ Handlebars.registerHelper('form_select', function(label, name, value, options, d
 				"</div>"
 		);
 	} else if (value || (showEmpty === true)) {
+		var value_label = null;
+		for (var i=0; i < options.length; i++) {
+			if (options[i].id == value)
+				value_label = options[i].label;
+		}
 		return new Handlebars.SafeString(
 			"<div class='form-group row'>" +
 				"<label class='col-sm-3 control-label'>" + label + "</label>"+
 				"<div class='col-sm-8'>"+
-				"<p class='form-control-static'>" + value + "</p>"+
+				"<p class='form-control-static'>" + value_label + "</p>"+
 				"</div>"+
 				"</div>"
 		);
@@ -176,6 +197,15 @@ Handlebars.registerHelper('alert_class', function(messageType) {
 		alertClass += "danger";
 	}
 	return new Handlebars.SafeString(alertClass);
+});
+
+Handlebars.registerHelper('form_options', function(value, options, htmlElementId) {
+	var s = "<select class='form-control' id='" + htmlElementId + "'>";
+	for (var i=0; i < options.length; i++) {
+		s += "<option value='"+ options[i].id +"'" + ((options[i].id === value) ? " selected" : "") + ">" + options[i].label + "</option>";
+	}
+	s += "</select>";
+	return new Handlebars.SafeString(s);
 });
 
 /**

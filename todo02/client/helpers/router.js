@@ -1,12 +1,11 @@
 Router.configure({
 	//layoutTemplate : 'layout', //v0.6.0
 	layout : 'layout',
-	loadingTemplate: 'loading'
-	//yieldTemplates: {
+	loadingTemplate: 'loading',
+	yieldTemplates: {
 		//'footer': { to: 'footer' },
 		//'tmplHeader': { to: 'header' }
-		//'sidebar': { to: 'sidebar' }
-	//}
+	}
 });
 
 Router.map(function ()
@@ -34,11 +33,13 @@ Router.map(function ()
 	this.route('tmpl_users_manage'        ,{path: '/usersManage'});
 	this.route('tmpl_movie_add'           ,{path: '/movieAdd'});
 	this.route('tmpl_person_add'          ,{path: '/personAdd'});
+	this.route('tmpl_movie_favs'          ,{path: '/favs'});
 
 	this.route('tmpl_person_detail', {
 		path  : '/person/:_id',
 		waitOn: function ()
 		{
+			Persons.update(this.params._id, { $inc: { click_cnt: 1 }});
 			Session.set('selected_person_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_person', this.params._id);
 		},
@@ -58,6 +59,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/:_id',
 		waitOn: function ()
 		{
+			Movies.update(this.params._id, { $inc: { click_cnt: 1 }});
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
 		},
@@ -77,6 +79,7 @@ Router.map(function ()
 		path  : '/m/:mymovie_id',
 		waitOn: function ()
 		{
+			Meteor.call('clickedMovieByMyMovieId', this.params.mymovie_id);
 			return Meteor.subscribe('pubsub_selected_movie_alternateId', this.params.mymovie_id);
 		},
 		data  : function ()
@@ -96,6 +99,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/timelines/:_id',
 		waitOn: function ()
 		{
+			MovieTimelines.update(this.params._id, { $inc: { click_cnt: 1 }});
 			Session.set("is_example_timeline", false);
 			Session.set('selected_movie_id', this.params._id);
 			Meteor.subscribe('pubsub_selected_movie', this.params._id);
@@ -115,6 +119,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/cast/:_id',
 		waitOn: function ()
 		{
+			Movies.update(this.params._id, { $inc: { click_cnt: 1 }});
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
 		},
@@ -128,6 +133,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/facts/:_id',
 		waitOn: function ()
 		{
+			Movies.update(this.params._id, { $inc: { click_cnt: 1 }});
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
 		},
@@ -141,6 +147,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/poster/:_id',
 		waitOn: function ()
 		{
+			Movies.update(this.params._id, { $inc: { click_cnt: 1 }});
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
 		},
@@ -154,6 +161,7 @@ Router.map(function ()
 		path  : '/movieTimeline/:_id',
 		waitOn: function ()
 		{
+			MovieTimelines.update(this.params._id, { $inc: { click_cnt: 1 }});
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie_timeline', this.params._id);
 		},

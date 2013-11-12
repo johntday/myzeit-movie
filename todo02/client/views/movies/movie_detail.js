@@ -12,6 +12,9 @@ Template.tmplMovieDetail.helpers({
 	canEditAndEditToggle: function() {
 		return canEdit(Meteor.user(), this) && Session.get('form_update');
 	},
+	canEditAndEditToggleAdmin: function() {
+		return isAdmin() && Session.get('form_update');
+	},
 	createdAgo: function() {
 		return moment(this.created).fromNow();
 	},
@@ -26,6 +29,9 @@ Template.tmplMovieDetail.helpers({
 	},
 	formattedReleaseDate: function() {
 		return formatReleaseDateForDisplay(this.release_date);
+	},
+	isFav: function() {
+		return isFav(this.favs);
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -49,6 +55,32 @@ Template.tmplMovieDetail.events({
 				Router.go('/sciFiMovies');
 			}
 		});
+	},
+
+	'click #icon-heart': function(e) {
+		var user = Meteor.user();
+		if(!user){
+			throwError('You must login to add a movie to your favorities');
+			return false;
+		}
+
+		if ( isFav(this.favs) ) {
+			Movies.update(this._id,
+				{
+					$pull: { favs: user._id },
+					$inc: { favs_cnt: -1 }
+				}
+			);
+			MyLog("movie_details.js/click #icon-heart/1", "remove from favs");
+		} else {
+			Movies.update(this._id,
+				{
+					$addToSet: { favs: user._id },
+					$inc: { favs_cnt: 1 }
+				}
+			);
+			MyLog("movie_details.js/click #icon-heart/1", "add to favs");
+		}
 	},
 
 	'click #btnEditToggle': function(e) {
@@ -79,6 +111,7 @@ Template.tmplMovieDetail.events({
 		var overview= $('#overview').val();
 		var critics_consensus= $('#critics_consensus').val();
 		var adult = $('#adult').prop('checked');
+		var status = $('#status').val();
 
 		var properties = {
 			title: title
@@ -92,6 +125,12 @@ Template.tmplMovieDetail.events({
 			, critics_consensus: critics_consensus
 			, adult: adult
 		};
+
+		if ( isAdmin(Meteor.user()) ) {
+			_.extend(properties, {
+				status: status
+			});
+		}
 
 		// VALIDATE
 		var isInputError = validateMovie(properties);
@@ -109,6 +148,7 @@ Template.tmplMovieDetail.events({
 				throwError(error.reason);
 				$(e.target).removeClass('disabled');
 			}else{
+				Session.set('form_update', false);
 				MyLog("movie_details.js/1", "updated movie", {'_id': _id, 'title': movie.title});
 				Router.go('/sciFiMovies/'+_id);
 			}

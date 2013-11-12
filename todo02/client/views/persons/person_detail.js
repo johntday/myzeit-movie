@@ -51,8 +51,9 @@ Template.tmpl_person_detail.events({
 				throwError(error.reason);
 				$(e.target).removeClass('disabled');
 			}else{
-				trackEvent("delete Person", {'_id': this._id});
+				MyLog("person_details.js/1", "delete person", {'_id': this._id});
 				Router.go('/persons');
+				Session.set('form_update', false);
 			}
 		});
 	},

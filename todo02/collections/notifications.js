@@ -1,18 +1,49 @@
+MOVIE_CREATED_BY_USER = 1;
+MOVIE_UPDATED_BY_USER = 2;
+MOVIE_UPDATED_BY_ADMIN = 3;
+MOVIE_DELETED_BY_USER = 4;
+MOVIE_DELETED_BY_ADMIN = 5;
+
+notificationFactory = function(notificationType, collectionName, userId, name, status, href, created) {
+	var description = "";
+	if (MOVIE_CREATED_BY_USER === notificationType)
+		description = "Movie '" + name + "' was created " + moment(created).fromNow();
+	else if (MOVIE_UPDATED_BY_USER === notificationType)
+		description = "Movie '" + name + "' was updated " + moment(created).fromNow();
+	else if (MOVIE_UPDATED_BY_ADMIN === notificationType)
+		description = "Your movie '" + name + "' was updated by Admin " + moment(created).fromNow();
+	else if (MOVIE_DELETED_BY_ADMIN === notificationType)
+		description = "Your movie '" + name + "' was deleted by Admin " + moment(created).fromNow();
+	else
+		return;
+	return {
+		notification_type: notificationType
+		, description: description
+		, collection_name: collectionName
+		, userId: userId
+		, status: status
+		, href: href
+		, created: created
+		, read: false
+	};
+};
 Notifications = new Meteor.Collection('notifications');
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Notifications.allow({
-  update: ownsDocument
+	insert: function (userId, doc) {
+		//return ownsDocumentOrAdmin(userId, doc);
+		return false;
+	},
+	update: function (userId, doc, fields, modifier) {
+		return ownsDocumentOrAdmin(userId, doc);
+	},
+	remove: function (userId, doc) {
+		return ownsDocumentOrAdmin(userId, doc);
+	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
-createCommentNotification = function(comment) {
-  var post = Posts.findOne(comment.postId);
-  if (comment.userId !== post.userId) {
-    Notifications.insert({
-      userId: post.userId,
-      postId: post._id,
-      commentId: comment._id,
-      commenterName: comment.author,
-      read: false
-    });
-  }
-};
+Meteor.methods({
+	deleteAllRead: function() {
+		Notifications.remove({read: true});
+	}
+});

@@ -8,23 +8,16 @@ Session.setDefault('selected_person_id', null);
 Session.setDefault('breadcrumbs', null);
 Session.setDefault('has_sidebar', true);
 Session.setDefault('is_example_timeline', false);
+Session.setDefault('movie_sort', 'title');
+Session.setDefault('favs_sort', 'title');
 /*------------------------------------------------------------------------------------------------------------------------------*/
-//Deps.autorun(function() {
-//	Meteor.subscribe('selectedMovieTimeline', Session.get('selected_movie_id'));
-//	Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
-//});
-
 /**
  * Notifications
  */
-// Notifications - only load if user is logged in
 if(Meteor.userId() != null) {
-	Meteor.subscribe('pubsub_notification_list');
+	Meteor.subscribe('pubsub_notification_list', isAdmin());
+	Meteor.subscribe('pubsub_settings');
 }
-/**
- * Movies
- */
-//moviesHandle = Meteor.subscribeWithPagination('pubsub_movie_list',  Meteor.MyClientModule.appConfig.pageLimit);
 /**
  * Persons
  */
@@ -36,12 +29,17 @@ personListSubscription = function(find, options, per_page) {
 	}
 	return handle;
 };
-personsHandle = personListSubscription(
-	{},
-	{sort: {name: 1}},
-	Meteor.MyClientModule.appConfig.pageLimit
-);
+Deps.autorun(function(){
+	personsHandle = personListSubscription(
+		personQuery( Session.get('search_text') ),
+		sortQuery('name', 1),
+		Meteor.MyClientModule.appConfig.pageLimit
+	);
+});
 
+/**
+ * Movies
+ */
 movieListSubscription = function(find, options, per_page) {
 	var handle = Meteor.subscribeWithPagination('pubsub_movie_list', find, options, per_page);
 	handle.fetch = function() {
@@ -50,12 +48,31 @@ movieListSubscription = function(find, options, per_page) {
 	}
 	return handle;
 };
-moviesHandle = movieListSubscription(
-	{},
-	{sort: {title: 1}},
-	Meteor.MyClientModule.appConfig.pageLimit
-);
+Deps.autorun(function(){
+	moviesHandle = movieListSubscription(
+		movieQuery( Session.get('search_text') ),
+		movieSort[ Session.get('movie_sort') ],
+		Meteor.MyClientModule.appConfig.pageLimit
+	);
+});
 
+movieFavsSubscription = function(find, options, per_page) {
+	var handle = Meteor.subscribeWithPagination('pubsub_movie_favs', find, options, per_page);
+	handle.fetch = function() {
+		var ourFind = _.isFunction(find) ? find() : find;
+		return limitDocuments(Movies.find(ourFind, options), handle.loaded());
+	}
+	return handle;
+};
+Deps.autorun(function(){
+	Meteor.subscribe('pubsub_movie_favs_5');
+
+	movieFavsHandle = movieFavsSubscription(
+		favsQuery( Session.get('search_text') ),
+		movieSort[ Session.get('favs_sort') ],
+		Meteor.MyClientModule.appConfig.pageLimit
+	);
+});
 /**
  * layout template JS
  */

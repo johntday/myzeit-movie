@@ -1,12 +1,27 @@
 regexQuery = function (searchText) {
 	return {$regex: searchText, $options: 'i'};
 };
-mySort = function (sortProperty, sortOrder) {
+sortQuery = function (sortProperty, sortOrder) {
 	var sort = {sort: {}};
 	sort.sort[sortProperty] = sortOrder;
-	sort.sort._id = 1;
 	return sort;
 };
+movieSort = {
+	title: sortQuery('title', 1)
+	, release_date: sortQuery('release_date', -1)
+	, click_cnt: sortQuery('click_cnt', -1)
+	, critics_score: sortQuery('critics_score', -1)
+};
+movieQuery = function(searchText) {
+	return (searchText) ? {title: regexQuery(searchText)} : {};
+};
+favsQuery = function(searchText) {
+	return (searchText) ? {favs: Meteor.userId(), title: regexQuery(searchText)} : {favs: Meteor.userId()};
+};
+personQuery = function(searchText) {
+	return (searchText) ? {name: regexQuery(searchText)} : {};
+};
+
 // build find query object
 selectPosts = function (properties) {
 	var find = {};

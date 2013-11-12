@@ -72,6 +72,7 @@ Template.tmpl_movie_add.events({
 //				if(error.error == 603)
 //					Meteor.Router.to('/posts/'+error.details);
 			}else{
+				Session.set('form_update', false);
 				trackEvent("create movie", {'_id': movie.movieId});
 //				if(post.status === STATUS_PENDING)
 //					throwError('Thanks, your post is awaiting approval.')

@@ -18,4 +18,4 @@ limitDocuments = function(cursor, limit) {
   });
   
   return documents;
-}
+};

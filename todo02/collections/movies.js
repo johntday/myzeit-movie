@@ -77,7 +77,8 @@ Meteor.methods({
 		 * NOTIFICATION
 		 */
 		if (! isAdmin(user)) {
-
+			var n = notificationFactory(MOVIE_CREATED_BY_USER, "movie", "admin", movie.title, movie.status, "/sciFiMovies/"+movieId, movie.created);
+			Notifications.insert(n);
 		}
 
 		return movie;
@@ -95,12 +96,24 @@ Meteor.methods({
 			updated: getNow()
 		});
 
-		console.log("server movie just before update: "+JSON.stringify(movie));
+		MyLog("collections/movies.js/updateMovie/1", "properties", properties);
 
 		Movies.update(
-			{_id: _id},
+			_id,
 			{$set: movie}
 		);
+
+		/**
+		 * NOTIFICATION
+		 */
+		if (! isAdmin(user)) {
+			var n = notificationFactory(MOVIE_UPDATED_BY_USER, "movie", "admin", movie.title, movie.status, "/sciFiMovies/"+_id, movie.created);
+			Notifications.insert(n);
+		} else {
+			var m = Movies.findOne(_id);
+			var n = notificationFactory(MOVIE_UPDATED_BY_ADMIN, "movie", m.userId, movie.title, movie.status, "/sciFiMovies/"+_id, movie.created);
+			Notifications.insert(n);
+		}
 		return movie;
 	},
 
@@ -130,8 +143,12 @@ Meteor.methods({
 		return true;
 	},
 
-	clickedMovie: function(movie){
-		Movies.update(movie._id, { $inc: { clicks: 1 }});
+	clickedMovie: function(_id){
+		Movies.update(_id, { $inc: { click_cnt: 1 }});
+	},
+
+	clickedMovieByMyMovieId: function(mymovie_id){
+		Movies.update({mymovie_id: mymovie_id}, { $inc: { click_cnt: 1 }});
 	},
 
 	deleteMovie: function(movieId) {
@@ -139,8 +156,30 @@ Meteor.methods({
 		if(!this.isSimulation) {
 			MovieTimelines.remove({movieId: movieId});
 		}
+
+		/**
+		 * NOTIFICATION
+		 */
+		if (isAdmin()) {
+			var m = Movies.findOne(movieId);
+			var n = notificationFactory(MOVIE_DELETED_BY_ADMIN, "movie", m.userId, m.title, m.status, "/sciFiMovies/"+movieId, getNow());
+			Notifications.insert(n);
+		}
+
 		Movies.remove(movieId);
 		return movieId;
+	},
+
+	addFavUser: function(_id, userId){
+		Movies.update(_id,
+			{ $addToSet: { favs: userId }, $inc: { favs_cnt: 1 } }
+		);
+	},
+
+	deleteFavUser: function(_id, userId){
+		Movies.update(_id,
+			{ $pull: { favs: userId }, $inc: { favs_cnt: -1 } }
+		);
 	}
 
 });

@@ -30,3 +30,9 @@ isAdmin = function(user) {
 canEditById = function(userId, doc){
 	return userId && doc && (userId===doc.userId || isAdmin);
 };
+getUserIdOrAdmin = function() {
+	var u = Meteor.user();
+	if (!u)
+		return null;
+	return (isAdmin(u)) ? "admin" : u._id;
+};

@@ -143,7 +143,7 @@ Template.tmplMovieTimelineList.rendered = function() {
 			timeline.getData()[row].content = getIconText(iconId) + " " + getEventText();
 			timeline.redraw();
 			$(this).hide();
-			$("#form").hide();
+//			$("#form").hide();
 //		}
 		$( "#update-data" ).show();
 	});

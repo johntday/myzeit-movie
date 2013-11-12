@@ -9313,5 +9313,4 @@ Meteor.startup(function () {
 		return Movies.findOne( {title: title}, {fields: {_id: 1}} );
 	};
 	*/
-
 });

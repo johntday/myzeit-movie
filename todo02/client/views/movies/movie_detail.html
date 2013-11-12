@@ -13,11 +13,12 @@
 		<div class="panel-heading">
 
 			<h2 class="panel-title">{{title}}
-				{{#if canEdit}}
 				<div class="pull-right" style="margin-top: -5px;">
-					<button type="button" class="btn btn-default btn-sm" id="btnEditToggle">&nbsp;&nbsp;Edit&nbsp;&nbsp;</button>
+					{{glyphicon "heart" "heart-empty" "icon-heart" isFav}}
+					{{#if canEdit}}
+						<button type="button" class="btn btn-default btn-sm" id="btnEditToggle">&nbsp;&nbsp;Edit&nbsp;&nbsp;</button>
+					{{/if}}
 				</div>
-				{{/if}}
 		<!--<div class="clearfix"></div>-->
 			</h2>
 		</div>
@@ -27,12 +28,10 @@
 
 				{{#if isAdmin}}
 					{{form_input "_id" "_id" _id false}}
-					{{form_select "Status" "status" status statusOptions "" canEditAndEditToggle true}}
-				{{else}}
-					<input type="hidden" value="{{_id}}" name="_id"/>
 				{{/if}}
 
 				<!-- COMMON FIELDS -->
+				{{form_select "Status" "status" status statusOptions "" canEditAndEditToggleAdmin true}}
 				{{form_input "Title" "title" title canEditAndEditToggle true}}
 				{{form_input "Year" "year" year canEditAndEditToggle false}}
 				{{form_date "Release Date" "release_date" formattedReleaseDate canEditAndEditToggle true}}

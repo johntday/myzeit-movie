@@ -4,6 +4,12 @@ Template.tmplMovieItem.helpers({
     },
 	movieLink: function() {
 		return "/sciFiMovies/" + this._id;
+	},
+	isFav: function() {
+		return isFav(this.favs);
+	},
+	yearDisplay: function() {
+		return (this.year && this.year != -1) ? this.year : "";
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
