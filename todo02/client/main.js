@@ -10,6 +10,7 @@ Session.setDefault('has_sidebar', true);
 Session.setDefault('is_example_timeline', false);
 Session.setDefault('movie_sort', 'title');
 Session.setDefault('favs_sort', 'title');
+Session.setDefault('facts_sort', 'click_cnt');
 /*------------------------------------------------------------------------------------------------------------------------------*/
 /**
  * Notifications
@@ -73,6 +74,23 @@ Deps.autorun(function(){
 		Meteor.MyClientModule.appConfig.pageLimit
 	);
 });
+
+movieFactsSubscription = function(find, options, per_page) {
+	var handle = Meteor.subscribeWithPagination('pubsub_movie_facts_list', find, options, per_page);
+	handle.fetch = function() {
+		var ourFind = _.isFunction(find) ? find() : find;
+		return limitDocuments(Facts.find(ourFind, options), handle.loaded());
+	}
+	return handle;
+};
+Deps.autorun(function(){
+	movieFactsHandle = movieFactsSubscription(
+		factsQuery( Session.get('selected_movie_id') ),
+		factsSort[ Session.get('facts_sort') ],
+		Meteor.MyClientModule.appConfig.pageLimit
+	);
+});
+
 /**
  * layout template JS
  */

@@ -1,0 +1,25 @@
+<template name="tmpl_movie_fact_item">
+
+	<div class="post">
+		<div class="media" id="fact-item">
+			<a class="pull-left" href="#">
+				{{trust_icon trust}}
+			</a>
+			<div class="media-body">
+				<h4 class="media-heading">{{text}}</h4>
+				<p><strong>{{author}}</strong> created {{createdAgo}}
+				{{#if canEdit}}
+					<button type="button" class="close" data-fact-id="{{_id}}" title="Be careful, this will delete me">&times;</button>
+				{{/if}}
+				</p>
+				{{#if isAdmin}}
+					<p>click_cnt({{click_cnt}}) status({{statusDisplay}})</p>
+
+					{{form_select "Status" "status" status statusOptions "" isAdmin true}}
+
+				{{/if}}
+			</div>
+		</div>
+	</div>
+
+</template>

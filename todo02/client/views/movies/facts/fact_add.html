@@ -1,0 +1,16 @@
+<template name="tmpl_fact_add">
+	{{#if canCreateFact}}
+		<form class="add modal-nav-box box-hide form-horizontal">
+			{{#constant}}
+
+			{{form_textarea "New Fact" "text" "" canCreateFact true}}
+
+			{{/constant}}
+			<div class="form-group">
+				<div class="col-offset-2 col-sm-4">
+					<button type="button" class="btn btn-primary" id="btnCreateFact">Create</button>
+				</div>
+			</div>
+		</form>
+	{{/if}}
+</template>

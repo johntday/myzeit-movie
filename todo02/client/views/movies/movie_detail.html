@@ -14,7 +14,7 @@
 
 			<h2 class="panel-title">{{title}}
 				<div class="pull-right" style="margin-top: -5px;">
-					{{glyphicon "heart" "heart-empty" "icon-heart" isFav}}
+					{{glyphicon "heart" "heart-empty" "icon-heart" isFav "Add/remove from favs"}}
 					{{#if canEdit}}
 						<button type="button" class="btn btn-default btn-sm" id="btnEditToggle">&nbsp;&nbsp;Edit&nbsp;&nbsp;</button>
 					{{/if}}
@@ -23,6 +23,7 @@
 			</h2>
 		</div>
 		<div class="panel-body">
+			<img src="{{smallPoster}}" title="{{title}}" />
 
 			<form class="add modal-nav-box box-hide form-horizontal" id="form_movie">
 
@@ -31,7 +32,6 @@
 				{{/if}}
 
 				<!-- COMMON FIELDS -->
-				{{form_select "Status" "status" status statusOptions "" canEditAndEditToggleAdmin true}}
 				{{form_input "Title" "title" title canEditAndEditToggle true}}
 				{{form_input "Year" "year" year canEditAndEditToggle false}}
 				{{form_date "Release Date" "release_date" formattedReleaseDate canEditAndEditToggle true}}
@@ -49,6 +49,7 @@
 				{{/if}}
 				{{form_static "Created" "created" createdAgo false}}
 				{{form_static "Updated" "updated" updatedAgo false}}
+				{{#if canEdit}} {{form_select "Status" "status" status statusOptions "" canEditAndEditToggleAdmin true}} {{/if}}
 
 				<div class="form-group">
 					<div class="col-offset-2 col-sm-4">

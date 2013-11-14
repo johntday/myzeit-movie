@@ -50,8 +50,20 @@ Meteor.publish('pubsub_user_movie_timeline_list', function(movieId, userId) {
 	return movieId && MovieTimelines.find({movieId: movieId, userId: { $in: ["admin", userId] } }, {limit: 2} );
 });
 Meteor.publish('pubsub_selected_movie_timeline', function(id) {
-	return id && MovieTimelines.find(id);
+	return MovieTimelines.find(id);
 });
 Meteor.publish('pubsub_selected_movie_timeline_alternateId', function(mymovie_id) {
-	return mymovie_id && MovieTimelines.find({mymovie_id: mymovie_id});
+	return MovieTimelines.find({mymovie_id: mymovie_id});
+});
+
+/**
+ * Facts
+ */
+Meteor.publish('pubsub_movie_facts_list', function(query, options, limit) {
+	options = options || {};
+	options.limit = limit;
+	return Facts.find(query || {}, options);
+});
+Meteor.publish('pubsub_selected_fact', function(id) {
+	return Facts.find(id);
 });

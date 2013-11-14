@@ -32,6 +32,9 @@ Template.tmplMovieDetail.helpers({
 	},
 	isFav: function() {
 		return isFav(this.favs);
+	},
+	smallPoster: function() {
+		return (this.posters && this.posters.detailed) ? this.posters.detailed : "/img/notfound.png";
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/

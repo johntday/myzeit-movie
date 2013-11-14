@@ -12,6 +12,10 @@ movieSort = {
 	, click_cnt: sortQuery('click_cnt', -1)
 	, critics_score: sortQuery('critics_score', -1)
 };
+factsSort = {
+	created: sortQuery('created', -1)
+	, click_cnt: sortQuery('click_cnt', -1)
+};
 movieQuery = function(searchText) {
 	return (searchText) ? {title: regexQuery(searchText)} : {};
 };
@@ -20,6 +24,9 @@ favsQuery = function(searchText) {
 };
 personQuery = function(searchText) {
 	return (searchText) ? {name: regexQuery(searchText)} : {};
+};
+factsQuery = function(movieId) {
+	return (movieId) ? {movieId: movieId, status: {$lt:STATUS_REJECTED}} : {};
 };
 
 // build find query object
@@ -46,27 +53,7 @@ selectPosts = function (properties) {
 	return find;
 };
 
-// build sort query object
-sortPosts = function (sortProperty) {
-	var sort = {sort: {sticky: -1}};
-	sort.sort[sortProperty] = -1;
-	sort.sort._id = 1;
-	return sort;
-};
-
-selectDigest = function (mDate) {
-	return _.extend({
-		submitted: {
-			$gte: mDate.startOf('day').valueOf(),
-			$lt : mDate.endOf('day').valueOf()
-		}
-	}, selectPosts({status: STATUS_APPROVED}));
-};
-
-sortDigest = function () {
-	return {sort: {baseScore: -1, _id: 1}};
-};
-
-findDigestPosts = function (mDate) {
-	return Posts.find(selectDigest(mDate), sortDigest());
+updateClickCnt = function(collection, _id) {
+	collection.update(_id, { $inc: { click_cnt: 1 }});
+	return true;
 };

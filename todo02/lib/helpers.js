@@ -1,4 +1,4 @@
-var isMyDebug = true;
+var isMyDebug = false;
 
 MyLog = function(codePath, name, object) {
 	if (isMyDebug) {
@@ -21,7 +21,7 @@ getMovieSortingOptions = function() {
 	return [{id:'title',label:'title'},{id:'release_date',label:'release date'},{id:'click_cnt',label:'most viewed'},{id:'critics_score',label:'top rated'}];
 };
 getMovieStatusOptions = function() {
-	return [{id:STATUS_PENDING,label:'STATUS_PENDING'},{id:STATUS_APPROVED,label:'STATUS_APPROVED'},{id:STATUS_REJECTED,label:'STATUS_REJECTED'}];
+	return [{id:STATUS_PENDING,label:'Pending'},{id:STATUS_APPROVED,label:'Approved'},{id:STATUS_REJECTED,label:'Rejected'}];
 };
 formatReleaseDateForDisplay = function(textDate/*YYYY-MM-DD*/) {
 	if (! textDate)
@@ -53,4 +53,17 @@ setSetting = function(view, name, value) {
 		Meteor.userId(),
 		{ $addToSet: { settings: {view:view, name:name, value:value} } }
 	);
+};
+// ---------------------------------- String Helper Functions ----------------------------------- //
+cleanUp = function(s){
+	return stripHTML(s).trim();
+};
+stripHTML = function(s){
+	return s.replace(/<(?:.|\n)*?>/gm, '');
+};
+trimWords = function(s, numWords) {
+	expString = s.split(/\s+/,numWords);
+	if(expString.length >= numWords)
+		return expString.join(" ")+"…";
+	return s;
 };

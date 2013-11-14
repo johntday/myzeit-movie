@@ -152,9 +152,10 @@ Meteor.methods({
 	},
 
 	deleteMovie: function(movieId) {
-		// remove movie timelines
+		// remove associated stuff
 		if(!this.isSimulation) {
 			MovieTimelines.remove({movieId: movieId});
+			Facts.remove({movieId: movieId});
 		}
 
 		/**

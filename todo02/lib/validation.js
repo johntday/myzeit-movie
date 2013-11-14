@@ -107,3 +107,28 @@ validatePerson = function(person) {
 transformPerson = function(person) {
 	return person;
 };
+
+validateFactText = function(text, min, max) {
+	if (! text) {
+		throwError("Please add a fact");
+		return true;
+	}
+	if (text.length < min) {
+		throwError("Please add more than " + (min-1) + " characters");
+		return true;
+	}
+	if (text.length > max) {
+		throwError("Limit fact text to " + max + " characters");
+		return true;
+	}
+	return false;
+};
+validateFact = function(fact) {
+	var hasInputError = validateFactText(fact.text, 10, 2048);
+
+	return hasInputError;
+};
+transformFact = function(fact) {
+	fact.text = cleanUp(fact.text);
+	return fact;
+};

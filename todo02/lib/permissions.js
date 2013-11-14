@@ -23,6 +23,9 @@ canCreateMovie = function(user) {
 canCreatePerson = function(user) {
 	return (user != null);
 };
+canCreateFact = function(user) {
+	return (user != null);
+};
 isAdmin = function(user) {
 	var u=(typeof user === 'undefined') ? Meteor.user() : user;
 	return (u && u.username === "admin");

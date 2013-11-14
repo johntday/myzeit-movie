@@ -2,6 +2,7 @@ Router.configure({
 	//layoutTemplate : 'layout', //v0.6.0
 	layout : 'layout',
 	loadingTemplate: 'loading',
+	notFoundTemplate: 'not_found',
 	yieldTemplates: {
 		//'footer': { to: 'footer' },
 		//'tmplHeader': { to: 'header' }
@@ -34,12 +35,13 @@ Router.map(function ()
 	this.route('tmpl_movie_add'           ,{path: '/movieAdd'});
 	this.route('tmpl_person_add'          ,{path: '/personAdd'});
 	this.route('tmpl_movie_favs'          ,{path: '/favs'});
+	this.route('tmpl_admin_stats'         ,{path: '/admin_stats'});
 
 	this.route('tmpl_person_detail', {
 		path  : '/person/:_id',
 		waitOn: function ()
 		{
-			Persons.update(this.params._id, { $inc: { click_cnt: 1 }});
+			updateClickCnt(Persons, this.params._id);
 			Session.set('selected_person_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_person', this.params._id);
 		},
@@ -139,7 +141,13 @@ Router.map(function ()
 		},
 		data  : function ()
 		{
-			return Movies.findOne(this.params._id);
+			var movie = Movies.findOne(this.params._id);
+			Session.set('breadcrumbs', {breadcrumbs: [
+				{title:"home", link:"/", isActive:false},
+				{title:"SciFi", link:"/sciFiMovies", isActive:false},
+				{title:movie.title, link:"", isActive:true}
+			]});
+			return movie;
 		}
 	});
 

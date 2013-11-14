@@ -1,7 +1,7 @@
 Meteor.startup(function () {
 	var ROTTENTOMATOE = false;
 
-	// Verify that the admin user account exists (should be created on the first run)
+	// DEFAULT USERS
 	var u = Meteor.users.findOne({username: "admin"}); // find the admin user
 	if(!u) {
 		Accounts.createUser({username: "admin", password: "877669", profile: {name: "John T Day"}});

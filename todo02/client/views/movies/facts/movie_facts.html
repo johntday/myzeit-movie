@@ -14,8 +14,30 @@
 			<h2 class="panel-title">{{title}}</h2>
 		</div>
 		<div class="panel-body">
-			Facts not added yet.
+
+			{{> tmpl_fact_add}}
+			<hr/>
+			{{> tmpl_facts_list movieFactsHandle}}
 		</div>
 	</div>
 
+</template>
+
+<template name="tmpl_facts_list">
+	<div class="posts">
+		{{#each facts}}
+			{{> tmpl_movie_fact_item}}
+		{{/each}}
+
+		{{#if ready}}
+			{{#unless loaded}}
+				<a class="load-more" href="#">Load more</a>
+			{{/unless}}
+		{{else}}
+			<div>{{> spinner}}</div>
+		{{/if}}
+		{{#if isEmpty}}
+			I didn't find any facts.  Please add some.
+		{{/if}}
+	</div>
 </template>

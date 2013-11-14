@@ -11,9 +11,24 @@ Handlebars.registerHelper('is_active', function(value1, value2) {
 /**
  * Bootstrap v3 glyphicon.
  */
-Handlebars.registerHelper('glyphicon', function(iconNameTrue, iconNameFalse, htmlElementId, isTrue) {
-	return new Handlebars.SafeString( "<span id='" + htmlElementId + "' class='glyphicon glyphicon-" + ((isTrue) ? iconNameTrue : iconNameFalse) + "'></span>" );
+Handlebars.registerHelper('glyphicon', function(iconNameTrue, iconNameFalse, htmlElementId, isTrue, tooltip) {
+	return new Handlebars.SafeString( "<span id='" + htmlElementId + "' class='glyphicon glyphicon-" + ((isTrue) ? iconNameTrue : iconNameFalse) + "'" +
+		((tooltip) ? " title='" + tooltip + "'" : "") +
+		"></span>" );
 });
+Handlebars.registerHelper('trust_icon', function(trust) {
+	var icon = "fire";
+	var title = "Fact not checked yet";
+	if (TRUST_MED === trust) {
+		icon = "flag";
+		title = "Fact seems accurate";
+	} else if (TRUST_HIGH === trust) {
+		icon = "star";
+		title = "Trusted fact";
+	}
+	return new Handlebars.SafeString( "<span class='glyphicon glyphicon-" + icon + "' title='" + title + "'></span>" );
+});
+
 Handlebars.registerHelper('tabss', function(tabList, activeTab, activeTabDefault) {
 	if (! tabList)
 		return;

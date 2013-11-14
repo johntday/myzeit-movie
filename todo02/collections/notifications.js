@@ -3,6 +3,9 @@ MOVIE_UPDATED_BY_USER = 2;
 MOVIE_UPDATED_BY_ADMIN = 3;
 MOVIE_DELETED_BY_USER = 4;
 MOVIE_DELETED_BY_ADMIN = 5;
+FACT_CREATED_BY_USER = 6;
+FACT_DELETED_BY_ADMIN = 7;
+FACT_UPDATED_BY_ADMIN = 8;
 
 notificationFactory = function(notificationType, collectionName, userId, name, status, href, created) {
 	var description = "";
@@ -14,6 +17,12 @@ notificationFactory = function(notificationType, collectionName, userId, name, s
 		description = "Your movie '" + name + "' was updated by Admin " + moment(created).fromNow();
 	else if (MOVIE_DELETED_BY_ADMIN === notificationType)
 		description = "Your movie '" + name + "' was deleted by Admin " + moment(created).fromNow();
+	else if (FACT_CREATED_BY_USER === notificationType)
+		description = "Fact '" + name + "' was created " + moment(created).fromNow();
+	else if (FACT_DELETED_BY_ADMIN === notificationType)
+		description = "Fact '" + name + "' was deleted by Admin" + moment(created).fromNow();
+	else if (FACT_UPDATED_BY_ADMIN === notificationType)
+		description = "Fact '" + name + "' was updated by Admin" + moment(created).fromNow();
 	else
 		return;
 	return {
