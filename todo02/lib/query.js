@@ -4,6 +4,7 @@ regexQuery = function (searchText) {
 sortQuery = function (sortProperty, sortOrder) {
 	var sort = {sort: {}};
 	sort.sort[sortProperty] = sortOrder;
+	console.log('sort', sort);
 	return sort;
 };
 movieSort = {

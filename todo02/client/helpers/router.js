@@ -61,7 +61,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/:_id',
 		waitOn: function ()
 		{
-			Movies.update(this.params._id, { $inc: { click_cnt: 1 }});
+			updateClickCnt(Movies, this.params._id);
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
 		},
@@ -101,7 +101,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/timelines/:_id',
 		waitOn: function ()
 		{
-			MovieTimelines.update(this.params._id, { $inc: { click_cnt: 1 }});
+			updateClickCnt(MovieTimelines, this.params._id);
 			Session.set("is_example_timeline", false);
 			Session.set('selected_movie_id', this.params._id);
 			Meteor.subscribe('pubsub_selected_movie', this.params._id);
@@ -121,7 +121,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/cast/:_id',
 		waitOn: function ()
 		{
-			Movies.update(this.params._id, { $inc: { click_cnt: 1 }});
+			updateClickCnt(Movies, this.params._id);
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
 		},
@@ -135,7 +135,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/facts/:_id',
 		waitOn: function ()
 		{
-			Movies.update(this.params._id, { $inc: { click_cnt: 1 }});
+			updateClickCnt(Movies, this.params._id);
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
 		},
@@ -155,7 +155,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/poster/:_id',
 		waitOn: function ()
 		{
-			Movies.update(this.params._id, { $inc: { click_cnt: 1 }});
+			updateClickCnt(Movies, this.params._id);
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie', this.params._id);
 		},
@@ -169,7 +169,7 @@ Router.map(function ()
 		path  : '/movieTimeline/:_id',
 		waitOn: function ()
 		{
-			MovieTimelines.update(this.params._id, { $inc: { click_cnt: 1 }});
+			updateClickCnt(MovieTimelines, this.params._id);
 			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie_timeline', this.params._id);
 		},

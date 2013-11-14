@@ -1,4 +1,5 @@
 var isMyDebug = false;
+testUsernames = ['admin','keira','sophia','quentin','jeanette'];
 
 MyLog = function(codePath, name, object) {
 	if (isMyDebug) {
@@ -7,6 +8,10 @@ MyLog = function(codePath, name, object) {
 		else
 			console.log(codePath + " [" + name + "]");
 	}
+};
+isTestUserId = function(userId) {
+	if (!userId) return false;
+	return false;
 };
 getNow = function() {
 	return new Date().getTime();
@@ -36,7 +41,7 @@ formatReleaseDateForSave = function(textDate/*MM/DD/YYYY*/) {
 isFav = function(favs) {
 	var user = Meteor.user();
 	if(!user) return false;
-	return _.include(favs, user._id);
+	return _.contains(favs, user._id);
 };
 getSetting = function(view, name, valueDefault) {
 	var user = Meteor.user();

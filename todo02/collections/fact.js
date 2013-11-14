@@ -107,7 +107,7 @@ Meteor.methods({
 	},
 
 	clickedFact: function(_id){
-		Facts.update(_id, { $inc: { click_cnt: 1 }});
+		updateClickCnt(Facts, this.params._id);
 	},
 
 	deleteFact: function(_id, movieId) {
