@@ -11,6 +11,7 @@ Session.setDefault('is_example_timeline', false);
 Session.setDefault('movie_sort', 'title');
 Session.setDefault('favs_sort', 'title');
 Session.setDefault('facts_sort', 'click_cnt');
+Session.setDefault('movie_timeline_sort', 'title');
 /*------------------------------------------------------------------------------------------------------------------------------*/
 /**
  * Notifications
@@ -87,6 +88,27 @@ Deps.autorun(function(){
 	movieFactsHandle = movieFactsSubscription(
 		factsQuery( Session.get('selected_movie_id') ),
 		factsSort[ Session.get('facts_sort') ],
+		Meteor.MyClientModule.appConfig.pageLimit
+	);
+});
+
+/**
+ * Movie Timelines
+ */
+movieTimelinesSubscription = function(find, options, per_page) {
+	var handle = Meteor.subscribeWithPagination('pubsub_movie_timelines', find, options, per_page);
+	handle.fetch = function() {
+		var ourFind = _.isFunction(find) ? find() : find;
+		return limitDocuments(Movies.find(ourFind, options), handle.loaded());
+	}
+	return handle;
+};
+Deps.autorun(function(){
+	Meteor.subscribe('pubsub_movie_timelines_5');
+
+	movieTimelinesHandle = movieTimelinesSubscription(
+		movieTimelinesQuery( Session.get('search_text') ),
+		movieTimelineSort[ Session.get('movie_timeline_sort') ],
 		Meteor.MyClientModule.appConfig.pageLimit
 	);
 });

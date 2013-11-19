@@ -35,7 +35,25 @@ Router.map(function ()
 	this.route('tmpl_movie_add'           ,{path: '/movieAdd'});
 	this.route('tmpl_person_add'          ,{path: '/personAdd'});
 	this.route('tmpl_movie_favs'          ,{path: '/favs'});
-	this.route('tmpl_admin_stats'         ,{path: '/admin_stats'});
+//	this.route('tmpl_admin_stats'         ,{path: '/admin_stats'});
+
+	this.route('tmpl_admin_stats', {
+		path  : '/admin_stats',
+		waitOn: function ()
+		{
+			var user = Meteor.user();
+			if (! isAdmin(user)) {
+				throwError('You must be an Administrator to use the "tmpl_admin_stats" template');
+				return false;
+			}
+			return Meteor.subscribe('pubsub_movie_status_pending');
+		},
+		data  : function ()
+		{
+			var movie_pending_cnt = Movies.find({status: STATUS_PENDING}).count();
+			return {movie_pending_cnt: movie_pending_cnt};
+		}
+	});
 
 	this.route('tmpl_person_detail', {
 		path  : '/person/:_id',
@@ -101,7 +119,7 @@ Router.map(function ()
 		path  : '/sciFiMovies/timelines/:_id',
 		waitOn: function ()
 		{
-			updateClickCnt(MovieTimelines, this.params._id);
+			//updateClickCnt(MovieTimelines, this.params._id);
 			Session.set("is_example_timeline", false);
 			Session.set('selected_movie_id', this.params._id);
 			Meteor.subscribe('pubsub_selected_movie', this.params._id);
@@ -109,11 +127,7 @@ Router.map(function ()
 		},
 		data  : function ()
 		{
-			return MovieTimelines.find({movieId: this.params._id, userId: { $in: ["admin", Meteor.userId()] } } )
-				.map(function(movieTimeline) {
-					movieTimeline.createdAgo = moment(movieTimeline.created).startOf('hour').fromNow();
-					return movieTimeline;
-				});
+			return MovieTimelines.find({movieId: this.params._id, userId: { $in: ["admin", Meteor.userId()] } } );
 		}
 	});
 
@@ -170,7 +184,6 @@ Router.map(function ()
 		waitOn: function ()
 		{
 			updateClickCnt(MovieTimelines, this.params._id);
-			Session.set('selected_movie_id', this.params._id);
 			return Meteor.subscribe('pubsub_selected_movie_timeline', this.params._id);
 		},
 		data  : function ()

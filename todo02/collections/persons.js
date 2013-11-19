@@ -1,23 +1,37 @@
 Persons = new Meteor.Collection('coll_persons');
 /*------------------------------------------------------------------------------------------------------------------------------*/
-//STATUS_PENDING=1;
-//STATUS_APPROVED=2;
-//STATUS_REJECTED=3;
-/*------------------------------------------------------------------------------------------------------------------------------*/
+// Create a collection where users can only modify documents that
+// they own. Ownership is tracked by an 'userId' field on each
+// document. All documents must be owned by the user (or userId='admin') that created
+// them and ownership can't be changed. Only a document's owner (or userId='admin')
+// is allowed to delete it, and the 'locked' attribute can be
+// set on a document to prevent its accidental deletion.
+
 Persons.allow({
-	insert: canEditById
-	, update: canEditById
-	, remove: canEditById
+	insert: function (userId, doc) {
+		//return ownsDocumentOrAdmin(userId, doc);
+		return false;
+	},
+	update: function (userId, doc, fields, modifier) {
+		return ownsDocumentOrAdmin(userId, doc);
+	},
+	remove: function (userId, doc) {
+		return ownsDocumentOrAdmin(userId, doc);
+	},
+	fetch: ['userId']
 });
 
-//Persons.deny({
-//	update: function(userId, doc, fieldNames) {
-//		if(isAdminById(userId))
-//			return false;
-//		// may only edit the following fields:
-//		return (_.without(fieldNames, 'fieldname1').length > 0);
-//	}
-//});
+Persons.deny({
+	update: function (userId, docs, fields, modifier) {
+		// can't change owners
+		return _.contains(fields, 'userId');
+	},
+	remove: function (userId, doc) {
+		// can't remove locked documents
+		return doc.locked;
+	},
+	fetch: ['locked'] // no need to fetch 'userId'
+});
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Meteor.methods({
 	createPerson: function(properties){

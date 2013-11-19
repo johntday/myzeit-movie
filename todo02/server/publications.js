@@ -1,4 +1,3 @@
-
 /**
  * Notifications
  */
@@ -55,6 +54,14 @@ Meteor.publish('pubsub_selected_movie_timeline', function(id) {
 Meteor.publish('pubsub_selected_movie_timeline_alternateId', function(mymovie_id) {
 	return MovieTimelines.find({mymovie_id: mymovie_id});
 });
+Meteor.publish('pubsub_movie_timelines', function(query, options, limit) {
+	options = options || {};
+	options.limit = limit;
+	return MovieTimelines.find(query || {}, options);
+});
+Meteor.publish('pubsub_movie_timelines_5', function() {
+	return MovieTimelines.find({}, {sort:{title: 1},limit: 5});
+});
 
 /**
  * Facts
@@ -66,4 +73,11 @@ Meteor.publish('pubsub_movie_facts_list', function(query, options, limit) {
 });
 Meteor.publish('pubsub_selected_fact', function(id) {
 	return Facts.find(id);
+});
+
+/**
+ * Admin
+ */
+Meteor.publish('pubsub_movie_status_pending', function() {
+	return Movies.find({status: STATUS_PENDING});
 });

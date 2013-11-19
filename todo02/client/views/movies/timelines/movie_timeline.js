@@ -25,7 +25,8 @@ Template.tmplMovieTimelineList.events({
 			if (error)
 				throwError(error.reason);
 		});
-		Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
+		//Meteor.subscribe('pubsub_user_movie_timeline_list', Session.get('selected_movie_id'), Meteor.userId());
+		Router.go('/sciFiMovies/timelines/' + Session.get('selected_movie_id'));
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -129,11 +130,10 @@ Template.tmplMovieTimelineList.rendered = function() {
 	$( "#delete" ).click(function() {
 		MyLog("movie_timeline.js/$('#delete').click(function()/1", "doing timeline delete");
 
-		MovieTimelines.remove({
-			_id: myMovieTimeline._id
-		});
+		MovieTimelines.remove({_id: myMovieTimeline._id});
 
 		$(this).hide();
+		Router.go('/sciFiMovies/timelines/' + Session.get('selected_movie_id'));
 	});
 	$("#dropdown-icon > li").click(function(e) {
 		var iconId = $(this).data("iconName");
@@ -253,7 +253,6 @@ Template.tmplMovieTimelineList.rendered = function() {
 
 	//Meteor.MyClientModule.scrollToTopOfPageFast();
 };
-
 /**
  * LIST ITEM
  */
@@ -289,37 +288,69 @@ Template.tmplMovieTimelineItem.rendered = function(){
 		$this.css("top",  "0px").removeClass("invisible");
 	});
 };
-
 /**
  * DETAIL
  */
 Template.tmplMovieTimeline.helpers({
-	hasMineAndAdminTimeline: function() {
-		return true;
+	click_cnt: function() {
+		return (this.click_cnt) ? this.click_cnt : 0;
 	},
-	hasMineTimeline: function() {
-		return true;
+	favs_cnt: function() {
+		return (this.favs_cnt && this.favs_cnt > -1) ? this.favs_cnt : 0;
 	},
-	hasAdminTimeline: function() {
-		return true;
+	canEdit: function() {
+		return canEdit(Meteor.user(), this);
 	},
-	hasNoTimeline: function() {
-		return true;
-	}
-});
-Template.tmpl_movie_timeline_detail.helpers({
-	isAdmin: function() {
-		return isAdmin();
+	canEditAndEditToggleAdmin: function() {
+		return isAdmin(Meteor.user()) && Session.get('form_update');
 	},
-	isReadOnly: function() {
-		return Meteor.MyClientModule.isReadOnly();
+	isFav: function() {
+		return isFav(this.favs);
 	},
 	breadcrumbs: function() {
+		Meteor.MyClientModule.scrollToTopOfPageFast();
 		return {breadcrumbs: [
-			new Meteor.MyClientModule.Breadcrumb("home","/",false),
-			new Meteor.MyClientModule.Breadcrumb("SciFi","/sciFiMovies",false),
-			new Meteor.MyClientModule.Breadcrumb("crap","",true)
+			{title:"home", link:"/", isActive:false},
+			{title:"SciFi", link:"/sciFiMovies", isActive:false},
+			{title:this.title, link:"/sciFiMovies/"+this.movieId, isActive:false},
+			{title:"timeline", link:"", isActive:true}
 		]};
+	},
+	createdAgo: function() {
+		return moment(this.created).fromNow();
+	},
+	updatedAgo: function() {
+		return (this.updated) ? moment(this.updated).fromNow() : this.updated;
+	}
+});
+Template.tmplMovieTimeline.events({
+	'click #icon-heart': function(e) {
+		var user = Meteor.user();
+		if(!user){
+			throwError('You must login to add a timeline to your favorities');
+			return false;
+		}
+
+		if ( isFav(this.favs) ) {
+			MovieTimelines.update(this._id,
+				{
+					$pull: { favs: user._id },
+					$inc: { favs_cnt: -1 }
+				}
+			);
+			MyLog("movie_timeline.js/click #icon-heart/1", "remove from favs");
+		} else {
+			MovieTimelines.update(this._id,
+				{
+					$addToSet: { favs: user._id },
+					$inc: { favs_cnt: 1 }
+				}
+			);
+			MyLog("movie_timeline.js/click #icon-heart/1", "add to favs");
+		}
+	},
+	'click #btnEditMovie': function(e) {
+		Router.go('/sciFiMovies/timelines/'+this.movieId);
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -331,51 +362,21 @@ Template.tmplMovieTimeline.rendered = function() {
 
 	// Called when the Visualization API is loaded.
 	function drawVisualization() {
-//		movieTimelineData.forEach(function (movieTimeline) {
-//			data = movieTimeline.data;
-//		});
-
 		var options = {
 			width: "100%",
 			height: "300px",
-			editable: true,   // enable dragging and editing events
-			enableKeys: true,
 			axisOnTop: false,
 			showNavigation: true,
-			showButtonNew: true,
 			animate: true,
 			animateZoom: true,
-			layout: "box"
+			layout: "box",
+			editable: false, enableKeys: false, showButtonNew: false
 		};
 
 		timeline = new Meteor.MyTimelineModule.links.Timeline( $('#mytimeline')[0] );
 
-//		function onRangeChanged(properties) {
-//			$('#info')[0].innerHTML += 'rangechanged ' +
-//				properties.start + ' - ' + properties.end + '<br>';
-//		}
-		//Meteor.MyTimelineModule.links.events.addListener(timeline, 'rangechanged', onRangeChanged);
-
 		// Draw our timeline with the created data and options
 		timeline.draw(movieTimelineData, options);
 	};
-	//Meteor.MyClientModule.scrollToTopOfPageFast();
 };
 /*------------------------------------------------------------------------------------------------------------------------------*/
-Template.tmplMovieTimeline.events({
-	'click #create-movie-timeline': function(e, template) {
-		e.preventDefault();
-
-		var movieTimelineAttr = {
-			movieId: Session.get('selected_movie_id')
-		};
-
-		var movieTimelineId = Meteor.call('createMovieTimeline', movieTimelineAttr, function(error, movieTimelineId) {
-			if (error){
-				throwError(error.reason);
-			} else {
-				//$body.val('');
-			}
-		});
-	}
-});

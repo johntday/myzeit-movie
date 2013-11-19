@@ -6,12 +6,7 @@ Template.tmpl_movie_fact_item.helpers({
 		return canEdit(Meteor.user(), this);
 	},
 	statusDisplay: function() {
-		var s = _.find( getMovieStatusOptions(),
-			function(obj){
-				return (obj.id === this.status);
-			}
-		);
-		return (s) ? s.label : '';
+		return getMovieStatusLabel(this.status);
 	},
 	statusOptions: function() {
 		return getMovieStatusOptions();

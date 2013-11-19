@@ -103,16 +103,53 @@
 
 <!-- DETAIL -->
 <template name="tmplMovieTimeline">
+	{{> tmpl_breadcrumbs breadcrumbs}}
+	<div class="panel panel-purple">
+		<div class="panel-heading">
 
-	<h1>Movie Timeline</h1>
+			<h2 class="panel-title">{{title}}
+				<div class="pull-right" style="margin-top: -5px;">
+					{{glyphicon "heart" "heart-empty" "icon-heart" isFav "Add/remove from favs"}}
+				</div>
+			</h2>
+		</div>
+	</div>
+
+		<h1>Movie Timeline</h1>
 
 	<p class="lead">{{description}}</p>
 
 	<div id="mytimeline"></div>
 	<br/>
 
-	???
-	<button id="create-movie-diagram" type="button" class="btn btn-primary">Create New Movie Diagram</button>
+	<!--<button id="create-movie-diagram" type="button" class="btn btn-primary">Create New Movie Diagram</button>-->
+
+	<form class="add modal-nav-box box-hide form-horizontal" id="form_movie">
+		{{#if canEdit}}
+			<button type="button" class="btn btn-primary" id="btnEditMovie">Edit</button>
+		{{/if}}
+		{{#if isAdmin}}
+			{{form_input "_id" "_id" _id false}}
+		{{/if}}
+
+		{{form_static "Author" "author" author true}}
+		{{#if isAdmin}}
+			{{form_static "Author UserId" "userId" userId true}}
+		{{/if}}
+		{{form_static "Favs" "favs_cnt" favs_cnt true}}
+		{{form_static "Views" "click_cnt" click_cnt true}}
+		{{form_static "Created" "created" createdAgo false}}
+		{{form_static "Updated" "updated" updatedAgo false}}
+
+		<div class="form-group">
+			<div class="col-offset-2 col-sm-4">
+				{{#if canEditAndEditToggle}}
+				<button type="button" class="btn btn-primary" id="btnUpdateMovie">Update</button>
+				<button type="button" class="btn btn-danger" id="btnDeleteMovie">Delete</button>
+				{{/if}}
+			</div>
+		</div>
+	</form>
 
 </template>
 

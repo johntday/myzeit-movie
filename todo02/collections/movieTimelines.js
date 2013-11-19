@@ -41,18 +41,11 @@ Meteor.methods({
 		if (!user)
 			throw new Meteor.Error(401, "You need to login to create a Movie Timeline");
 
-		// validate data
-//		if (!movieTimelineAttr.data)
-//			throw new Meteor.Error(422, 'Your Movie Timeline is empty');
+		var m = Movies.findOne( movieTimelineAttr.movieId, {fields: {title: 1}} );
+		var title = (m && m.title) ? m.title : 'Unknown';
 
-		// check that there are no previous posts with the same link
-		//		if (movieTimelineAttr.url && postWithSameLink) {
-		//			throw new Meteor.Error(302,
-		//				'This link has already been posted',
-		//				postWithSameLink._id);
-		//		}
-
-		var movieTimeline = _.extend(_.pick(movieTimelineAttr, 'movieId'), {
+		var movieTimeline = _.extend(movieTimelineAttr, {
+			title: title,
 			description: "My Movie Timeline Description",
 			data: [
 				{
@@ -62,10 +55,7 @@ Meteor.methods({
 			],
 			userId: (isAdmin()) ? "admin" : user._id,
 			author: user.username,
-			created: new Date().getTime(),
-			comment_count: 0,
-			upvoters: [],
-			vote_count: 0
+			created: getNow()
 		});
 
 		var movieTimelineId = MovieTimelines.insert(movieTimeline);

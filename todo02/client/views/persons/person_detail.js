@@ -32,6 +32,18 @@ Template.tmpl_person_detail.helpers({
 	},
 	movieLink: function() {
 		return "/sciFiMovies/" + this._id;
+	},
+	click_cnt: function() {
+		return (this.click_cnt) ? this.click_cnt : 0;
+	},
+	isFav: function() {
+		return isFav(this.favs);
+	},
+	click_cnt: function() {
+		return (this.click_cnt) ? this.click_cnt : 0;
+	},
+	favs_cnt: function() {
+		return (this.favs_cnt && this.favs_cnt > -1) ? this.favs_cnt : 0;
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -56,6 +68,32 @@ Template.tmpl_person_detail.events({
 				Session.set('form_update', false);
 			}
 		});
+	},
+
+	'click #icon-heart': function(e) {
+		var user = Meteor.user();
+		if(!user){
+			throwError('You must login to add a person to your favorities');
+			return false;
+		}
+
+		if ( isFav(this.favs) ) {
+			Persons.update(this._id,
+				{
+					$pull: { favs: user._id },
+					$inc: { favs_cnt: -1 }
+				}
+			);
+			MyLog("person_details.js/click #icon-heart/1", "remove from favs");
+		} else {
+			Persons.update(this._id,
+				{
+					$addToSet: { favs: user._id },
+					$inc: { favs_cnt: 1 }
+				}
+			);
+			MyLog("person_details.js/click #icon-heart/1", "add to favs");
+		}
 	},
 
 	'click #btnEditToggle': function(e) {
@@ -103,11 +141,12 @@ Template.tmpl_person_detail.events({
 //				Router.go('/person/'+_id);
 //			}
 //		});
-		Persons.update({
-			_id: this._id
-		}, {
-			$set: properties
-		});
+		//???
+//		Persons.update({
+//			_id: this._id
+//		}, {
+//			$set: properties
+//		});
 		Session.set('form_update', false);
 		MyLog("person_details.js/1", "updated person", {'_id': this._id, 'name': this.name});
 		//Router.go('/person/'+this._id);

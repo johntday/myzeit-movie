@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-	var ROTTENTOMATOE = false;
+	var ROTTENTOMATOE = true;
 
 	// DEFAULT USERS
 	var u = Meteor.users.findOne({username: "admin"}); // find the admin user
@@ -9216,6 +9216,7 @@ Meteor.startup(function () {
 
 		var movieTimelines = [
 			{
+				title: "2001: A Space Odyssey",
 				mymovie_id: "2001_a_space_odyssey",
 				movieId: testId,
 				userId: "admin",

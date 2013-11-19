@@ -33,8 +33,24 @@ Template.tmplMovieDetail.helpers({
 	isFav: function() {
 		return isFav(this.favs);
 	},
+	hasSeen: function() {
+		return hasSeen(this.seen);
+	},
 	smallPoster: function() {
 		return (this.posters && this.posters.detailed) ? this.posters.detailed : "/img/notfound.png";
+	},
+	critics_score: function() {
+		if (!this.ratings || !this.ratings.critics_score || this.ratings.critics_score === -1) return 'NA';
+		return this.ratings.critics_score+'%';
+	},
+	click_cnt: function() {
+		return (this.click_cnt) ? this.click_cnt : 0;
+	},
+	favs_cnt: function() {
+		return (this.favs_cnt && this.favs_cnt > -1) ? this.favs_cnt : 0;
+	},
+	seen_cnt: function() {
+		return (this.seen_cnt && this.seen_cnt > -1) ? this.seen_cnt : 0;
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -83,6 +99,22 @@ Template.tmplMovieDetail.events({
 				}
 			);
 			MyLog("movie_details.js/click #icon-heart/1", "add to favs");
+		}
+	},
+
+	'click #icon-eye': function(e) {
+		var user = Meteor.user();
+		if(!user){
+			throwError('You must login to add a movie to your "seen it" list');
+			return false;
+		}
+
+		if ( hasSeen(this.seen) ) {
+			Movies.update(this._id, { $pull: { seen: user._id }, $inc: { seen_cnt: -1 } } );
+			MyLog("movie_details.js/click #icon-eye/2", "remove from seen");
+		} else {
+			Movies.update(this._id, { $addToSet: { seen: user._id }, $inc: { seen_cnt: 1 } } );
+			MyLog("movie_details.js/click #icon-eye/1", "remove from seen");
 		}
 	},
 
@@ -166,6 +198,20 @@ Template.tmplMovieDetail.rendered = function() {
 		autoclose: true,
 		todayHighlight: true
 	});
+
+//	$("#seen-it").change(function() {
+//		var hasSeenIt = $("input[name='seen-it']:checked").attr('id');
+//		if (hasSeenIt) {
+//			if (hasSeenIt === 'true')
+//				Movies.update(_id, { $addToSet: { seen: userId }, $inc: { seen_cnt: 1 } } );
+//			else if (hasSeenIt === 'false')
+//				Movies.update(_id, { $pull: { seen: userId }, $inc: { seen_cnt: -1 } } );
+//		}
+//	});
+//
+//	$("#want-to-see-it").change(function() {
+//		var hasWantToSeeIt = $("input[name='want-to-see-it']:checked").attr('id');
+//	});
 
 	if ( Session.get('form_update') ) {
 		$("#btnEditToggle").addClass("active");

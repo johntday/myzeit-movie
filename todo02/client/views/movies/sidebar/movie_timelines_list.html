@@ -1,0 +1,33 @@
+<template name="tmpl_movie_tl_list">
+	<div class="posts">
+		<ol>
+        {{#each movies}}
+			{{> tmpl_movie_tl_item}}
+        {{/each}}
+
+        {{#if isMoreMovies}}
+			<a href="/movieTimelineList">See them all</a></li>
+        {{/if}}
+		</ol>
+    </div>
+</template>
+
+<template name="tmpl_movie_tl_item">
+	<li>
+		<a href="/movieTimeline/{{_id}}">{{title}} ({{author}})</a>
+	</li>
+</template>
+
+
+<template name="tmpl_movie_tl_summary">
+	<div class="panel panel-purple">
+		<div class="panel-heading">
+			<h3 class="panel-title">Top Movie Timelines</h3>
+		</div>
+		<div class="panel-body">
+
+			{{> tmpl_movie_tl_list}}
+
+		</div>
+	</div>
+</template>

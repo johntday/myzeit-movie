@@ -9,8 +9,16 @@
 				<h4 class="media-heading">{{title}}</h4>
 				<span>{{yearDisplay}}</span><br/>
 				{{#if isFav}}
-					<span class="glyphicon glyphicon-heart"></span>
+					<span class="glyphicon glyphicon-heart" title="my fav"></span>
 				{{/if}}
+				{{#if hasSeen}}
+					<span class="glyphicon glyphicon-eye-open" title="Seen it"></span>
+				{{/if}}
+				<p><strong>rating:</strong>{{critics_score}}
+					<strong>views:</strong>{{click_cnt}}
+					<strong>favs:</strong>{{favs_cnt}}
+					<strong>seen:</strong>{{seen_cnt}}
+				</p>
 			</div>
 		</div>
 	</div>

@@ -7,6 +7,12 @@ Template.tmpl_person_item.helpers({
 	},
 	personLink: function() {
 		return "/person/" + this._id;
+	},
+	click_cnt: function() {
+		return (this.click_cnt) ? this.click_cnt : 0;
+	},
+	favs_cnt: function() {
+		return (this.favs_cnt && this.favs_cnt > -1) ? this.favs_cnt : 0;
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -37,13 +43,13 @@ Template.tmpl_person_item.helpers({
 //	});
 //};
 /*------------------------------------------------------------------------------------------------------------------------------*/
-Template.tmpl_person_item.events({
-	'click .upvotable': function(e) {
-		e.preventDefault();
-		Meteor.call('upvote', this._id);
-	}
-});
-
-Template.tmpl_person_item.preserve({
-	'.post': function (node) {return node.id; }
-});
+//Template.tmpl_person_item.events({
+//	'click .upvotable': function(e) {
+//		e.preventDefault();
+//		Meteor.call('upvote', this._id);
+//	}
+//});
+//
+//Template.tmpl_person_item.preserve({
+//	'.post': function (node) {return node.id; }
+//});

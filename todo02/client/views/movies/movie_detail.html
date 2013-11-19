@@ -15,6 +15,8 @@
 			<h2 class="panel-title">{{title}}
 				<div class="pull-right" style="margin-top: -5px;">
 					{{glyphicon "heart" "heart-empty" "icon-heart" isFav "Add/remove from favs"}}
+					&nbsp;&nbsp;&nbsp;
+					{{glyphicon "eye-open" "eye-close" "icon-eye" hasSeen "Seen the movie"}}
 					{{#if canEdit}}
 						<button type="button" class="btn btn-default btn-sm" id="btnEditToggle">&nbsp;&nbsp;Edit&nbsp;&nbsp;</button>
 					{{/if}}
@@ -23,7 +25,47 @@
 			</h2>
 		</div>
 		<div class="panel-body">
-			<img src="{{smallPoster}}" title="{{title}}" />
+
+			<!--<div class="row">-->
+				<!--<div class="col-sm-3">-->
+					<img src="{{smallPoster}}" title="{{title}}" />
+				<!--</div>-->
+				<!--<div class="col-sm-1">-->
+				<!--</div>-->
+				<!--<div class="col-sm-7">-->
+					<!--<form class="add modal-nav-box box-hide form-horizontal" id="form_seen_it">-->
+						<!--<div class="form-group row">-->
+							<!--<label class="col-sm-4 control-label" for="seen-it">Seen it</label>-->
+							<!--<div class="col-sm-8">-->
+								<!--<div class="btn-group" data-toggle="buttons" id="seen-it">-->
+									<!--<label class="btn btn-primary">-->
+										<!--<input type="radio" name="seen-it" id="true"> Yes-->
+									<!--</label>-->
+									<!--<label class="btn btn-primary">-->
+										<!--<input type="radio" name="seen-it" id="false"> No&nbsp;-->
+									<!--</label>-->
+								<!--</div>-->
+							<!--</div>&lt;!&ndash; col &ndash;&gt;-->
+						<!--</div>&lt;!&ndash; row &ndash;&gt;-->
+
+						<!--<div class="form-group row">-->
+							<!--<label class="col-sm-4 control-label" for="want-to-see-it">Want to see it</label>-->
+							<!--<div class="col-sm-8">-->
+								<!--<div class="btn-group" data-toggle="buttons" id="want-to-see-it">-->
+									<!--<label class="btn btn-primary">-->
+										<!--<input type="radio" name="want-to-see-it" id="true"> Yes-->
+									<!--</label>-->
+									<!--<label class="btn btn-primary">-->
+										<!--<input type="radio" name="want-to-see-it" id="false"> No&nbsp;-->
+									<!--</label>-->
+								<!--</div>-->
+							<!--</div>&lt;!&ndash; col &ndash;&gt;-->
+						<!--</div>&lt;!&ndash; row &ndash;&gt;-->
+
+					<!--</form>-->
+				<!--</div>&lt;!&ndash; col &ndash;&gt;-->
+			<!--</div>&lt;!&ndash; row &ndash;&gt;-->
+
 
 			<form class="add modal-nav-box box-hide form-horizontal" id="form_movie">
 
@@ -31,7 +73,6 @@
 					{{form_input "_id" "_id" _id false}}
 				{{/if}}
 
-				<!-- COMMON FIELDS -->
 				{{form_input "Title" "title" title canEditAndEditToggle true}}
 				{{form_input "Year" "year" year canEditAndEditToggle false}}
 				{{form_date "Release Date" "release_date" formattedReleaseDate canEditAndEditToggle true}}
@@ -47,6 +88,10 @@
 				{{#if isAdmin}}
 					{{form_static "Author UserId" "userId" userId true}}
 				{{/if}}
+				{{form_static "Favs" "favs_cnt" favs_cnt true}}
+				{{form_static "Views" "click_cnt" click_cnt true}}
+				{{form_static "Seen" "seen_cnt" seen_cnt true}}
+				{{form_static "Rating" "critics_score" critics_score true}}
 				{{form_static "Created" "created" createdAgo false}}
 				{{form_static "Updated" "updated" updatedAgo false}}
 				{{#if canEdit}} {{form_select "Status" "status" status statusOptions "" canEditAndEditToggleAdmin true}} {{/if}}

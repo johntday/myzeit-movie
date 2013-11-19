@@ -7,14 +7,14 @@
 
 	<div class="panel panel-purple">
 		<div class="panel-heading">
-
 			<h2 class="panel-title">{{name}}
-				{{#if canEdit}}
 				<div class="pull-right" style="margin-top: -5px;">
+					{{glyphicon "heart" "heart-empty" "icon-heart" isFav "Add/remove from favs"}}
+					{{#if canEdit}}
 					<button type="button" class="btn btn-default btn-sm" id="btnEditToggle">&nbsp;&nbsp;Edit&nbsp;&nbsp;</button>
+					{{/if}}
 				</div>
-				{{/if}}
-		<!--<div class="clearfix"></div>-->
+				<!--<div class="clearfix"></div>-->
 			</h2>
 		</div>
 		<div class="panel-body">
@@ -34,6 +34,8 @@
 				{{#if isAdmin}}
 					{{form_static "Author UserId" "userId" userId true}}
 				{{/if}}
+				{{form_static "Favs" "favs_cnt" favs_cnt true}}
+				{{form_static "Clicks" "click_cnt" click_cnt true}}
 				{{form_static "Created" "created" createdAgo false}}
 				{{form_static "Updated" "updated" updatedAgo false}}
 

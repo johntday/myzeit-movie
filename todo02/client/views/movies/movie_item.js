@@ -8,8 +8,35 @@ Template.tmplMovieItem.helpers({
 	isFav: function() {
 		return isFav(this.favs);
 	},
+	hasSeen: function() {
+		return hasSeen(this.seen);
+	},
 	yearDisplay: function() {
-		return (this.year && this.year != -1) ? this.year : "";
+		if (this.year && this.year != -1)
+			return this.year;
+		if (this.release_date)
+			return this.release_date.substring(0,4);
+		else
+			'';
+	},
+	isAdmin: function() {
+		return isAdmin(Meteor.user());
+	},
+	critics_score: function() {
+		if (!this.ratings || !this.ratings.critics_score || this.ratings.critics_score === -1) return 'NA';
+		return this.ratings.critics_score+'%';
+	},
+	click_cnt: function() {
+		return (this.click_cnt) ? this.click_cnt : 0;
+	},
+	statusLabel: function() {
+		return getMovieStatusLabel(this.status);
+	},
+	favs_cnt: function() {
+		return (this.favs_cnt && this.favs_cnt > -1) ? this.favs_cnt : 0;
+	},
+	seen_cnt: function() {
+		return (this.seen_cnt && this.seen_cnt > -1) ? this.seen_cnt : 0;
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -40,9 +67,3 @@ Template.tmplMovieItem.helpers({
 //	});
 //};
 /*------------------------------------------------------------------------------------------------------------------------------*/
-Template.tmplMovieItem.events({
-	'click .upvotable': function(e) {
-		e.preventDefault();
-		Meteor.call('upvote', this._id);
-	}
-});

@@ -176,10 +176,20 @@ Meteor.methods({
 			{ $addToSet: { favs: userId }, $inc: { favs_cnt: 1 } }
 		);
 	},
-
 	deleteFavUser: function(_id, userId){
 		Movies.update(_id,
 			{ $pull: { favs: userId }, $inc: { favs_cnt: -1 } }
+		);
+	},
+
+	addSeenUser: function(_id, userId){
+		Movies.update(_id,
+			{ $addToSet: { seen: userId }, $inc: { seen_cnt: 1 } }
+		);
+	},
+	deleteSeenUser: function(_id, userId){
+		Movies.update(_id,
+			{ $pull: { seen: userId }, $inc: { seen_cnt: -1 } }
 		);
 	}
 

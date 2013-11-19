@@ -4,7 +4,7 @@ Meteor.methods({
 		//			check(userId, String);
 		this.unblock();
 		try {
-			console.log("q='"+q+"'");
+			MyLog('getMovieFromRottenTomatoes', 'q', q);
 			var apikey = "9gxg34a7w2efakdhxmepxm8e";
 			var page_limit = 1;
 			var page = 1;

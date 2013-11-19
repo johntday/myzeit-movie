@@ -23,10 +23,18 @@ getMpaaOptions = function() {
 	return [{id:'G',label:'G'},{id:'PG',label:'PG'},{id:'PG-13',label:'PG-13'},{id:'R',label:'R'},{id:'NC-17',label:'NC-17'},{id:'M',label:'M'},{id:'X',label:'X'},{id:'Unrated',label:'Not Rated'}];
 };
 getMovieSortingOptions = function() {
-	return [{id:'title',label:'title'},{id:'release_date',label:'release date'},{id:'click_cnt',label:'most viewed'},{id:'critics_score',label:'top rated'}];
+	return [{id:'title',label:'title'},{id:'release_date',label:'release date'},{id:'click_cnt',label:'most viewed'},{id:'critics_score',label:'top rated'},{id:'favs_cnt',label:'most favs'},{id:'seen_cnt',label:'most seen'}];
 };
 getMovieStatusOptions = function() {
 	return [{id:STATUS_PENDING,label:'Pending'},{id:STATUS_APPROVED,label:'Approved'},{id:STATUS_REJECTED,label:'Rejected'}];
+};
+getMovieStatusLabel = function(status_id) {
+	var s = _.find( getMovieStatusOptions(),
+		function(obj){
+			return (obj.id === status_id);
+		}
+	);
+	return (s) ? s.label : '';
 };
 formatReleaseDateForDisplay = function(textDate/*YYYY-MM-DD*/) {
 	if (! textDate)
@@ -42,6 +50,11 @@ isFav = function(favs) {
 	var user = Meteor.user();
 	if(!user) return false;
 	return _.contains(favs, user._id);
+};
+hasSeen = function(seen) {
+	var user = Meteor.user();
+	if(!user) return false;
+	return _.contains(seen, user._id);
 };
 getSetting = function(view, name, valueDefault) {
 	var user = Meteor.user();

@@ -2,32 +2,45 @@ regexQuery = function (searchText) {
 	return {$regex: searchText, $options: 'i'};
 };
 sortQuery = function (sortProperty, sortOrder) {
+	var args = Array.prototype.slice.call(arguments, 0);
 	var sort = {sort: {}};
-	sort.sort[sortProperty] = sortOrder;
-	console.log('sort', sort);
+
+	for (var i=0; i < args.length; i++) {
+		sort.sort[args[i]] = args[++i];
+	}
+	//sort.sort[sortProperty] = sortOrder;
 	return sort;
 };
 movieSort = {
-	title: sortQuery('title', 1)
+	title: sortQuery('title', 1, 'release_date', -1)
 	, release_date: sortQuery('release_date', -1)
-	, click_cnt: sortQuery('click_cnt', -1)
-	, critics_score: sortQuery('critics_score', -1)
+	, click_cnt: sortQuery('click_cnt', -1, '_id', 1)
+	, critics_score: sortQuery('ratings.critics_score', -1, 'click_cnt', -1, '_id', 1)
+	, favs_cnt: sortQuery('favs_cnt', -1, 'click_cnt', -1, '_id', 1)
+	, seen_cnt: sortQuery('seen_cnt', -1, 'click_cnt', -1, '_id', 1)
 };
 factsSort = {
 	created: sortQuery('created', -1)
 	, click_cnt: sortQuery('click_cnt', -1)
 };
-movieQuery = function(searchText) {
+movieTimelineSort = {
+	title: sortQuery('_id', 1)
+};
+movieQuery = function(searchText, status) {
 	return (searchText) ? {title: regexQuery(searchText)} : {};
 };
 favsQuery = function(searchText) {
-	return (searchText) ? {favs: Meteor.userId(), title: regexQuery(searchText)} : {favs: Meteor.userId()};
+	var userId = Meteor.userId();
+	return (searchText) ? {favs: Meteor.userId(), title: regexQuery(searchText)} : {favs: ((userId) ? userId : "0")};
 };
 personQuery = function(searchText) {
 	return (searchText) ? {name: regexQuery(searchText)} : {};
 };
 factsQuery = function(movieId) {
 	return (movieId) ? {movieId: movieId, status: {$lt:STATUS_REJECTED}} : {};
+};
+movieTimelinesQuery = function() {
+	return {};
 };
 
 // build find query object
