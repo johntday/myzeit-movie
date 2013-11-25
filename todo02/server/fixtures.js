@@ -1,6 +1,4 @@
 Meteor.startup(function () {
-	var ROTTENTOMATOE = true;
-
 	// DEFAULT USERS
 	var u = Meteor.users.findOne({username: "admin"}); // find the admin user
 	if(!u) {

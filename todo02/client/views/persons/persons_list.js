@@ -25,6 +25,32 @@ Template.tmpl_persons_list.helpers({
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
+Template.tmpl_person_sort_select.helpers({
+	breadcrumbs: function() {
+		return [
+			{title:"home", link:"/", isActive:false},
+			{title:"People", link:"/persons", isActive:true}
+		];
+	},
+	option_value: function() {
+		return Session.get('person_sort');
+	},
+	options: function() {
+		return getPersonSortingOptions();
+	}
+});
+Template.tmpl_person_sort_select.events({
+	'click #person-sort': function(e) {
+		e.preventDefault();
+		var $selector = $('#person-sort');
+		if ( Session.get('person-sort') !== $selector.val() ) {
+			Session.set('person-sort', $selector.val());
+			Router.go('/persons');
+		}
+		$selector = null;
+	}
+});
+/*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmpl_persons_list.events({
 	'click #persons.load-more': function(e) {
 		e.preventDefault();

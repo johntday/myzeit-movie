@@ -1,0 +1,22 @@
+<template name="tmplTimelineItem">
+
+	<div class="post">
+		<div class="media">
+			<a class="pull-left" href="{{timelineLink}}">
+				<img class="media-object" src="{{thumbnail}}" alt="thumbnail poster">
+			</a>
+			<div class="media-body">
+				<h4 class="media-heading">{{title}}</h4>
+				<span>{{description}}</span><br/>
+				{{#if isFav}}
+					<span class="glyphicon glyphicon-heart" title="my fav"></span>
+				{{/if}}
+				<p>
+					<strong>views:</strong>{{click_cnt}}
+					<strong>favs:</strong>{{favs_cnt}}
+				</p>
+			</div>
+		</div>
+	</div>
+
+</template>

@@ -1,6 +1,3 @@
-var isMyDebug = false;
-testUsernames = ['admin','keira','sophia','quentin','jeanette'];
-
 MyLog = function(codePath, name, object) {
 	if (isMyDebug) {
 		if (object)
@@ -24,6 +21,15 @@ getMpaaOptions = function() {
 };
 getMovieSortingOptions = function() {
 	return [{id:'title',label:'title'},{id:'release_date',label:'release date'},{id:'click_cnt',label:'most viewed'},{id:'critics_score',label:'top rated'},{id:'favs_cnt',label:'most favs'},{id:'seen_cnt',label:'most seen'}];
+};
+getTimelineSortingOptions = function() {
+	return [{id:'title',label:'title'}];
+};
+getPersonSortingOptions = function() {
+	return [{id:'name',label:'name'},{id:'click_cnt',label:'most viewed'},{id:'favs_cnt',label:'most favs'}];
+};
+getUserSortingOptions = function() {
+	return [{id:'username',label:'username'}];
 };
 getMovieStatusOptions = function() {
 	return [{id:STATUS_PENDING,label:'Pending'},{id:STATUS_APPROVED,label:'Approved'},{id:STATUS_REJECTED,label:'Rejected'}];

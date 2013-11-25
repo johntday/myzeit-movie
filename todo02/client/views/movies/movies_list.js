@@ -7,7 +7,7 @@ Template.tmpl_movie_sort_select.helpers({
 	breadcrumbs: function() {
 		return [
 			{title:"home", link:"/", isActive:false},
-			{title:"SciFi", link:"/sciFiMovies", isActive:true}
+			{title:"Movies", link:"/sciFiMovies", isActive:true}
 		];
 	},
 	option_value: function() {

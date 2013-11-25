@@ -23,9 +23,8 @@ Meteor.publish('pubsub_movie_favs', function(query, options, limit) {
 	return Movies.find(query || {}, options);
 });
 Meteor.publish('pubsub_movie_favs_5', function() {
-	return Movies.find({favs: this.userId}, {limit: 5});
+	return Movies.find({favs: this.userId}, findOptions(movieSort['title'], 5) );
 });
-
 Meteor.publish('pubsub_selected_movie_alternateId', function(mymovie_id) {
 	return Movies.find({mymovie_id: mymovie_id});
 });
@@ -74,6 +73,16 @@ Meteor.publish('pubsub_movie_facts_list', function(query, options, limit) {
 Meteor.publish('pubsub_selected_fact', function(id) {
 	return Facts.find(id);
 });
+
+/**
+ * Users
+ */
+Meteor.publish('pubsub_users_list', function(query, options, limit) {
+	options = options || {};
+	options.limit = limit;
+	return Meteor.users.find(query || {}, options);
+});
+
 
 /**
  * Admin

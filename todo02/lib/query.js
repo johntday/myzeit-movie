@@ -8,7 +8,6 @@ sortQuery = function (sortProperty, sortOrder) {
 	for (var i=0; i < args.length; i++) {
 		sort.sort[args[i]] = args[++i];
 	}
-	//sort.sort[sortProperty] = sortOrder;
 	return sort;
 };
 movieSort = {
@@ -19,12 +18,23 @@ movieSort = {
 	, favs_cnt: sortQuery('favs_cnt', -1, 'click_cnt', -1, '_id', 1)
 	, seen_cnt: sortQuery('seen_cnt', -1, 'click_cnt', -1, '_id', 1)
 };
+personSort = {
+	name: sortQuery('name', 1, '_id', 1)
+	, click_cnt: sortQuery('click_cnt', -1, '_id', 1)
+	, favs_cnt: sortQuery('favs_cnt', -1, 'click_cnt', -1, '_id', 1)
+};
 factsSort = {
 	created: sortQuery('created', -1)
 	, click_cnt: sortQuery('click_cnt', -1)
 };
 movieTimelineSort = {
 	title: sortQuery('_id', 1)
+};
+usersSort = {
+	username: sortQuery('username', 1)
+};
+findOptions = function(sort, limit) {
+	return (limit) ? _.extend(sort, {limit:limit}) : sort;
 };
 movieQuery = function(searchText, status) {
 	return (searchText) ? {title: regexQuery(searchText)} : {};
@@ -41,6 +51,9 @@ factsQuery = function(movieId) {
 };
 movieTimelinesQuery = function() {
 	return {};
+};
+usersQuery = function(searchText) {
+	return (searchText) ? {username: regexQuery(searchText)} : {};
 };
 
 // build find query object

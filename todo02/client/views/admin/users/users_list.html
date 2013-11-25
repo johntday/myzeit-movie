@@ -1,0 +1,46 @@
+<template name="tmplUsersList">
+	<div class="posts">
+        {{#each users}}
+	        {{> tmplUserItem}}
+        {{/each}}
+
+        {{#if ready}}
+	        {{#unless allLoaded}}
+				<a class="load-more" href="#">Load more</a>
+	        {{/unless}}
+	    {{else}}
+		    <div>{{> spinner}}</div>
+        {{/if}}
+    </div>
+</template>
+
+<template name="tmplSortedUsers">
+	<ul class="nav nav-tabs nav-justified">
+		<li class="active"><a href="#">Users</a></li>
+		<li><a href="/admin/stats">Stats</a></li>
+	</ul>
+
+	{{> tmpl_user_sort_select}}
+
+	{{> tmplUsersList usersHandle}}
+</template>
+
+<template name="tmpl_user_sort_select">
+	<div class="row">
+		<div class="col-sm-8">
+			<ol class="breadcrumb">
+				{{#each breadcrumbs}}
+				{{#if isActive}}
+				<li class="active">{{title}}</li>
+				{{else}}
+				<li><a href="{{link}}">{{title}}</a></li>
+				{{/if}}
+				{{/each}}
+			</ol>
+		</div>
+
+		<div class="col-sm-4">
+			{{form_options option_value options "user-sort"}}
+		</div>
+	</div>
+</template>

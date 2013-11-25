@@ -1,0 +1,2 @@
+isMyDebug = true;
+ROTTENTOMATOE = true;

@@ -9,9 +9,11 @@ Session.setDefault('breadcrumbs', null);
 Session.setDefault('has_sidebar', true);
 Session.setDefault('is_example_timeline', false);
 Session.setDefault('movie_sort', 'title');
+Session.setDefault('person_sort', 'name');
 Session.setDefault('favs_sort', 'title');
 Session.setDefault('facts_sort', 'click_cnt');
 Session.setDefault('movie_timeline_sort', 'title');
+Session.setDefault('user_sort', 'username');
 /*------------------------------------------------------------------------------------------------------------------------------*/
 /**
  * Notifications
@@ -34,7 +36,7 @@ personListSubscription = function(find, options, per_page) {
 Deps.autorun(function(){
 	personsHandle = personListSubscription(
 		personQuery( Session.get('search_text') ),
-		sortQuery('name', 1),
+		personSort[ Session.get('person_sort') ],
 		Meteor.MyClientModule.appConfig.pageLimit
 	);
 });
@@ -99,7 +101,7 @@ movieTimelinesSubscription = function(find, options, per_page) {
 	var handle = Meteor.subscribeWithPagination('pubsub_movie_timelines', find, options, per_page);
 	handle.fetch = function() {
 		var ourFind = _.isFunction(find) ? find() : find;
-		return limitDocuments(Movies.find(ourFind, options), handle.loaded());
+		return limitDocuments(MovieTimelines.find(ourFind, options), handle.loaded());
 	}
 	return handle;
 };
@@ -112,6 +114,28 @@ Deps.autorun(function(){
 		Meteor.MyClientModule.appConfig.pageLimit
 	);
 });
+
+/**
+ * Users
+ */
+usersSubscription = function(find, options, per_page) {
+	var handle = Meteor.subscribeWithPagination('pubsub_users_list', find, options, per_page);
+	handle.fetch = function() {
+		var ourFind = _.isFunction(find) ? find() : find;
+		return limitDocuments(Meteor.users.find(ourFind, options), handle.loaded());
+	}
+	return handle;
+};
+Deps.autorun(function(){
+	if(Meteor.userId() != null && isAdmin(Meteor.user())) {
+		usersHandle = usersSubscription(
+			usersQuery( Session.get('search_text') ),
+			usersSort[ Session.get('user_sort') ],
+			Meteor.MyClientModule.appConfig.pageLimit
+		);
+	}
+});
+
 
 /**
  * layout template JS

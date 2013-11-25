@@ -28,17 +28,18 @@ Router.map(function ()
 	this.route('tmplHome'                 ,{path: '/'});
 	this.route('tmplSortedMovies'         ,{path: '/sciFiMovies'});
 	this.route('tmpl_sorted_persons_list' ,{path: '/persons'});
+	this.route('tmpl_sorted_timeline_list',{path: '/timelines'});
 	this.route('tmpl_about'               ,{path: '/about'});
 	this.route('tmpl_help'                ,{path: '/help'});
 	this.route('tmpl_settings'            ,{path: '/settings'});
-	this.route('tmpl_users_manage'        ,{path: '/usersManage'});
+	this.route('tmplSortedUsers'          ,{path: '/admin/users'});
 	this.route('tmpl_movie_add'           ,{path: '/movieAdd'});
 	this.route('tmpl_person_add'          ,{path: '/personAdd'});
 	this.route('tmpl_movie_favs'          ,{path: '/favs'});
 //	this.route('tmpl_admin_stats'         ,{path: '/admin_stats'});
 
 	this.route('tmpl_admin_stats', {
-		path  : '/admin_stats',
+		path  : '/admin/stats',
 		waitOn: function ()
 		{
 			var user = Meteor.user();
