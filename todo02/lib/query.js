@@ -13,15 +13,15 @@ sortQuery = function (sortProperty, sortOrder) {
 movieSort = {
 	title: sortQuery('title', 1, 'release_date', -1)
 	, release_date: sortQuery('release_date', -1)
-	, click_cnt: sortQuery('click_cnt', -1, '_id', 1)
-	, critics_score: sortQuery('ratings.critics_score', -1, 'click_cnt', -1, '_id', 1)
-	, favs_cnt: sortQuery('favs_cnt', -1, 'click_cnt', -1, '_id', 1)
-	, seen_cnt: sortQuery('seen_cnt', -1, 'click_cnt', -1, '_id', 1)
+	, click_cnt: sortQuery('click_cnt', -1, 'title', 1)
+	, critics_score: sortQuery('ratings.critics_score', -1, 'click_cnt', -1, 'title', 1)
+	, favs_cnt: sortQuery('favs_cnt', -1, 'click_cnt', -1, 'title', 1)
+	, seen_cnt: sortQuery('seen_cnt', -1, 'click_cnt', -1, 'title', 1)
 };
 personSort = {
 	name: sortQuery('name', 1, '_id', 1)
-	, click_cnt: sortQuery('click_cnt', -1, '_id', 1)
-	, favs_cnt: sortQuery('favs_cnt', -1, 'click_cnt', -1, '_id', 1)
+	, click_cnt: sortQuery('click_cnt', -1, 'name', 1)
+	, favs_cnt: sortQuery('favs_cnt', -1, 'click_cnt', -1, 'name', 1)
 };
 factsSort = {
 	created: sortQuery('created', -1)
@@ -49,8 +49,8 @@ personQuery = function(searchText) {
 factsQuery = function(movieId) {
 	return (movieId) ? {movieId: movieId, status: {$lt:STATUS_REJECTED}} : {};
 };
-movieTimelinesQuery = function() {
-	return {};
+movieTimelinesQuery = function(searchText) {
+	return (searchText) ? {title: regexQuery(searchText)} : {};
 };
 usersQuery = function(searchText) {
 	return (searchText) ? {username: regexQuery(searchText)} : {};

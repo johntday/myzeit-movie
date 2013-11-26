@@ -1,6 +1,6 @@
 Template.tmplTimelineItem.helpers({
     thumbnail: function() {
-	    return (this.posters && this.posters.thumbnail) ? this.posters.thumbnail : "/img/notfound.png";
+	    return "/img/timeline-thumb.png";
     },
 	timelineLink: function() {
 		return "/movieTimeline/" + this._id;

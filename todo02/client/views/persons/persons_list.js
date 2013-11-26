@@ -15,10 +15,10 @@ Template.tmpl_persons_list.helpers({
 	persons: function() {
 		return this.fetch();
 	},
-	personsReady: function() {
+	ready: function() {
 		return this.ready();
 	},
-	allPersonsLoaded: function() {
+	allLoaded: function() {
 		allPostsLoaded = this.fetch().length < this.loaded();
 		Session.set('allPostsLoaded', allPostsLoaded);
 		return allPostsLoaded;
@@ -40,11 +40,11 @@ Template.tmpl_person_sort_select.helpers({
 	}
 });
 Template.tmpl_person_sort_select.events({
-	'click #person-sort': function(e) {
+	'click #person_sort': function(e) {
 		e.preventDefault();
-		var $selector = $('#person-sort');
-		if ( Session.get('person-sort') !== $selector.val() ) {
-			Session.set('person-sort', $selector.val());
+		var $selector = $('#person_sort');
+		if ( Session.get('person_sort') !== $selector.val() ) {
+			Session.set('person_sort', $selector.val());
 			Router.go('/persons');
 		}
 		$selector = null;
