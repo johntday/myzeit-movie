@@ -28,7 +28,9 @@ factsSort = {
 	, click_cnt: sortQuery('click_cnt', -1)
 };
 movieTimelineSort = {
-	title: sortQuery('_id', 1)
+	title: sortQuery('title', 1)
+	, click_cnt: sortQuery('click_cnt', -1, 'title', 1)
+	, favs_cnt: sortQuery('favs_cnt', -1, 'click_cnt', -1, 'title', 1)
 };
 usersSort = {
 	username: sortQuery('username', 1)

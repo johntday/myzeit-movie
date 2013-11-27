@@ -59,7 +59,7 @@ Meteor.publish('pubsub_movie_timelines', function(query, options, limit) {
 	return MovieTimelines.find(query || {}, options);
 });
 Meteor.publish('pubsub_movie_timelines_5', function() {
-	return MovieTimelines.find({}, {sort:{title: 1},limit: 5});
+	return MovieTimelines.find({}, findOptions(movieTimelineSort['click_cnt'], 5) );
 });
 
 /**
