@@ -321,6 +321,9 @@ Template.tmplMovieTimeline.helpers({
 	},
 	updatedAgo: function() {
 		return (this.updated) ? moment(this.updated).fromNow() : this.updated;
+	},
+	timelineHelp: function() {
+		return {isEdit: false};
 	}
 });
 Template.tmplMovieTimeline.events({

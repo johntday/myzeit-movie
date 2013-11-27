@@ -60,6 +60,9 @@ Deps.autorun(function(){
 	);
 });
 
+/**
+ * Movie Favs
+ */
 movieFavsSubscription = function(find, options, per_page) {
 	var handle = Meteor.subscribeWithPagination('pubsub_movie_favs', find, options, per_page);
 	handle.fetch = function() {
@@ -78,6 +81,9 @@ Deps.autorun(function(){
 	);
 });
 
+/**
+ * Movie Facts
+ */
 movieFactsSubscription = function(find, options, per_page) {
 	var handle = Meteor.subscribeWithPagination('pubsub_movie_facts_list', find, options, per_page);
 	handle.fetch = function() {

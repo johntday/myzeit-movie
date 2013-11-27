@@ -1,2 +1,2 @@
-isMyDebug = true;
+isMyDebug = false;
 ROTTENTOMATOE = true;
