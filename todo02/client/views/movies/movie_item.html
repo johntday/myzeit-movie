@@ -14,6 +14,9 @@
 				{{#if hasSeen}}
 					<span class="glyphicon glyphicon-eye-open" title="Seen it"></span>
 				{{/if}}
+				{{#if isStar}}
+					<span class="glyphicon glyphicon-star"></span>
+				{{/if}}
 				<p><strong>rating:</strong>{{critics_score}}
 					<strong>views:</strong>{{click_cnt}}
 					<strong>favs:</strong>{{favs_cnt}}

@@ -16,6 +16,9 @@ Template.tmplTimelineItem.helpers({
 	},
 	favs_cnt: function() {
 		return (this.favs_cnt && this.favs_cnt > -1) ? this.favs_cnt : 0;
+	},
+	title: function() {
+		return this.title + ' (' + this.author + ')';
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
