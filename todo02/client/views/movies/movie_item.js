@@ -11,6 +11,9 @@ Template.tmplMovieItem.helpers({
 	hasSeen: function() {
 		return hasSeen(this.seen);
 	},
+	isStar: function() {
+		return isStar(this.stars);
+	},
 	yearDisplay: function() {
 		if (this.year && this.year != -1)
 			return this.year;
@@ -37,6 +40,9 @@ Template.tmplMovieItem.helpers({
 	},
 	seen_cnt: function() {
 		return (this.seen_cnt && this.seen_cnt > -1) ? this.seen_cnt : 0;
+	},
+	stars_cnt: function() {
+		return (this.stars_cnt && this.stars_cnt > -1) ? this.stars_cnt : 0;
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/

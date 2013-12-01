@@ -14,9 +14,11 @@
 
 			<h2 class="panel-title">{{title}}
 				<div class="pull-right" style="margin-top: -5px;">
-					{{glyphicon "heart" "heart-empty" "icon-heart" isFav "Add/remove from favs"}}
+					{{glyphicon "heart" "heart-empty" "icon-heart" isFav "Add / remove from favs"}}
 					&nbsp;&nbsp;&nbsp;
 					{{glyphicon "eye-open" "eye-close" "icon-eye" hasSeen "Seen the movie"}}
+					&nbsp;&nbsp;&nbsp;
+					{{glyphicon "star" "star-empty" "icon-star" isStar "Star. Want to See!"}}
 					{{#if canEdit}}
 						<button type="button" class="btn btn-default btn-sm" id="btnEditToggle">&nbsp;&nbsp;Edit&nbsp;&nbsp;</button>
 					{{/if}}
@@ -88,10 +90,11 @@
 				{{#if isAdmin}}
 					{{form_static "Author UserId" "userId" userId true}}
 				{{/if}}
+				{{form_static "Rating" "critics_score" critics_score true}}
 				{{form_static "Favs" "favs_cnt" favs_cnt true}}
 				{{form_static "Views" "click_cnt" click_cnt true}}
 				{{form_static "Seen" "seen_cnt" seen_cnt true}}
-				{{form_static "Rating" "critics_score" critics_score true}}
+				{{form_static "Starred" "stars_cnt" stars_cnt true}}
 				{{form_static "Created" "created" createdAgo false}}
 				{{form_static "Updated" "updated" updatedAgo false}}
 				{{#if canEdit}} {{form_select "Status" "status" status statusOptions "" canEditAndEditToggleAdmin true}} {{/if}}

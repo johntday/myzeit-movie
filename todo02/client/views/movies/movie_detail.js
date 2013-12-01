@@ -36,6 +36,9 @@ Template.tmplMovieDetail.helpers({
 	hasSeen: function() {
 		return hasSeen(this.seen);
 	},
+	isStar: function() {
+		return isStar(this.stars);
+	},
 	smallPoster: function() {
 		return (this.posters && this.posters.detailed) ? this.posters.detailed : "/img/notfound.png";
 	},
@@ -51,6 +54,9 @@ Template.tmplMovieDetail.helpers({
 	},
 	seen_cnt: function() {
 		return (this.seen_cnt && this.seen_cnt > -1) ? this.seen_cnt : 0;
+	},
+	stars_cnt: function() {
+		return (this.stars_cnt && this.stars_cnt > -1) ? this.stars_cnt : 0;
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -115,6 +121,22 @@ Template.tmplMovieDetail.events({
 		} else {
 			Movies.update(this._id, { $addToSet: { seen: user._id }, $inc: { seen_cnt: 1 } } );
 			MyLog("movie_details.js/click #icon-eye/1", "remove from seen");
+		}
+	},
+
+	'click #icon-star': function(e) {
+		var user = Meteor.user();
+		if(!user){
+			throwError('You must login to add a movie to your "star" list');
+			return false;
+		}
+
+		if ( isStar(this.stars) ) {
+			Movies.update(this._id, { $pull: { stars: user._id }, $inc: { stars_cnt: -1 } } );
+			MyLog("movie_details.js/click #icon-star/2", "remove from stars");
+		} else {
+			Movies.update(this._id, { $addToSet: { stars: user._id }, $inc: { stars_cnt: 1 } } );
+			MyLog("movie_details.js/click #icon-star/1", "remove from stars");
 		}
 	},
 

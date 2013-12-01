@@ -38,7 +38,7 @@ Template.tmplHeader.events({
 
 			if (!value || value.length > 1)
 				Session.set("search_text", value);
-			Router.go('/sciFiMovies');
+			searchRouteLogic();
 		} else {
 			/**
 			 * no type-ahead.  just search on <enter>.
@@ -50,27 +50,12 @@ Template.tmplHeader.events({
 	'click #show-sidebar': function(e, template) {
 		e.preventDefault();
 		Session.set('has_sidebar', true);
-	},
-	// SEARCH BUTTON
-	'click #btn-search': function(e, template) {
-		var value = String($("#header-search").val() || "");
-		doSearch(value, true);
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
 doSearch = function(value, isEnter) {
 	if (!value || isEnter) {
 		Session.set("search_text", value);
-		Router.go('/sciFiMovies');
-//		personsHandle = personListSubscription(
-//			{name: {$regex: Session.get('search_text'), $options: 'i'}},
-//			{sort: {name: 1}},
-//			Meteor.MyClientModule.appConfig.pageLimit
-//		);
-//		moviesHandle = movieListSubscription(
-//			{title: {$regex: Session.get('search_text'), $options: 'i'}},
-//			{sort: {title: 1}},
-//			Meteor.MyClientModule.appConfig.pageLimit
-//		);
+		searchRouteLogic();
 	}
 };

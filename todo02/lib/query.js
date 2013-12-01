@@ -17,6 +17,7 @@ movieSort = {
 	, critics_score: sortQuery('ratings.critics_score', -1, 'click_cnt', -1, 'title', 1)
 	, favs_cnt: sortQuery('favs_cnt', -1, 'click_cnt', -1, 'title', 1)
 	, seen_cnt: sortQuery('seen_cnt', -1, 'click_cnt', -1, 'title', 1)
+	, stars_cnt: sortQuery('stars_cnt', -1, 'click_cnt', -1, 'title', 1)
 };
 personSort = {
 	name: sortQuery('name', 1, '_id', 1)

@@ -9183,6 +9183,9 @@ Meteor.startup(function () {
 			}
 		}
 		console.log("Movies.find().count()="+Movies.find().count());
+
+//		console.log("Creating index on Movies.favs...");
+//		Movies._ensureIndex( {favs: 1} );
 	}
 
 	// MOVIE TIMELINES

@@ -32,6 +32,7 @@ Router.map(function ()
 	this.route('tmpl_about'               ,{path: '/about'});
 	this.route('tmpl_help'                ,{path: '/help'});
 	this.route('tmpl_settings'            ,{path: '/settings'});
+	this.route('tmpl_mystuff'             ,{path: '/mystuff'});
 	this.route('tmplSortedUsers'          ,{path: '/admin/users'});
 	this.route('tmpl_movie_add'           ,{path: '/movieAdd'});
 	this.route('tmpl_person_add'          ,{path: '/personAdd'});

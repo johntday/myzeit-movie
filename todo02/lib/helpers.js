@@ -6,6 +6,13 @@ MyLog = function(codePath, name, object) {
 			console.log(codePath + " [" + name + "]");
 	}
 };
+searchRouteLogic = function() {
+	if ( _.contains(['/sciFiMovies','/timelines','/persons','/favs'], Location._state.path) ) {
+		Router.go(Location._state.path);
+	} else {
+		Router.go('/sciFiMovies');
+	}
+};
 getNow = function() {
 	return new Date().getTime();
 };
@@ -39,6 +46,11 @@ hasSeen = function(seen) {
 	var user = Meteor.user();
 	if(!user) return false;
 	return _.contains(seen, user._id);
+};
+isStar = function(stars) {
+	var user = Meteor.user();
+	if(!user) return false;
+	return _.contains(stars, user._id);
 };
 getSetting = function(view, name, valueDefault) {
 	var user = Meteor.user();
