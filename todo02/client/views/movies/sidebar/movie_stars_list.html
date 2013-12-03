@@ -1,0 +1,37 @@
+<template name="tmpl_movie_stars_list">
+	<div class="posts">
+		{{#if currentUser}}
+		<ol>
+        {{#each movies}}
+			{{> tmpl_movie_stars_item}}
+        {{/each}}
+
+        {{#if isMoreMovies}}
+			<a href="/stars">See them all</a></li>
+        {{/if}}
+		</ol>
+		{{else}}
+		Login to see your starred movies
+		{{/if}}
+	</div>
+</template>
+
+<template name="tmpl_movie_stars_item">
+	<li>
+		<a href="/sciFiMovies/{{_id}}">{{title}}</a>
+	</li>
+</template>
+
+
+<template name="tmpl_movie_stars_summary">
+	<div class="panel panel-purple">
+		<div class="panel-heading">
+			<h3 class="panel-title">My Starred</h3>
+		</div>
+		<div class="panel-body">
+
+			{{> tmpl_movie_stars_list}}
+
+		</div>
+	</div>
+</template>

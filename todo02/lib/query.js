@@ -46,6 +46,10 @@ favsQuery = function(searchText) {
 	var userId = Meteor.userId();
 	return (searchText) ? {favs: Meteor.userId(), title: regexQuery(searchText)} : {favs: ((userId) ? userId : "0")};
 };
+starsQuery = function(searchText) {
+	var userId = Meteor.userId();
+	return (searchText) ? {stars: Meteor.userId(), title: regexQuery(searchText)} : {stars: ((userId) ? userId : "0")};
+};
 personQuery = function(searchText) {
 	return (searchText) ? {name: regexQuery(searchText)} : {};
 };

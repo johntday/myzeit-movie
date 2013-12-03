@@ -25,6 +25,14 @@ Meteor.publish('pubsub_movie_favs', function(query, options, limit) {
 Meteor.publish('pubsub_movie_favs_5', function() {
 	return Movies.find({favs: this.userId}, findOptions(movieSort['title'], 5) );
 });
+Meteor.publish('pubsub_movie_stars', function(query, options, limit) {
+	options = options || {};
+	options.limit = limit;
+	return Movies.find(query || {}, options);
+});
+Meteor.publish('pubsub_movie_stars_5', function() {
+	return Movies.find({stars: this.userId}, findOptions(movieSort['title'], 5) );
+});
 Meteor.publish('pubsub_selected_movie_alternateId', function(mymovie_id) {
 	return Movies.find({mymovie_id: mymovie_id});
 });

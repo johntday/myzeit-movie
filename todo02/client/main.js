@@ -11,6 +11,7 @@ Session.setDefault('is_example_timeline', false);
 Session.setDefault('movie_sort', 'title');
 Session.setDefault('person_sort', 'name');
 Session.setDefault('favs_sort', 'title');
+Session.setDefault('stars_sort', 'title');
 Session.setDefault('facts_sort', 'click_cnt');
 Session.setDefault('movie_timeline_sort', 'title');
 Session.setDefault('user_sort', 'username');
@@ -77,6 +78,27 @@ Deps.autorun(function(){
 	movieFavsHandle = movieFavsSubscription(
 		favsQuery( Session.get('search_text') ),
 		movieSort[ Session.get('favs_sort') ],
+		Meteor.MyClientModule.appConfig.pageLimit
+	);
+});
+
+/**
+ * Movie Starred
+ */
+movieStarsSubscription = function(find, options, per_page) {
+	var handle = Meteor.subscribeWithPagination('pubsub_movie_stars', find, options, per_page);
+	handle.fetch = function() {
+		var ourFind = _.isFunction(find) ? find() : find;
+		return limitDocuments(Movies.find(ourFind, options), handle.loaded());
+	}
+	return handle;
+};
+Deps.autorun(function(){
+	Meteor.subscribe('pubsub_movie_stars_5');
+
+	movieStarsHandle = movieStarsSubscription(
+		starsQuery( Session.get('search_text') ),
+		movieSort[ Session.get('stars_sort') ],
 		Meteor.MyClientModule.appConfig.pageLimit
 	);
 });

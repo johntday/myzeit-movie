@@ -1,13 +1,9 @@
-Template.tmpl_movie_tl_item.helpers({
-});
 /*------------------------------------------------------------------------------------------------------------------------------*/
-Template.tmpl_movie_tl_list.helpers({
+Template.tmpl_movie_stars_list.helpers({
 	movies: function() {
-		return MovieTimelines.find({}, findOptions(movieTimelineSort['click_cnt'], 5) );
+		return Movies.find({stars: Meteor.userId()}, findOptions(movieSort['title'], 5) );
 	},
 	isMoreMovies: function() {
-//		var cnt = Movies.find({favs: Meteor.userId()}).count();
-//		return ( cnt > 5 );
 		return true;
 	}
 });

@@ -37,7 +37,7 @@ Router.map(function ()
 	this.route('tmpl_movie_add'           ,{path: '/movieAdd'});
 	this.route('tmpl_person_add'          ,{path: '/personAdd'});
 	this.route('tmpl_movie_favs'          ,{path: '/favs'});
-//	this.route('tmpl_admin_stats'         ,{path: '/admin_stats'});
+	this.route('tmpl_movie_stars'         ,{path: '/stars'});
 
 	this.route('tmpl_admin_stats', {
 		path  : '/admin/stats',
