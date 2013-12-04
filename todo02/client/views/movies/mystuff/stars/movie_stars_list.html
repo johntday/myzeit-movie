@@ -1,16 +1,16 @@
-<template name="tmpl_movie_favs">
+<template name="tmpl_movie_stars">
 	<ul class="nav nav-tabs nav-justified">
 		<li><a href="/mystuff">My Stuff</a></li>
-		<li class="active"><a href="#">Favs</a></li>
-		<li><a href="/stars">Starred</a></li>
+		<li><a href="/favs">Favs</a></li>
+		<li class="active"><a href="#">Starred</a></li>
 	</ul>
+`
+	{{> tmpl_stars_sort_select}}
 
-	{{> tmpl_favs_sort_select}}
-
-	{{> tmplMoviesList movieFavsHandle}}
+	{{> tmplMoviesList movieStarsHandle}}
 </template>
 
-<template name="tmpl_favs_sort_select">
+<template name="tmpl_stars_sort_select">
 	<div class="row">
 		<div class="col-sm-8">
 			<ol class="breadcrumb">
@@ -25,7 +25,7 @@
 		</div>
 
 		<div class="col-sm-4">
-			{{form_options option_value options "favs-sort"}}
+			{{form_options option_value options "stars-sort"}}
 		</div>
 	</div>
 </template>
