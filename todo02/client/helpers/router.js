@@ -1,3 +1,4 @@
+// UPGRADE TO v0.6.x ???
 Router.configure({
 	//layoutTemplate : 'layout', //v0.6.0
 	layout : 'layout',
