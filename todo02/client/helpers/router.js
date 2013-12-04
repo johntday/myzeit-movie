@@ -12,20 +12,6 @@ Router.configure({
 
 Router.map(function ()
 {
-	this.route('bestPosts', {path: '/best'});
-	this.route('newPosts', {path: '/new'});
-	this.route('postPage', {
-		path  : '/posts/:_id',
-		waitOn: function ()
-		{
-			return Meteor.subscribe('singlePost', this.params._id);
-		},
-		data  : function ()
-		{
-			return Posts.findOne(this.params._id);
-		}
-	});
-
 	this.route('tmplHome'                 ,{path: '/'});
 	this.route('tmplSortedMovies'         ,{path: '/sciFiMovies'});
 	this.route('tmpl_sorted_persons_list' ,{path: '/persons'});
