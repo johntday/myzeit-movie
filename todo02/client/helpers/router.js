@@ -3,11 +3,11 @@ Router.configure({
 	//layoutTemplate : 'layout', //v0.6.0
 	layout : 'layout',
 	loadingTemplate: 'loading',
-	notFoundTemplate: 'not_found',
-	yieldTemplates: {
+	notFoundTemplate: 'not_found'
+//	yieldTemplates: {
 		//'footer': { to: 'footer' },
 		//'tmplHeader': { to: 'header' }
-	}
+//	}
 });
 
 Router.map(function ()
