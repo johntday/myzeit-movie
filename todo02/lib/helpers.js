@@ -7,7 +7,7 @@ MyLog = function(codePath, name, object) {
 	}
 };
 searchRouteLogic = function() {
-	if ( _.contains(['/sciFiMovies','/timelines','/persons','/favs'], Location._state.path) ) {
+	if ( _.contains(['/sciFiMovies','/timelines','/persons','/favs','/stars'], Location._state.path) ) {
 		Router.go(Location._state.path);
 	} else {
 		Router.go('/sciFiMovies');
