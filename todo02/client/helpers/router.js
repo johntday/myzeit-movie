@@ -10,8 +10,7 @@ Router.configure({
 //	}
 });
 
-Router.map(function ()
-{
+Router.map(function () {
 	this.route('tmplHome'                 ,{path: '/'});
 	this.route('tmplSortedMovies'         ,{path: '/sciFiMovies'});
 	this.route('tmpl_sorted_persons_list' ,{path: '/persons'});
@@ -43,7 +42,6 @@ Router.map(function ()
 			return {movie_pending_cnt: movie_pending_cnt};
 		}
 	});
-
 	this.route('tmpl_person_detail', {
 		path  : '/person/:_id',
 		waitOn: function ()
@@ -63,7 +61,6 @@ Router.map(function ()
 			return person;
 		}
 	});
-
 	this.route('tmplMovieDetail', {
 		path  : '/sciFiMovies/:_id',
 		waitOn: function ()
@@ -83,7 +80,6 @@ Router.map(function ()
 			return movie;
 		}
 	});
-
 	this.route('tmplMovieDetail', {
 		path  : '/m/:mymovie_id',
 		waitOn: function ()
@@ -103,7 +99,6 @@ Router.map(function ()
 			return movie;
 		}
 	});
-
 	this.route('tmplMovieTimelineList', {
 		path  : '/sciFiMovies/timelines/:_id',
 		waitOn: function ()
@@ -119,7 +114,6 @@ Router.map(function ()
 			return MovieTimelines.find({movieId: this.params._id, userId: { $in: ["admin", Meteor.userId()] } } );
 		}
 	});
-
 	this.route('tmplMovieCastList', {
 		path  : '/sciFiMovies/cast/:_id',
 		waitOn: function ()
@@ -133,7 +127,6 @@ Router.map(function ()
 			return Movies.findOne(this.params._id);
 		}
 	});
-
 	this.route('tmplMovieFactsList', {
 		path  : '/sciFiMovies/facts/:_id',
 		waitOn: function ()
@@ -153,7 +146,6 @@ Router.map(function ()
 			return movie;
 		}
 	});
-
 	this.route('tmplMoviePoster', {
 		path  : '/sciFiMovies/poster/:_id',
 		waitOn: function ()
@@ -167,7 +159,6 @@ Router.map(function ()
 			return Movies.findOne(this.params._id);
 		}
 	});
-
 	this.route('tmplMovieTimeline', {
 		path  : '/movieTimeline/:_id',
 		waitOn: function ()
@@ -180,7 +171,6 @@ Router.map(function ()
 			return MovieTimelines.findOne(this.params._id);
 		}
 	});
-
 	this.route('tmplMovieTimelineList', {
 		path  : '/sciFiMovies/timelines/example/:mymovie_id',
 		waitOn: function ()
@@ -201,5 +191,4 @@ Router.map(function ()
 			return MovieTimelines.find({movieId: m._id});
 		}
 	});
-
 });

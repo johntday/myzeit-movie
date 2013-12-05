@@ -12,6 +12,7 @@ searchRouteLogic = function() {
 	} else {
 		Router.go('/sciFiMovies');
 	}
+	Meteor.MyClientModule.scrollToTopOfPageFast();
 };
 getNow = function() {
 	return new Date().getTime();
