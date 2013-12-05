@@ -1,3 +1,6 @@
+searchTextBuilder = function(text) {
+	return (text) ? "\\b" + text : "";
+};
 regexQuery = function (searchText) {
 	return {$regex: searchText, $options: 'i'};
 };
