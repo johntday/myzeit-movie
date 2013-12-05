@@ -7,9 +7,8 @@ Template.tmpl_movie_tl_list.helpers({
 		return MovieTimelines.find({}, {sort: {click_cnt:-1}, limit:5});
 	},
 	isMoreMovies: function() {
-//		var cnt = Movies.find({favs: Meteor.userId()}).count();
-//		return ( cnt > 5 );
-		return true;
+		var cnt = MovieTimelines.find().count();
+		return ( cnt > 5 );
 	}
 });
 /*------------------------------------------------------------------------------------------------------------------------------*/
