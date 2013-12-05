@@ -6,7 +6,7 @@ Template.tmpl_movie_item.helpers({
 /*------------------------------------------------------------------------------------------------------------------------------*/
 Template.tmpl_movie_list.helpers({
 	movies: function() {
-		return Movies.find({favs: Meteor.userId()}, findOptions(movieSort['title'], 5) );
+		return Movies.find({favs: Meteor.userId()}, {sort: {title:1}, limit:5});
 	},
 	isMoreMovies: function() {
 		var cnt = Movies.find({favs: Meteor.userId()}).count();
