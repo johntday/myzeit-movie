@@ -17,7 +17,7 @@ Template.tmplHeader.events({
 	// KEYUP SEARCH FIELD
 	'keyup #header-search': function(e) {
 		e.preventDefault();
-		var value = String( searchTextBuilder(e.target.value) );
+		var value = String(e.target.value || "");
 		var doTypeAheadSearch = false;
 
 		/**
